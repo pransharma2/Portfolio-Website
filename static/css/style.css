@@ -1,0 +1,70 @@
+/* static/css/style.css */
+
+/* Core Persona 5 colors */
+:root {
+    --p5-red: #e60012;
+    --p5-black: #0a0a0a;
+    --p5-white: #ffffff;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--p5-black);
+    font-family: 'Fjalla One', sans-serif;
+    color: var(--p5-white);
+    overflow-x: hidden;
+  }
+  
+  /* Angled red background layer */
+  .persona-bg {
+    position: fixed;
+    top: 0;
+    left: -10%;
+    width: 120%;
+    height: 100vh;
+    background: linear-gradient(135deg, var(--p5-red) 40%, var(--p5-black) 60%);
+    clip-path: polygon(0 0, 100% 15%, 100% 100%, 0% 85%);
+    z-index: -1;
+  }
+  
+  /* Navbar styling */
+  .persona-nav {
+    background: var(--p5-black);
+    padding: 1rem 2rem;
+    transform: skew(-15deg);
+    border-bottom: 3px solid var(--p5-red);
+  }
+  
+  .persona-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .persona-nav li {
+    margin-left: 2rem;
+    transform: skew(15deg);
+  }
+  
+  .persona-nav a {
+    color: var(--p5-white);
+    text-decoration: none;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    transition: color 0.3s, transform 0.3s;
+  }
+  
+  .persona-nav a:hover {
+    color: var(--p5-red);
+    transform: scale(1.1);
+  }
+  
+  /* Main content area */
+  .content {
+    padding: 5rem 2rem;
+    text-align: center;
+  }
+  

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Home - Persona 5 Portfolio{% endblock %}
+{% block content %}
+<section class="home-menu">
+  <h1 class="home-title">Prantap’s Portfolio</h1>
+  <ul class="menu-list">
+    <li><a href="{{ url_for('about') }}">About Me</a></li>
+    <li><a href="{{ url_for('projects') }}">Projects</a></li>
+    <li><a href="{{ url_for('contact') }}">Contact</a></li>
+  </ul>
+</section>
+{% endblock %}

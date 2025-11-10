@@ -1,0 +1,31 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Persona 5 Portfolio{% endblock %}</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="{{ url_for('static', filename='js/animations.js') }}" defer></script>
+
+  <!-- Persona-style font -->
+  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Bebas+Neue&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="persona-bg"></div>
+
+  <nav class="persona-nav">
+    <ul>
+      <li><a href="{{ url_for('home') }}">Home</a></li>
+      <li><a href="{{ url_for('contact') }}">Contact</a></li>
+      <li><a href="{{ url_for('about') }}">About</a></li>
+      <li><a href="{{ url_for('projects') }}">Projects</a></li>
+    </ul>
+  </nav>
+
+  <main class="content">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
