@@ -76,4 +76,79 @@
   @media (max-width:520px){
     .hero-grid{grid-template-columns:1fr}
   }
+
+/* ===== Persona 5 background using your image ===== */
+.p5-body{
+  background: var(--p5-black) url("../img/p5_wall.jpg") center/cover fixed no-repeat;
+  position: relative;
+}
+
+/* Subtle vignette + red tint so text pops */
+.p5-body::before{
+  content:"";
+  position:fixed; inset:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse at center, rgba(0,0,0,.2) 0%, rgba(0,0,0,.6) 70%),
+    linear-gradient(0deg, rgba(255,30,30,.08), rgba(255,30,30,.08));
+  z-index:-1;
+}
+
+/* ===== Page transition curtain (comic swipe) ===== */
+.p5-enter,.p5-exit{
+  position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+  background: var(--p5-red);
+  transform: skewX(-18deg) translateX(-120%);
+  box-shadow: 0 0 0 8px #000, 10px 10px 0 #000;
+  border: 6px solid #fff;
+}
+.p5-enter{ animation: p5Enter .55s cubic-bezier(.2,.8,.2,1) both; }
+.p5-exit.p5-exiting{ animation: p5Exit .45s cubic-bezier(.2,.8,.2,1) both; }
+
+@keyframes p5Enter{
+  0%{ transform: skewX(-18deg) translateX(0%); }
+  100%{ transform: skewX(-18deg) translateX(-120%); }
+}
+@keyframes p5Exit{
+  0%{ transform: skewX(-18deg) translateX(-120%); }
+  100%{ transform: skewX(-18deg) translateX(0%); }
+}
+
+/* ===== Command buttons overlay (used on Home) ===== */
+.command-stack{
+  position: relative;
+  display: grid; gap: 14px;
+  width: clamp(240px, 42vw, 500px);
+}
+.command{
+  display:flex; align-items:center; gap:10px;
+  background:#000; color:#fff; text-decoration:none;
+  padding:12px 16px; text-transform:uppercase; letter-spacing:1px;
+  border:4px solid #fff;
+  box-shadow: 6px 6px 0 #000, 0 0 0 4px var(--p5-red);
+  transform: skewX(-12deg);
+  transition: transform .12s ease, border-color .12s ease, color .12s ease;
+}
+.command span{ transform: skewX(12deg); font-size: clamp(1.1rem, 1.8vw, 1.6rem); }
+.command::before{
+  content:"★"; font-weight:900;
+  transform: skewX(12deg) rotate(-8deg);
+  display:inline-block; font-size:1.1em; margin-right:2px;
+  filter: drop-shadow(2px 2px 0 #000);
+}
+.command:hover{ transform: translateY(-3px) skewX(-12deg) scale(1.03); border-color: var(--p5-red); color: var(--p5-red); }
+
+/* Layout helpers for the home hero so buttons overlay the BG */
+.hero{
+  min-height: clamp(60vh, 76vh, 88vh);
+  display:grid; grid-template-columns: 1fr;
+  align-content: center; justify-items: start;
+}
+.hero-inner{
+  margin-left: clamp(12px, 6vw, 80px);
+  display: grid; gap: 18px;
+}
+.hero-title{ max-width: fit-content; }
+
+/* Keep previous cards/styles; this just ensures home looks like P5 menu */
+
   

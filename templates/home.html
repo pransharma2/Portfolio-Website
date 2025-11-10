@@ -2,23 +2,18 @@
 {% block title %}Home — Prantap's Portfolio{% endblock %}
 {% block content %}
 <section class="hero">
-  <div class="hero-title skew">
-    <h1>Prantap’s Portfolio</h1>
-    <div class="hero-sub">Take Your Heart — enter the Metaverse of my work.</div>
-  </div>
-  <div class="hero-grid">
-    <a class="hero-card menu-link fade-rise" href="{{ url_for('about') }}">
-      <span>About Me</span>
-    </a>
-    <a class="hero-card menu-link fade-rise delay-1" href="{{ url_for('projects') }}">
-      <span>Projects</span>
-    </a>
-    <a class="hero-card menu-link fade-rise delay-2" href="{{ url_for('contact') }}">
-      <span>Contact</span>
-    </a>
-    <div class="hero-avatar">
-      <img src="{{ url_for('static', filename='img/Joker_character_silhouette_pose_c3b36b5e.png') }}" alt="Avatar" />
+  <div class="hero-inner">
+    <div class="hero-title skew">
+      <h1>Prantap’s Portfolio</h1>
+      <div class="hero-sub">Take Your Heart — enter the Metaverse of my work.</div>
     </div>
+
+    <!-- Persona 5-style command stack -->
+    <nav class="command-stack fade-rise">
+      <a class="command" href="{{ url_for('about') }}"><span>About Me</span></a>
+      <a class="command" href="{{ url_for('projects') }}"><span>Projects</span></a>
+      <a class="command" href="{{ url_for('contact') }}"><span>Contact</span></a>
+    </nav>
   </div>
 </section>
 {% endblock %}
