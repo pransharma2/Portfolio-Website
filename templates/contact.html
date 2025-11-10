@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Contact — Prantap{% endblock %}
+{% block content %}
+<section class="contact-section">
+  <form class="p5-form" action="#" method="POST" onsubmit="event.preventDefault(); alert('Front-end only for now.');">
+    <div class="form-row">
+      <label class="skew">Name</label>
+      <input type="text" placeholder="Your Name" required />
+    </div>
+    <div class="form-row">
+      <label class="skew">Email</label>
+      <input type="email" placeholder="you@example.com" required />
+    </div>
+    <div class="form-row">
+      <label class="skew">Message</label>
+      <textarea rows="4" placeholder="Tell me about your idea…" required></textarea>
+    </div>
+    <button class="p5-btn" type="submit">Send</button>
+  </form>
+</section>
+{% endblock %}
