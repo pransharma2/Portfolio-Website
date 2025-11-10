@@ -1,14 +1,14 @@
-# supabase/db.py
-from supabase import create_client
-import os
+# from supabase import Client, create_client
+# import os
 
-url = os.getenv("SUPABASE_URL")
-key = os.getenv("SUPABASE_KEY")
-supabase = create_client(url, key)
+# url: str = os.environ.get("SUPABASE_URL")
+# key: str = os.environ.get("SUPABASE_KEY")
 
-def save_message(name, email, message):
-    return supabase.table("messages").insert({
-        "name": name,
-        "email": email,
-        "message": message
-    }).execute()
+# supabase: Client = create_client(url, key)
+
+# def save_message(name, email, message):
+#     return supabase.table("messages").insert({
+#         "name": name,
+#         "email": email,
+#         "message": message
+#     }).execute()

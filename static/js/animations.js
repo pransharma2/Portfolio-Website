@@ -1,13 +1,14 @@
-// static/js/animations.js
-document.addEventListener("DOMContentLoaded", () => {
-    const menuItems = document.querySelectorAll(".menu-list li");
-  
-    menuItems.forEach((item, index) => {
-      item.style.opacity = 0;
-      setTimeout(() => {
-        item.style.transform = "translateY(0)";
-        item.style.opacity = 1;
-        item.style.transition = "all 0.6s ease";
-      }, 300 * index);
+// animations.js — front-end only
+document.addEventListener('DOMContentLoaded', () => {
+    // Add swoosh transition on nav links
+    document.querySelectorAll('.p5-nav a').forEach(a => {
+      a.addEventListener('click', (e) => {
+        // simple page-out effect for single-page navigation feel
+        document.body.classList.add('p5-page-out');
+        // let navigation continue naturally
+      });
     });
   });
+  
+  // Optional: Add a class for hover sfx (CSS handles the visuals)
+  

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Projects — Prantap{% endblock %}
+{% block content %}
+<section class="projects-list">
+  {% for p in projects %}
+  <article class="project-panel hover-border">
+    <h3>{{ p.name }}</h3>
+    <p>{{ p.desc }}</p>
+    <div class="tags">
+      {% for t in p.tags %}<span class="tag">{{ t }}</span>{% endfor %}
+    </div>
+  </article>
+  {% endfor %}
+</section>
+{% endblock %}

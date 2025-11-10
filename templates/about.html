@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}About — Prantap{% endblock %}
+{% block content %}
+<section class="status">
+  <div class="status-portrait">
+    <img src="{{ url_for('static', filename='img/1_P1ZpJoADmVLHN2vjq0cmqw_1762760206212.jpg') }}" alt="Portrait" />
+  </div>
+  <div class="status-stats">
+    <div class="stat-card hover-pop">
+      <h3>Data Science</h3>
+      <p>ETL, dashboards, and insights with Python/Power BI.</p>
+    </div>
+    <div class="stat-card hover-pop">
+      <h3>Python</h3>
+      <p>Flask apps, automation, and data pipelines.</p>
+    </div>
+    <div class="stat-card hover-pop">
+      <h3>Power BI</h3>
+      <p>Interactive reporting, DAX, and storytelling.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

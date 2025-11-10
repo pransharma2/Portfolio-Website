@@ -1,31 +1,40 @@
-<!-- templates/base.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}Persona 5 Portfolio{% endblock %}</title>
-
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  <script src="{{ url_for('static', filename='js/animations.js') }}" defer></script>
-
-  <!-- Persona-style font -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Prantap's Portfolio{% endblock %}</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}">
+  <!-- Persona 5 style fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/p5.css') }}" />
+  <script defer src="{{ url_for('static', filename='js/animations.js') }}"></script>
 </head>
-<body>
-  <div class="persona-bg"></div>
+<body class="p5-body">
+  <!-- Angled background layers -->
+  <div class="p5-bg p5-bg-red"></div>
+  <div class="p5-bg p5-bg-black"></div>
 
-  <nav class="persona-nav">
-    <ul>
-      <li><a href="{{ url_for('home') }}">Home</a></li>
-      <li><a href="{{ url_for('contact') }}">Contact</a></li>
-      <li><a href="{{ url_for('about') }}">About</a></li>
-      <li><a href="{{ url_for('projects') }}">Projects</a></li>
-    </ul>
-  </nav>
+  <header class="p5-header">
+    <nav class="p5-nav">
+      <div class="logo skew"><a href="{{ url_for('home') }}">PHANTOM • DEV</a></div>
+      <ul class="nav-links">
+        <li class="skew"><a class="{% if page=='home' %}active{% endif %}" href="{{ url_for('home') }}">Home</a></li>
+        <li class="skew"><a class="{% if page=='about' %}active{% endif %}" href="{{ url_for('about') }}">About</a></li>
+        <li class="skew"><a class="{% if page=='projects' %}active{% endif %}" href="{{ url_for('projects') }}">Projects</a></li>
+        <li class="skew"><a class="{% if page=='contact' %}active{% endif %}" href="{{ url_for('contact') }}">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
-  <main class="content">
+  <main class="p5-main">
     {% block content %}{% endblock %}
   </main>
+
+  <footer class="p5-footer">
+    <div class="footer-inner skew">
+      <span>© {{ 2025 }} Prantap • Persona 5–themed portfolio</span>
+    </div>
+  </footer>
 </body>
 </html>
