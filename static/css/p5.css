@@ -151,4 +151,97 @@
 
 /* Keep previous cards/styles; this just ensures home looks like P5 menu */
 
+/* ===== P5 command highlight — additive red/cyan plates (box-shadow method) ===== */
+/* Ref: additive blend idea from the P5 thread; on the web we use screen blending. */
+:root { --p5-cyan:#23e0ff; }
+
+.command{
+  position:relative;
+  isolation:isolate;       /* contain blend to this button (important!) */
+  will-change: transform;  /* smoother transforms */
+}
+
+/* Draw plates as OUTER box-shadows so they don't cover the label area */
+.command::before,
+.command::after{
+  content:"";
+  position:absolute;
+  inset:0;                 /* matches the button’s box; shadow draws outside it */
+  z-index:-1;              /* sit under the text */
+  pointer-events:none;
+
+  /* additive/lighten blend so red + cyan => white where overlapping */
+  mix-blend-mode:screen;   /* additive/lighten blend. */
+  opacity:0;               /* hidden until hover/focus */
+  transform:skewX(-12deg); /* match your button tilt */
+
+  transition:
+    opacity .12s ease,
+    transform .18s cubic-bezier(.2,.8,.2,1),
+    box-shadow .18s cubic-bezier(.2,.8,.2,1);
+}
+
+/* RED plate (upper-left bias) — not a perfect fit */
+.command::before{
+  /* offset-x, offset-y, blur, spread, color */
+  box-shadow: -14px -10px 0 16px #ff1e1e;   /* solid red, no alpha */
+  transform: skewX(-12deg) translate(-4px,-3px) rotate(-1deg);
+}
+
+/* CYAN plate (lower-right bias) — moves more than red */
+.command::after{
+  box-shadow:  16px  12px 0 14px var(--p5-cyan); /* solid cyan, no alpha */
+  transform: skewX(-12deg) translate(8px,6px) rotate(1deg);
+}
+
+/* Show + animate on hover or keyboard focus */
+.command:hover::before,
+.command:focus-visible::before,
+.command:hover::after,
+.command:focus-visible::after{
+  opacity:1;
+}
+
+/* motion: both move; cyan travels a bit more (like the game) */
+.command:hover::before,
+.command:focus-visible::before{
+  box-shadow: -10px -7px 0 18px #ff1e1e;
+  transform: skewX(-12deg) translate(-2px,-1px) rotate(-1deg);
+  animation:p5PulseRed 1100ms ease-in-out infinite;
+}
+.command:hover::after,
+.command:focus-visible::after{
+  box-shadow:  20px 14px 0 18px var(--p5-cyan);
+  transform: skewX(-12deg) translate(10px,8px) rotate(1deg);
+  animation:p5PulseCyan 900ms ease-in-out infinite;
+}
+
+/* gentle heartbeat (different phases so they don’t move identically) */
+@keyframes p5PulseRed{
+  0%{   box-shadow:-10px -7px 0 18px #ff1e1e; transform:skewX(-12deg) translate(-2px,-1px) rotate(-1deg); }
+  50%{  box-shadow: -8px -5px 0 20px #ff1e1e; transform:skewX(-12deg) translate( 0px, 0px) rotate(-1deg); }
+  100%{ box-shadow:-10px -7px 0 18px #ff1e1e; transform:skewX(-12deg) translate(-2px,-1px) rotate(-1deg); }
+}
+@keyframes p5PulseCyan{
+  0%{   box-shadow: 20px 14px 0 18px var(--p5-cyan); transform:skewX(-12deg) translate(10px,8px) rotate(1deg); }
+  50%{  box-shadow: 22px 16px 0 22px var(--p5-cyan); transform:skewX(-12deg) translate(14px,10px) rotate(1deg); }
+  100%{ box-shadow: 20px 14px 0 18px var(--p5-cyan); transform:skewX(-12deg) translate(10px,8px) rotate(1deg); }
+}
+
+/* Label stays above the plates */
+.command > span{ position:relative; z-index:1; }
+
+/* Your requested label color on hover/focus: BLACK.
+   Switch the interior to white so black text stays readable. */
+.command:hover,
+.command:focus-visible{
+  background:#fff;
+  color:#000;
+  border-color:#fff; /* keep the crisp comic outline */
+}
+
+/* a11y: use focus-visible so mouse clicks don’t leave a ring */
+.command:focus-visible{ outline:none; }
+
+
   

@@ -32,3 +32,24 @@
     }
   }, true);
 })();
+
+document.querySelectorAll('.command').forEach(cmd => {
+  cmd.style.setProperty('--p5-ox', '50%');
+  cmd.style.setProperty('--p5-oy', '50%');
+
+  cmd.addEventListener('mousemove', (e) => {
+    const r = cmd.getBoundingClientRect();
+    const ox = ((e.clientX - r.left) / r.width) * 100;
+    const oy = ((e.clientY - r.top)  / r.height) * 100;
+    cmd.style.setProperty('--p5-ox', `${ox}%`);
+    cmd.style.setProperty('--p5-oy', `${oy}%`);
+  });
+
+  cmd.addEventListener('mouseleave', () => {
+    cmd.style.setProperty('--p5-ox', '50%');
+    cmd.style.setProperty('--p5-oy', '50%');
+  });
+});
+
+
+
