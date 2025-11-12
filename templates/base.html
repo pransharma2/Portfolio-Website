@@ -40,5 +40,22 @@
       <span>© {{ 2025 }} Prantap • Persona 5–themed portfolio</span>
     </div>
   </footer>
+  <div id="p5-intro" class="p5-intro" hidden>
+  <div class="intro-panel"></div>
+  <!-- Joker cut-in image (silhouette/crop works great) -->
+  <img class="intro-joker" src="{{ url_for('static', filename='img/joker-cutin.png') }}" alt="">
+  <!-- sweeping plates (additive) -->
+  <div class="intro-swoosh cyan">
+    <svg viewBox="0 0 108.1 47" preserveAspectRatio="none">
+      <polygon fill="#23E0FF" points="0,20 108.1,0 95,47 0,35"></polygon>
+    </svg>
+  </div>
+  <div class="intro-swoosh red">
+    <svg viewBox="0 0 108.1 47" preserveAspectRatio="none">
+      <polygon fill="#FF1E1E" points="10,0 108.1,12 108.1,47 0,30"></polygon>
+    </svg>
+  </div>
+  <div class="intro-text"><span>Take Your Heart</span></div>
+</div>
 </body>
 </html>

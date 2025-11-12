@@ -149,99 +149,441 @@
 }
 .hero-title{ max-width: fit-content; }
 
-/* Keep previous cards/styles; this just ensures home looks like P5 menu */
+/* remove the star that was on each button */
+.command::before{ content: none !important; display:none !important; }
 
-/* ===== P5 command highlight — additive red/cyan plates (box-shadow method) ===== */
-/* Ref: additive blend idea from the P5 thread; on the web we use screen blending. */
-:root { --p5-cyan:#23e0ff; }
-
-.command{
-  position:relative;
-  isolation:isolate;       /* contain blend to this button (important!) */
-  will-change: transform;  /* smoother transforms */
+/* image-based commands: no inner padding/border box */
+.image-command{
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
 }
 
-/* Draw plates as OUTER box-shadows so they don't cover the label area */
-.command::before,
-.command::after{
-  content:"";
+/* keep the container skewed for P5 vibe; de-skew the image itself */
+.image-command .command-img{
+  display:block;
+  width: clamp(260px, 42vw, 560px);
+  height:auto;
+  transform: skewX(12deg);           /* counters parent skew so image looks straight */
+  position: relative;
+  z-index: 2;                         /* above plates */
+  filter: drop-shadow(4px 4px 0 #000);/* crisp comic shadow */
+}
+
+/* plates container sits under the image */
+.image-command .shape-wrapper{
   position:absolute;
-  inset:0;                 /* matches the button’s box; shadow draws outside it */
-  z-index:-1;              /* sit under the text */
+  inset: -2px -6px;                   /* spill beyond image */
+  z-index:1;
   pointer-events:none;
-
-  /* additive/lighten blend so red + cyan => white where overlapping */
-  mix-blend-mode:screen;   /* additive/lighten blend. */
-  opacity:0;               /* hidden until hover/focus */
-  transform:skewX(-12deg); /* match your button tilt */
-
-  transition:
-    opacity .12s ease,
-    transform .18s cubic-bezier(.2,.8,.2,1),
-    box-shadow .18s cubic-bezier(.2,.8,.2,1);
+  display:none;                       /* only show on hover/focus */
+  transform: rotate(-6deg);
 }
 
-/* RED plate (upper-left bias) — not a perfect fit */
-.command::before{
-  /* offset-x, offset-y, blur, spread, color */
-  box-shadow: -14px -10px 0 16px #ff1e1e;   /* solid red, no alpha */
-  transform: skewX(-12deg) translate(-4px,-3px) rotate(-1deg);
+/* show plates on hover/focus only */
+.image-command:hover .shape-wrapper,
+.image-command:focus-visible .shape-wrapper{ display:block; }
+
+/* alternate angle like your SCSS */
+.image-command:nth-child(even):hover .shape-wrapper,
+.image-command:nth-child(even):focus-visible .shape-wrapper{ transform: rotate(11deg); }
+
+/* individual plates; use additive blend (screen) and contain it to the link */
+.link-wrapper{ isolation:isolate; }   /* keep blending local to the link */
+.shape{ position:absolute; top:0; left:0; right:0; height: 56px; overflow:hidden; }
+.shape svg{ position:absolute; top:0; left:0; }
+
+.shape.red-fill{  mix-blend-mode: screen; animation: jellyRed .45s ease .08s both; }
+.shape.cyan-fill{ mix-blend-mode: screen; animation: jellyCyan .40s ease .05s both; }
+
+/* both plates move; cyan moves more */
+.image-command:hover .shape.cyan-fill,
+.image-command:focus-visible .shape.cyan-fill{
+  transform: scale(3,.12);
+}
+.image-command:hover .shape.red-fill,
+.image-command:focus-visible .shape.red-fill{
+  transform: scale(2.3,.11);
 }
 
-/* CYAN plate (lower-right bias) — moves more than red */
-.command::after{
-  box-shadow:  16px  12px 0 14px var(--p5-cyan); /* solid cyan, no alpha */
-  transform: skewX(-12deg) translate(8px,6px) rotate(1deg);
+/* gentle wobble (can tune if you want less motion) */
+@keyframes jellyRed{
+  0%  { transform: scale(1.25,1) skewX(10deg) translateY(2px) rotateZ(-8deg); }
+  50% { transform: scale(1.28,1.08) skewX(-12deg) translateY(-1px); }
+  100%{ transform: scale(1.25,1) skewX(10deg) translateY(2px) rotateZ(-8deg); }
+}
+@keyframes jellyCyan{
+  0%  { transform: scale(1.25,1) skewX(20deg) translateY(3px) rotateZ(-10deg); }
+  50% { transform: scale(1.25,1.10) skewX(-15deg) translateY(-2px); }
+  100%{ transform: scale(1.25,1) skewX(20deg) translateY(3px) rotateZ(-10deg); }
 }
 
-/* Show + animate on hover or keyboard focus */
-.command:hover::before,
-.command:focus-visible::before,
-.command:hover::after,
-.command:focus-visible::after{
-  opacity:1;
+/* make sure hover color changes from older rules don’t tint the image */
+.command:hover, .command:focus-visible{
+  color: inherit;
+  background: transparent;
+  border-color: #fff;
 }
 
-/* motion: both move; cyan travels a bit more (like the game) */
-.command:hover::before,
-.command:focus-visible::before{
-  box-shadow: -10px -7px 0 18px #ff1e1e;
-  transform: skewX(-12deg) translate(-2px,-1px) rotate(-1deg);
-  animation:p5PulseRed 1100ms ease-in-out infinite;
+/* ===== HOME IMAGE COMMANDS — compact + proper P5 streak ===== */
+
+/* Smaller, tighter list */
+.command-stack{
+  gap: clamp(4px, 0.8vw, 10px);
 }
-.command:hover::after,
-.command:focus-visible::after{
-  box-shadow:  20px 14px 0 18px var(--p5-cyan);
-  transform: skewX(-12deg) translate(10px,8px) rotate(1deg);
-  animation:p5PulseCyan 900ms ease-in-out infinite;
+.image-command{
+  display:block;
+  margin: 0;                 /* compact */
+  isolation:isolate;         /* keep additive blend local to each link */
 }
 
-/* gentle heartbeat (different phases so they don’t move identically) */
-@keyframes p5PulseRed{
-  0%{   box-shadow:-10px -7px 0 18px #ff1e1e; transform:skewX(-12deg) translate(-2px,-1px) rotate(-1deg); }
-  50%{  box-shadow: -8px -5px 0 20px #ff1e1e; transform:skewX(-12deg) translate( 0px, 0px) rotate(-1deg); }
-  100%{ box-shadow:-10px -7px 0 18px #ff1e1e; transform:skewX(-12deg) translate(-2px,-1px) rotate(-1deg); }
-}
-@keyframes p5PulseCyan{
-  0%{   box-shadow: 20px 14px 0 18px var(--p5-cyan); transform:skewX(-12deg) translate(10px,8px) rotate(1deg); }
-  50%{  box-shadow: 22px 16px 0 22px var(--p5-cyan); transform:skewX(-12deg) translate(14px,10px) rotate(1deg); }
-  100%{ box-shadow: 20px 14px 0 18px var(--p5-cyan); transform:skewX(-12deg) translate(10px,8px) rotate(1deg); }
+/* Image size (you can tweak just this one line anytime) */
+.image-command .cmd-img{
+  display:block;
+  width: clamp(160px, 12vw, 280px);   /* your current choice */
+  height:auto;
+  filter: invert(1) brightness(.18) contrast(1.6);
+  position: relative;
+  z-index: 2;                         /* above plates */
 }
 
-/* Label stays above the plates */
-.command > span{ position:relative; z-index:1; }
-
-/* Your requested label color on hover/focus: BLACK.
-   Switch the interior to white so black text stays readable. */
-.command:hover,
-.command:focus-visible{
-  background:#fff;
-  color:#000;
-  border-color:#fff; /* keep the crisp comic outline */
+/* Container that the plates are clipped to (middle band across the image) */
+.image-command .cmd-visual{ position:relative; display:inline-block; }
+.image-command .plates{
+  position:absolute;
+  /* slightly wider than the image so the tips can flare out */
+  left:-8%; right:-8%;
+  /* vertical position through a CSS var (per-item fine-tune) */
+  top: var(--plate-y, 52%);
+  height: var(--plate-h, clamp(18px, 3.2vw, 34px));  /* thickness of the streak */
+  transform: translateY(-50%) rotate(var(--plate-rot, -8deg));
+  pointer-events:none;
+  display:none;                       /* show on hover/focus */
+  mix-blend-mode: screen;             /* additive blend -> white where they overlap */
 }
 
-/* a11y: use focus-visible so mouse clicks don’t leave a ring */
-.command:focus-visible{ outline:none; }
+/* Show streak on interaction */
+.image-command:hover .plates,
+.image-command:focus-visible .plates{ display:block; }
+
+/* The two plates fill that band and animate */
+.image-command .plate{ position:absolute; inset:0; transform-origin:center; }
+.image-command .plate svg{ width:100%; height:100%; display:block; }
+
+/* Start a little offset so they aren't perfectly aligned */
+.image-command .plate.red   { transform: translateX(-1%) scale(3.0,.13) }
+.image-command .plate.cyan  { transform: translateX( 1%) scale(3.4,.13) }
+
+/* Motion — cyan travels a hair more than red */
+.image-command:hover .plate.red,
+.image-command:focus-visible .plate.red{
+  animation: p5Red 900ms ease-in-out infinite alternate;
+}
+.image-command:hover .plate.cyan,
+.image-command:focus-visible .plate.cyan{
+  animation: p5Cyan 860ms ease-in-out infinite alternate;
+}
+
+@keyframes p5Red{
+  from { transform: translateX(-2%) scale(2.8,.14); }
+  to   { transform: translateX( 1%) scale(3.2,.11); }
+}
+@keyframes p5Cyan{
+  from { transform: translateX(-1%) scale(3.3,.14); }
+  to   { transform: translateX( 2%) scale(3.8,.10); }
+}
+
+/* Remove any older star/padding visuals if they were inherited */
+.command::before{ content:none !important; display:none !important; }
+
+/* === P5 image commands — CodePen-accurate sizing & streak === */
+/* Per-link controls (feel free to tweak) */
+.image-command {
+  --imgW: clamp(120px, 18vw, 250px);  /* overall PNG width */
+  /* --imgW: clamp(220px, 18vw, 360px);  overall PNG width */
+  --plateH: clamp(150px, 2vw, 220px); /* streak thickness */
+  display: block;
+  margin: 0px 0;                      /* tighter vertical spacing */
+}
+
+/* stack tighter overall */
+.command-stack { gap: 0px; }
+
+/* The visual box hugs the image size; plates will use this width */
+.image-command .cmd-visual{
+  position: relative;
+  display: inline-block;
+  width: var(--imgW);
+}
+
+/* Plates wrapper is the width of the image, centered on its midline */
+.image-command .plates{
+  position: absolute;
+  left: 0; right: 0;
+  top: 50%;
+  transform: translateY(-50%);        /* sit across the middle */
+  display: none;                       /* only on hover/focus */
+}
+
+/* Show plates and add the alternating tilt just like CodePen */
+.image-command:hover .plates,
+.image-command:focus-visible .plates { display:block; }
+.image-command:nth-child(even):hover .plates,
+.image-command:nth-child(even):focus-visible .plates {
+  transform: translateY(-50%) rotate(11deg);
+}
+.image-command:hover .plates { transform: translateY(-50%) rotate(-6deg); }
+
+/* Each plate fills the wrapper width and is CLIPPED */
+.image-command .plates .plate{
+  position: absolute;
+  inset: 0;            /* left:0; right:0; top:0; bottom:0 */
+  height: var(--plateH);
+
+  margin: auto 0;      /* center vertically within .plates */
+  overflow: hidden;    /* <— prevents “rockets” across the page */
+  mix-blend-mode: screen;   /* additive like the Pen */
+}
+
+/* Make the SVG scale to the clipping box */
+.image-command .plates .plate svg{
+  position: absolute; left: 0; top: 0;
+  width: 100%; height: 100%;
+}
+
+/* Subtle base offsets so red/cyan aren’t perfectly aligned */
+.image-command .plates .red  { transform: translate(-2px,-1px) }
+.image-command .plates .cyan { transform: translate( 3px,  2px) }
+
+/* Motion: scale a bit on width, very thin on height (like the Pen) */
+.image-command:hover .plates .cyan,
+.image-command:focus-visible .plates .cyan{
+  transform: translate(3px,2px) scale(1.8,.12);
+}
+.image-command:hover .plates .red,
+.image-command:focus-visible .plates .red{
+  transform: translate(-2px,-1px) scale(1.6,.12);
+}
+
+/* pivot and perf hint */
+.image-command .cmd-img{
+  transform-origin: 50% 60%;   /* feels like a baseline tilt */
+  will-change: transform;
+}
+
+/* run the bounce on hover */
+.image-command:hover .cmd-img{
+  animation: tiltBounce .15s ease forwards;
+}
+
+/* alternate direction every other item, just like the Pen */
+.image-command:nth-child(even):hover .cmd-img{
+  animation-name: tiltBounceAlt;
+}
+
+/* your existing keyframes work as-is */
+@keyframes tiltBounce{
+  0%   { transform: scale(1) rotate(-7deg); }
+  50%  { transform: scale(1.5) rotate(-7deg); }
+  100% { transform: scale(1.15) rotate(-7deg); }
+}
+@keyframes tiltBounceAlt{
+  0%   { transform: scale(1) rotate(7deg); }
+  50%  { transform: scale(1.5) rotate(7deg); }
+  100% { transform: scale(1.15) rotate(7deg); }
+}
+
+/* Optional wobble (kept light); you can remove if you want it static */
+@keyframes jellyLite {
+  0% {
+    width: 100%; transform: scale(1.25,1) skewX(20deg) translateY(3px) rotateX(40deg) rotateY(10deg) rotateZ(-10deg);
+  }
+  50% { width: 100%; transform: scale(1.25,1.1) skewX(-15deg) translateY(-2px) translateZ(-30px); }
+  100% { width: 100%; transform: scale(1.25,1) skewX(20deg) translateY(3px) rotateX(-40deg) rotateY(-10deg) rotateZ(-15deg); }
+}
+/* @keyframes jellyLite {
+  0%   { transform: scale(1.0,1) }
+  50%  { transform: scale(1.06,1.02) }
+  100% { transform: scale(1.0,1) }
+} */
+.image-command:hover .plates .plate { animation: jellyLite .45s linear infinite; }
+
+/* P5-style cursor nubs left/right of the hovered label */
+.image-command{
+  position: relative;
+}
+.image-command::before,
+.image-command::after{
+  content:"";
+  position:absolute; top:50%; translate:0 -50%;
+  border:8px solid transparent;
+  opacity:0; transition:opacity .12s ease, transform .12s ease;
+  z-index:3;
+}
+.image-command::before{ left:-18px;  border-right-color:#fff; filter:drop-shadow(2px 2px 0 #000); }
+.image-command::after { right:-18px; border-left-color:#fff;  filter:drop-shadow(2px 2px 0 #000); }
+.image-command:hover::before,
+.image-command:hover::after{ opacity:1; transform:scale(1.08); }
+
+/* ===== Persona 5: intro cut-in overlay ===== */
+.p5-intro {
+  position: fixed; inset: 0; z-index: 10050;
+  pointer-events: none;              /* ignore clicks */
+  display: grid; place-items: center;
+  opacity: 0; transition: opacity .15s ease;
+}
+.p5-intro.play { opacity: 1; pointer-events: auto; }
+.p5-intro.done { opacity: 0; transition: opacity .25s ease; }
+
+/* red comic panel that swooshes in and out */
+.p5-intro .intro-panel{
+  position: absolute; inset: -12vh -12vw;
+  background: var(--p5-red);
+  border: 6px solid #fff;
+  box-shadow: 0 0 0 8px #000, 10px 10px 0 #000;
+  transform: skewX(-18deg) translateX(-120%);
+  animation: introPanelIn .45s cubic-bezier(.2,.8,.2,1) .05s forwards,
+             introPanelOut .45s cubic-bezier(.2,.8,.2,1) 1.4s forwards;
+}
+
+/* Joker cut-in silhouette */
+.p5-intro .intro-joker{
+  position: absolute; height: min(76vh, 720px); width: auto;
+  transform: translateX(-10%) translateY(3%) rotate(-1.5deg);
+  opacity: 0;
+  filter: drop-shadow(10px 10px 0 #000);
+  animation: jokerIn .38s ease .22s forwards, jokerOut .25s ease 1.35s forwards;
+}
+
+/* additive swooshes */
+.p5-intro .intro-swoosh{ position:absolute; inset:auto 0; top: 46%; height: min(28px, 3.1vw); mix-blend-mode: screen; opacity:0; }
+.p5-intro .intro-swoosh svg{ width: 120%; height: 100%; }
+.p5-intro .intro-swoosh.cyan{ animation: swooshIn .28s ease .30s forwards, swooshOut .20s ease 1.28s forwards; }
+.p5-intro .intro-swoosh.red { top: 50%;   animation: swooshIn .28s ease .36s forwards, swooshOut .20s ease 1.32s forwards; }
+
+/* keyframes */
+@keyframes introPanelIn  { from{ transform: skewX(-18deg) translateX(-120%);} to{ transform: skewX(-18deg) translateX(0);} }
+@keyframes introPanelOut { from{ transform: skewX(-18deg) translateX(0);}     to{ transform: skewX(-18deg) translateX(120%);} }
+
+@keyframes jokerIn  { to{ opacity:1; transform: translateX(0) translateY(0) rotate(0deg);} }
+@keyframes jokerOut { to{ opacity:0; transform: translateX(12%) translateY(-4%) rotate(2deg);} }
+
+@keyframes swooshIn  { to{ opacity:1; transform: translateX(6%);} }
+@keyframes swooshOut { to{ opacity:0; transform: translateX(24%);} }
+
+.p5-stars{ position:absolute; left:clamp(8px,5vw,80px); top:22vh; width:0; height:0; pointer-events:none; }
+.p5-stars::before, .p5-stars::after{
+  content:"★"; position:absolute; color:#fff; text-shadow:2px 2px 0 #000;
+  animation: starFloat 4.5s ease-in-out infinite;
+  font-size: clamp(14px,1.6vw,24px);
+}
+.p5-stars::after{ content:"✦"; left:30px; animation-duration:5.2s; animation-delay:.6s; }
+@keyframes starFloat{
+  0%{ transform: translate(-10px, 0) rotate(-10deg); opacity:0 }
+  15%{ opacity:1 }
+  50%{ transform: translate(40px, -26px) rotate(8deg) }
+  100%{ transform: translate(80px, -52px) rotate(16deg); opacity:0 }
+}
+
+/* -------- Intro timings you can tweak in one place -------- */
+:root{
+  --intro-panel-in:.55s;
+  --intro-panel-out:.55s;
+  --intro-hold:1.20s;            /* how long things stay on screen */
+  --intro-swoosh-h:min(34px,3.6vh);
+}
+
+/* make the overlay red so it reads like a P5 full-screen card */
+.p5-intro{
+  position:fixed; inset:0; z-index:9998;
+  display:grid; place-items:center;
+  background: var(--p5-red);
+  opacity:0; transition:opacity .18s ease;
+  pointer-events:none;
+}
+.p5-intro.play{ opacity:1; pointer-events:auto; }
+.p5-intro.done{ opacity:0; transition:opacity .28s ease; }
+
+/* panel in → hold → out */
+.p5-intro .intro-panel{
+  position:absolute; inset:-12vh -12vw;
+  background: transparent;              /* red is on .p5-intro now */
+  border:6px solid #fff;
+  box-shadow:0 0 0 8px #000, 10px 10px 0 #000;
+  transform:skewX(-18deg) translateX(-120%);
+  animation:
+    introPanelIn var(--intro-panel-in) cubic-bezier(.2,.8,.2,1) .05s forwards,
+    introPanelOut var(--intro-panel-out) cubic-bezier(.2,.8,.2,1) calc(.05s + var(--intro-panel-in) + var(--intro-hold)) forwards;
+}
+
+.p5-intro .intro-joker{
+  position:absolute; height:min(70vh,680px); width:auto;
+  transform: translateX(-12%) translateY(4%) rotate(-2deg);
+  opacity:0; filter: drop-shadow(10px 10px 0 #000);
+  animation:
+    jokerIn .40s ease .22s forwards,
+    jokerOut .28s ease  calc(.22s + .40s + var(--intro-hold)) forwards;
+}
+
+/* cyan/red streaks – a bit thicker and above the image */
+.p5-intro .intro-swoosh{
+  position:absolute; left:4vw; right:4vw; top:48%;
+  height:var(--intro-swoosh-h); opacity:0;
+  mix-blend-mode:screen; z-index:2;
+}
+.p5-intro .intro-swoosh svg{ width:120%; height:100%; }
+.p5-intro .intro-swoosh.cyan{
+  animation:
+    swooshIn  .32s ease .34s forwards,
+    swooshOut .24s ease calc(.34s + .32s + var(--intro-hold)) forwards;
+}
+.p5-intro .intro-swoosh.red{
+  top:52%;
+  animation:
+    swooshIn  .32s ease .40s forwards,
+    swooshOut .24s ease calc(.40s + .32s + var(--intro-hold)) forwards;
+}
+
+/* the big P5-style text badge */
+.p5-intro .intro-text{
+  position:absolute; bottom:10vh; left:6vw;
+  background:#000; color:#fff;
+  padding:.35rem .8rem; text-transform:uppercase;
+  letter-spacing:.08em; font-family:'Fjalla One','Bebas Neue',Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif;
+  border:5px solid #fff;
+  box-shadow:8px 8px 0 #000, 0 0 0 5px var(--p5-red);
+  transform: skewX(-12deg) translateY(20px) scale(.9);
+  opacity:0;
+  animation:
+    introTextIn  .28s ease .52s forwards,
+    introTextOut .22s ease calc(.52s + .28s + var(--intro-hold)) forwards;
+}
+.p5-intro .intro-text span{ display:inline-block; transform:skewX(12deg); }
+
+/* keyframes */
+@keyframes introPanelIn  { to { transform:skewX(-18deg) translateX(0); } }
+@keyframes introPanelOut { to { transform:skewX(-18deg) translateX(120%);} }
+
+@keyframes jokerIn  { to { opacity:1; transform:translateX(0) translateY(0) rotate(0);} }
+@keyframes jokerOut { to { opacity:0; transform:translateX(12%) translateY(-4%) rotate(2deg);} }
+
+@keyframes swooshIn  { to { opacity:1; transform:translateX(6%);} }
+@keyframes swooshOut { to { opacity:0; transform:translateX(24%);} }
+
+@keyframes introTextIn  { to{ opacity:1; transform:skewX(-12deg) translateY(0) scale(1);} }
+@keyframes introTextOut { to{ opacity:0; transform:skewX(-12deg) translateY(-14px) scale(.96);} }
+
+
+
+
+
+
+
+
+
+
+
 
 
   

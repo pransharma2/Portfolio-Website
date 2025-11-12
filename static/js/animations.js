@@ -1,39 +1,37 @@
-// animations.js
-(function () {
+// static/js/animations.js
+(() => {
   const enter = document.getElementById('p5-enter');
   const exit  = document.getElementById('p5-exit');
 
-  // Play the page-enter overlay (it's already in the DOM)
-  if (enter) {
-    // Force reflow so the CSS animation runs every time
-    void enter.offsetWidth;
-    // nothing else needed; CSS handles animation
-  }
+  // Re-trigger the page-enter animation on each load
+  if (enter) void enter.offsetWidth; // force reflow so CSS animation runs
 
-  // Intercept internal nav for a page-exit swoosh
+  // Intercept internal navigation to play a page-exit swoosh
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a');
     if (!a) return;
 
-    // ignore new tab/middle-click/externals/anchors/mailto/tel
     const url = new URL(a.href, window.location.origin);
     const isInternal = url.origin === window.location.origin;
-    const sameHash = url.pathname === window.location.pathname && url.hash;
+    const sameHash   = url.pathname === window.location.pathname && url.hash;
+
+    // Respect modifiers, new tabs, externals, anchors, mailto/tel
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    if (!isInternal || sameHash || a.target === '_blank' || a.href.startsWith('mailto:') || a.href.startsWith('tel:')) return;
+    if (!isInternal || sameHash || a.target === '_blank' ||
+        a.href.startsWith('mailto:') || a.href.startsWith('tel:')) return;
 
     e.preventDefault();
     if (exit) {
       exit.classList.add('p5-exiting');
-      // match CSS @keyframes duration (.45s); give a tiny buffer
-      setTimeout(() => { window.location.href = a.href; }, 470);
+      setTimeout(() => { window.location.href = a.href; }, 470); // slightly > CSS time
     } else {
       window.location.href = a.href;
     }
   }, true);
 })();
 
-document.querySelectorAll('.command').forEach(cmd => {
+// Optional: per-command parallax hotspot (safe if the class exists, no errors if not)
+document.querySelectorAll('.command').forEach((cmd) => {
   cmd.style.setProperty('--p5-ox', '50%');
   cmd.style.setProperty('--p5-oy', '50%');
 
@@ -51,5 +49,25 @@ document.querySelectorAll('.command').forEach(cmd => {
   });
 });
 
+// static/js/animations.js (replace only this DOMContentLoaded block)
+document.addEventListener('DOMContentLoaded', () => {
+  const intro = document.getElementById('p5-intro');
+  if (!intro) return;
 
+  // play once per tab session
+  if (sessionStorage.getItem('p5IntroSeen')) return;
+
+  // wait for the page-enter curtain to finish (~0.55s). Small buffer added.
+  setTimeout(() => {
+    intro.hidden = false;
+    intro.classList.add('play');
+  }, 600);
+
+  intro.addEventListener('animationend', (e) => {
+    if (e.animationName === 'introPanelOut') {
+      intro.classList.add('done');
+      sessionStorage.setItem('p5IntroSeen', '1');
+    }
+  });
+});
 
