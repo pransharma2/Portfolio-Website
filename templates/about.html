@@ -1,22 +1,103 @@
 {% extends "base.html" %}
-{% block title %}About — Prantap{% endblock %}
+{% block title %}About &mdash; Confidant Profile{% endblock %}
 {% block content %}
-<section class="status">
-  <div class="status-portrait">
-    <img src="{{ url_for('static', filename='img/1_P1ZpJoADmVLHN2vjq0cmqw_1762760206212.jpg') }}" alt="Portrait" />
+<section class="confidant-page">
+  <!-- Page banner -->
+  <div class="page-banner">
+    <h2>Confidant Profile</h2>
   </div>
-  <div class="status-stats">
-    <div class="stat-card hover-pop">
+
+  <!-- Profile section -->
+  <div class="confidant-profile">
+    <!-- Portrait -->
+    <div class="confidant-portrait">
+      <img src="{{ url_for('static', filename='img/1_P1ZpJoADmVLHN2vjq0cmqw_1762760206212.jpg') }}" alt="Prantap" />
+      <div class="rank-badge">&#9733;</div>
+    </div>
+
+    <!-- Bio dialogue box -->
+    <div>
+      <div class="confidant-bio">
+        <p>Data scientist and developer who turns raw data into actionable insights. Skilled in Python, Power BI, and building end-to-end data pipelines. Always looking for new shadows to defeat in the Metaverse of analytics.</p>
+      </div>
+
+      <!-- Social Stats -->
+      <div class="social-stats">
+        <div class="stat-bar" style="--fill: 90%">
+          <div class="stat-name">Knowledge</div>
+          <div class="stat-value">Data Science</div>
+          <div class="stat-level">
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star empty"></div>
+          </div>
+        </div>
+        <div class="stat-bar" style="--fill: 95%">
+          <div class="stat-name">Proficiency</div>
+          <div class="stat-value">Python</div>
+          <div class="stat-level">
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+          </div>
+        </div>
+        <div class="stat-bar" style="--fill: 85%">
+          <div class="stat-name">Charm</div>
+          <div class="stat-value">Power BI</div>
+          <div class="stat-level">
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star empty"></div>
+          </div>
+        </div>
+        <div class="stat-bar" style="--fill: 80%">
+          <div class="stat-name">Guts</div>
+          <div class="stat-value">ETL Pipelines</div>
+          <div class="stat-level">
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star empty"></div>
+          </div>
+        </div>
+        <div class="stat-bar" style="--fill: 75%">
+          <div class="stat-name">Kindness</div>
+          <div class="stat-value">Dashboards</div>
+          <div class="stat-level">
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star empty"></div>
+            <div class="star empty"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="p5-divider"></div>
+
+  <!-- Skill cards -->
+  <div class="skill-cards">
+    <div class="skill-card">
       <h3>Data Science</h3>
-      <p>ETL, dashboards, and insights with Python/Power BI.</p>
+      <p>ETL workflows, statistical analysis, dashboards, and ML-powered insights using Python and Power BI.</p>
     </div>
-    <div class="stat-card hover-pop">
-      <h3>Python</h3>
-      <p>Flask apps, automation, and data pipelines.</p>
+    <div class="skill-card">
+      <h3>Python Development</h3>
+      <p>Flask applications, automation scripts, data pipelines, and API integrations for production systems.</p>
     </div>
-    <div class="stat-card hover-pop">
-      <h3>Power BI</h3>
-      <p>Interactive reporting, DAX, and storytelling.</p>
+    <div class="skill-card">
+      <h3>Visualization</h3>
+      <p>Interactive Power BI reports, Tableau dashboards, and data storytelling that drives decisions.</p>
     </div>
   </div>
 </section>

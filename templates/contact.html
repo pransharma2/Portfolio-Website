@@ -1,21 +1,50 @@
 {% extends "base.html" %}
-{% block title %}Contact — Prantap{% endblock %}
+{% block title %}Contact &mdash; Send a Calling Card{% endblock %}
 {% block content %}
-<section class="contact-section">
-  <form class="p5-form" action="#" method="POST" onsubmit="event.preventDefault(); alert('Front-end only for now.');">
-    <div class="form-row">
-      <label class="skew">Name</label>
-      <input type="text" placeholder="Your Name" required />
+<section class="chat-page">
+  <!-- Page banner -->
+  <div class="page-banner">
+    <h2>Calling Card</h2>
+  </div>
+
+  <!-- Phone-style chat interface -->
+  <div class="phone-frame">
+    <div class="chat-header">
+      <div class="chat-avatar">P</div>
+      <div>
+        <div class="chat-name">Phantom Dev</div>
+        <div class="chat-status">Online</div>
+      </div>
     </div>
-    <div class="form-row">
-      <label class="skew">Email</label>
-      <input type="email" placeholder="you@example.com" required />
+
+    <!-- Chat messages -->
+    <div class="chat-messages">
+      <div class="chat-bubble received" style="animation-delay: 0.2s">
+        Hey! Thanks for stopping by the Thieves' Den.
+      </div>
+      <div class="chat-bubble received" style="animation-delay: 0.5s">
+        Got a project in mind? Send me a calling card below and let's steal the show.
+      </div>
     </div>
-    <div class="form-row">
-      <label class="skew">Message</label>
-      <textarea rows="4" placeholder="Tell me about your idea…" required></textarea>
-    </div>
-    <button class="p5-btn" type="submit">Send</button>
-  </form>
+
+    <!-- Contact form as chat input -->
+    <form class="chat-form" action="#" method="POST" onsubmit="event.preventDefault(); handleContactSubmit(this);">
+      <div class="form-row">
+        <label>Your Name</label>
+        <input type="text" name="name" placeholder="Codename..." required />
+      </div>
+      <div class="form-row">
+        <label>Your Email</label>
+        <input type="email" name="email" placeholder="phantom@mementos.net" required />
+      </div>
+      <div class="form-row">
+        <label>Your Message</label>
+        <textarea name="message" rows="3" placeholder="Write your calling card..." required></textarea>
+      </div>
+      <button class="p5-send-btn" type="submit" data-sound="confirm">
+        <span>Send Calling Card</span>
+      </button>
+    </form>
+  </div>
 </section>
 {% endblock %}

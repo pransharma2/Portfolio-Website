@@ -1,73 +1,39 @@
 {% extends "base.html" %}
-{% block title %}Home — Prantap's Portfolio{% endblock %}
+{% block title %}Home &mdash; Phantom Dev Portfolio{% endblock %}
 {% block content %}
 <section class="hero">
   <div class="hero-inner">
-    <div class="p5-stars" aria-hidden="true"></div>
-    <div class="hero-title skew">
-      <h1>Prantap’s Portfolio</h1>
-      <div class="hero-sub">Take Your Heart — enter the Metaverse of my work.</div>
+    <!-- Decorative floating stars -->
+    <div class="p5-star" aria-hidden="true">&#9733;</div>
+    <div class="p5-star" aria-hidden="true">&#10022;</div>
+    <div class="p5-star" aria-hidden="true">&#9733;</div>
+    <div class="p5-star" aria-hidden="true">&#10022;</div>
+    <div class="p5-star" aria-hidden="true">&#9733;</div>
+
+    <!-- Title card -->
+    <div class="hero-title-card">
+      <h1 class="glitch" data-text="Prantap's Portfolio">Prantap's Portfolio</h1>
+      <div class="hero-sub">Take Your Heart &mdash; enter the Metaverse of my work.</div>
     </div>
 
-    <!-- Persona 5-style command stack -->
-    <nav class="home-menu fade-rise">
-<!-- ABOUT -->
-<a class="image-command" href="{{ url_for('about') }}">
-  <div class="cmd-visual">
-    <img class="cmd-img" src="{{ url_for('static', filename='img/about-me.png') }}" alt="About Me">
-    <div class="plates" aria-hidden="true">
-      <div class="plate red">
-        <svg viewBox="0 0 108.1 47" preserveAspectRatio="none">
-          <polygon fill="#FF0000" points="29.5,8.5 150.7,0 108.1,32.7 3.1,47"></polygon>
-        </svg>
-      </div>
-      <div class="plate cyan">
-        <svg viewBox="0 0 108.1 47" preserveAspectRatio="none">
-          <polygon fill="#00FFFF" points="0.3,17 125.1,0 68.8,45.6 24.3,39"></polygon>
-        </svg>
-      </div>
-    </div>
+    <!-- P5-style battle menu commands -->
+    <nav class="p5-menu" aria-label="Main navigation">
+      <a class="p5-menu-item" href="{{ url_for('about') }}" data-sound="select">
+        <img class="menu-icon" src="{{ url_for('static', filename='img/about-me.png') }}" alt="">
+        <span class="menu-label">About Me</span>
+      </a>
+      <a class="p5-menu-item" href="{{ url_for('projects') }}" data-sound="select">
+        <img class="menu-icon" src="{{ url_for('static', filename='img/projects.png') }}" alt="">
+        <span class="menu-label">Projects</span>
+      </a>
+      <a class="p5-menu-item" href="{{ url_for('contact') }}" data-sound="select">
+        <img class="menu-icon" src="{{ url_for('static', filename='img/contact.png') }}" alt="">
+        <span class="menu-label">Contact</span>
+      </a>
+    </nav>
   </div>
-</a>
 
-<!-- PROJECTS -->
-<a class="image-command" href="{{ url_for('projects') }}">
-  <div class="cmd-visual">
-    <img class="cmd-img" src="{{ url_for('static', filename='img/projects.png') }}" alt="Projects">
-    <div class="plates" aria-hidden="true">
-      <div class="plate red">
-        <svg viewBox="0 0 108.1 47" preserveAspectRatio="none">
-          <polygon fill="#FF0000" points="0,7.1 127.3,0 32.3,64 4.8,58.2"></polygon>
-        </svg>
-      </div>
-      <div class="plate cyan">
-        <svg viewBox="0 0 108.1 47" preserveAspectRatio="none">
-          <polygon fill="#00FFFF" points="14,0.5 127.4,0 77.4,164 2.3,61.1"></polygon>
-        </svg>
-      </div>
-    </div>
-  </div>
-</a>
-
-<!-- CONTACT -->
-<a class="image-command" href="{{ url_for('contact') }}">
-  <div class="cmd-visual">
-    <img class="cmd-img" src="{{ url_for('static', filename='img/contact.png') }}" alt="Contact">
-    <div class="plates" aria-hidden="true">
-      <div class="plate red">
-        <svg viewBox="0 0 108.1 47" preserveAspectRatio="none">
-          <polygon fill="#FF0000" points="15.5,0 70.7,0 118.1,32.7 43.1,47"></polygon>
-        </svg>
-      </div>
-      <div class="plate cyan">
-        <svg viewBox="0 0 108.1 47" preserveAspectRatio="none">
-          <polygon fill="#00FFFF" points="17.3,0 105.1,0 68.8,45.6 24.3,39"></polygon>
-        </svg>
-      </div>
-    </div>
-  </div>
-</a>
-    </nav>        
-  </div>
+  <!-- Background character silhouette -->
+  <img class="hero-character" src="{{ url_for('static', filename='img/joker-cutin.png') }}" alt="" aria-hidden="true">
 </section>
 {% endblock %}

@@ -1,15 +1,28 @@
 {% extends "base.html" %}
-{% block title %}Projects — Prantap{% endblock %}
+{% block title %}Projects &mdash; Persona Compendium{% endblock %}
 {% block content %}
-<section class="projects-list">
-  {% for p in projects %}
-  <article class="project-panel hover-border">
-    <h3>{{ p.name }}</h3>
-    <p>{{ p.desc }}</p>
-    <div class="tags">
-      {% for t in p.tags %}<span class="tag">{{ t }}</span>{% endfor %}
-    </div>
-  </article>
-  {% endfor %}
+<section class="compendium-page">
+  <!-- Page banner -->
+  <div class="page-banner">
+    <h2>Persona Compendium</h2>
+  </div>
+
+  <!-- Project grid -->
+  <div class="compendium-grid">
+    {% for p in projects %}
+    <article class="persona-card">
+      <div class="card-header">
+        <h3>{{ p.name }}</h3>
+        <span class="card-number">No. {{ "%03d"|format(loop.index) }}</span>
+      </div>
+      <div class="card-body">
+        <p>{{ p.desc }}</p>
+      </div>
+      <div class="card-tags">
+        {% for t in p.tags %}<span class="p5-tag">{{ t }}</span>{% endfor %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
 </section>
 {% endblock %}

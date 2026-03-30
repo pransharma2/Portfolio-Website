@@ -1,589 +1,1695 @@
-:root{
-    --p5-red:#ff1e1e; /* bright red */
-    --p5-black:#0d0d0d;
-    --p5-white:#ffffff;
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;padding:0;background:var(--p5-black);color:var(--p5-white);font-family:'Fjalla One','Bebas Neue',Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif}
-  .p5-body{overflow-x:hidden;position:relative;min-height:100dvh}
-  
-  .p5-bg{position:fixed;inset:0;pointer-events:none;z-index:-2;transform:skewY(-4deg);transform-origin:top left;opacity:.85}
-  .p5-bg-red{background:linear-gradient(120deg, var(--p5-red) 0%, #c60b0b 40%, var(--p5-red) 100%);clip-path:polygon(0 0,100% 0,100% 30%,0 45%)}
-  .p5-bg-black{background:repeating-linear-gradient(45deg, #000 0 10px,#111 10px 20px);clip-path:polygon(0 60%,100% 50%,100% 100%,0 100%);z-index:-3}
-  
-  .p5-header{position:sticky;top:0;z-index:20;background:transparent;padding:8px 0}
-  .p5-nav{display:flex;align-items:center;justify-content:space-between;margin:0 auto;max-width:1100px;padding:8px 16px;filter:drop-shadow(0 6px 0 #000)}
-  .p5-nav .logo a{background:#000;color:#fff;text-decoration:none;padding:8px 12px;display:inline-block;border:3px solid var(--p5-red);text-transform:uppercase;letter-spacing:1px}
-  .skew{transform:skewX(-12deg)}
-  .nav-links{display:flex;gap:14px;list-style:none;padding:0;margin:0}
-  .nav-links a{display:inline-block;background:#000;color:#fff;text-decoration:none;padding:8px 14px;border:3px solid #fff;transition:transform .12s ease, color .12s ease, border-color .12s ease}
-  .nav-links a:hover{color:var(--p5-red);transform:scale(1.06);border-color:var(--p5-red)}
-  .nav-links a.active{border-color:var(--p5-red);}
-  
-  .p5-main{max-width:1100px;margin:0 auto;padding:32px 16px}
-  .hero{display:grid;gap:24px}
-  .hero-title{background:#000;border:5px solid #fff;box-shadow:8px 8px 0 #000, 0 0 0 5px var(--p5-red);padding:18px;max-width:fit-content}
-  .hero-title h1{margin:0;font-size:3rem;line-height:1;text-transform:uppercase;letter-spacing:1.5px}
-  .hero-sub{font-size:1rem;opacity:.9;margin-top:6px}
-  
-  .hero-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;align-items:stretch}
-  .hero-card{background:#000;border:4px solid #fff;box-shadow:6px 6px 0 #000,0 0 0 4px var(--p5-red);display:flex;align-items:center;justify-content:center;min-height:120px;text-decoration:none;color:#fff;text-transform:uppercase;letter-spacing:1px;transition:transform .15s ease;position:relative;overflow:hidden}
-  .hero-card:hover{transform:translateY(-4px) scale(1.02)}
-  .hero-card span{transform:skewX(12deg);font-size:1.4rem}
-  .hero-avatar{grid-column:span 1;display:flex;align-items:center;justify-content:center}
-  .hero-avatar img{max-width:100%;filter:drop-shadow(0 8px 0 #000)}
-  
-  .status{display:grid;grid-template-columns:1fr 2fr;gap:24px}
-  .status-portrait img{width:100%;border:6px solid #fff;box-shadow:8px 8px 0 #000,0 0 0 6px var(--p5-red);object-fit:cover}
-  .status-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-  .stat-card{background:#000;border:4px solid #fff;box-shadow:6px 6px 0 #000,0 0 0 4px var(--p5-red);padding:16px;min-height:120px}
-  .stat-card h3{margin:0 0 8px 0;text-transform:uppercase;letter-spacing:1px}
-  
-  .projects-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
-  .project-panel{background:#000;border:4px solid #fff;box-shadow:6px 6px 0 #000,0 0 0 4px var(--p5-red);padding:16px;min-height:160px;transition:transform .15s ease, border-color .15s ease}
-  .project-panel h3{margin:0 0 6px 0}
-  .project-panel .tags{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
-  .tag{background:#fff;color:#000;padding:2px 8px;border:2px solid #000;font-size:.85rem;text-transform:uppercase}
-  
-  .contact-section{display:flex;justify-content:center}
-  .p5-form{width:min(600px,100%);background:#000;border:4px solid #fff;box-shadow:6px 6px 0 #000,0 0 0 4px var(--p5-red);padding:16px}
-  .form-row{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
-  label{font-size:1.1rem;text-transform:uppercase}
-  input,textarea{padding:10px 12px;border:3px solid #fff;background:#111;color:#fff;outline:none}
-  input:focus,textarea:focus{border-color:var(--p5-red)}
-  .p5-btn{background:#000;color:#fff;border:4px solid #fff;box-shadow:4px 4px 0 #000,0 0 0 4px var(--p5-red);padding:10px 16px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;transition:transform .12s ease, color .12s ease, border-color .12s ease}
-  .p5-btn:hover{color:var(--p5-red);transform:translateY(-2px) scale(1.03);border-color:var(--p5-red)}
-  
-  .hover-pop{transition:transform .12s ease}
-  .hover-pop:hover{transform:translateY(-4px) scale(1.02)}
-  .hover-border{}
-  .hover-border:hover{transform:translateY(-4px) scale(1.02);border-color:var(--p5-red)}
-  
-  .p5-footer{margin-top:40px;display:flex;justify-content:center}
-  .footer-inner{background:#000;color:#fff;border:3px solid #fff;box-shadow:6px 6px 0 #000,0 0 0 3px var(--p5-red);padding:10px 12px}
-  
-  .fade-rise{opacity:0;transform:translateY(18px);animation:fadeUp .6s ease forwards}
-  .fade-rise.delay-1{animation-delay:.15s}
-  .fade-rise.delay-2{animation-delay:.3s}
-  @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
-  
-  /* Responsive */
-  @media (max-width:900px){
-    .hero-grid{grid-template-columns:repeat(2,1fr)}
-    .status{grid-template-columns:1fr}
-    .status-stats{grid-template-columns:1fr}
-  }
-  @media (max-width:520px){
-    .hero-grid{grid-template-columns:1fr}
-  }
+/* ============================================================
+   PERSONA 5 PORTFOLIO — COMPLETE STYLE OVERHAUL
+   "Take Your Heart"
+   ============================================================ */
 
-/* ===== Persona 5 background using your image ===== */
-.p5-body{
-  background: var(--p5-black) url("../img/p5_wall.jpg") center/cover fixed no-repeat;
+/* ── 1. VARIABLES & RESET ──────────────────────────────────── */
+:root {
+  --p5-red: #ff0000;
+  --p5-dark-red: #cc0000;
+  --p5-crimson: #d41428;
+  --p5-black: #0d0d0d;
+  --p5-white: #ffffff;
+  --p5-yellow: #ffd700;
+  --p5-cyan: #00e5ff;
+  --p5-grey: #1a1a1a;
+  --p5-font: 'Fjalla One', 'Bebas Neue', 'Arsenal', Impact, sans-serif;
+  --p5-font-body: 'Arsenal', 'Fjalla One', sans-serif;
+  --p5-skew: -12deg;
+  --p5-transition: cubic-bezier(.2, .8, .2, 1);
+  --diamond-size: 50px;
+  --stripe-size: 40px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+::selection { background: var(--p5-red); color: #fff; }
+::-moz-selection { background: var(--p5-red); color: #fff; }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: var(--p5-red); border: 2px solid #000; }
+::-webkit-scrollbar-thumb:hover { background: #ff3333; }
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-color: var(--p5-red) #000;
+}
+
+body {
+  font-family: var(--p5-font);
+  background: var(--p5-black);
+  color: var(--p5-white);
+  overflow-x: hidden;
+  min-height: 100dvh;
+  cursor: default;
+  line-height: 1.4;
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+ul { list-style: none; }
+
+/* ── 2. ANIMATED BACKGROUND PATTERNS ──────────────────────── */
+
+/* Base background layer - sits behind everything */
+.p5-bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  overflow: hidden;
+}
+
+/* PATTERN 1: Scrolling Diamond Checkerboard (Home page) */
+.p5-bg-diamonds {
+  position: absolute;
+  inset: -100px;
+  background-color: var(--p5-dark-red);
+  background-image:
+    linear-gradient(45deg, rgba(0,0,0,0.88) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.88) 75%),
+    linear-gradient(45deg, rgba(0,0,0,0.88) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.88) 75%);
+  background-size: var(--diamond-size) var(--diamond-size);
+  background-position: 0 0, calc(var(--diamond-size)/2) calc(var(--diamond-size)/2);
+  animation: diamondScroll 3s linear infinite;
+}
+
+@keyframes diamondScroll {
+  to {
+    transform: translate(var(--diamond-size), var(--diamond-size));
+  }
+}
+
+/* PATTERN 2: Moving Diagonal Stripes (About page) */
+.p5-bg-stripes {
+  position: absolute;
+  inset: -200px;
+  background: repeating-linear-gradient(
+    -45deg,
+    #1a0000 0px,
+    #1a0000 18px,
+    var(--p5-dark-red) 18px,
+    var(--p5-dark-red) 20px,
+    #0d0000 20px,
+    #0d0000 38px,
+    var(--p5-red) 38px,
+    var(--p5-red) 40px
+  );
+  animation: stripeScroll 2s linear infinite;
+}
+
+@keyframes stripeScroll {
+  to { transform: translate(var(--stripe-size), var(--stripe-size)); }
+}
+
+/* PATTERN 3: Pulsing Halftone Grid (Projects page) */
+.p5-bg-halftone {
+  position: absolute;
+  inset: 0;
+  background-color: #0a0a0a;
+  background-image:
+    radial-gradient(circle, var(--p5-red) 1px, transparent 1px),
+    radial-gradient(circle, var(--p5-crimson) 1px, transparent 1px);
+  background-size: 30px 30px;
+  background-position: 0 0, 15px 15px;
+  animation: halftoneFloat 4s ease-in-out infinite alternate;
+}
+
+@keyframes halftoneFloat {
+  0% { opacity: 0.4; transform: scale(1); }
+  100% { opacity: 0.7; transform: scale(1.05); }
+}
+
+/* PATTERN 4: Crosshatch (Contact page) */
+.p5-bg-crosshatch {
+  position: absolute;
+  inset: -100px;
+  background-color: #111;
+  background-image:
+    repeating-linear-gradient(
+      0deg, transparent, transparent 28px, rgba(255,0,0,0.08) 28px, rgba(255,0,0,0.08) 30px
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 28px, rgba(255,0,0,0.08) 28px, rgba(255,0,0,0.08) 30px
+    );
+  animation: crosshatchDrift 8s linear infinite;
+}
+
+@keyframes crosshatchDrift {
+  to { transform: translate(30px, 30px); }
+}
+
+/* Vignette overlay on all patterns */
+.p5-bg-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.7) 100%);
+  pointer-events: none;
+}
+
+/* ── 3. LAYOUT & STRUCTURE ─────────────────────────────────── */
+
+.p5-main {
   position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 100px 24px 60px;
+  min-height: calc(100dvh - 60px);
 }
 
-/* Subtle vignette + red tint so text pops */
-.p5-body::before{
-  content:"";
-  position:fixed; inset:0; pointer-events:none;
-  background:
-    radial-gradient(ellipse at center, rgba(0,0,0,.2) 0%, rgba(0,0,0,.6) 70%),
-    linear-gradient(0deg, rgba(255,30,30,.08), rgba(255,30,30,.08));
-  z-index:-1;
-}
+/* ── 4. NAVIGATION — P5 ANGULAR MENU ──────────────────────── */
 
-/* ===== Page transition curtain (comic swipe) ===== */
-.p5-enter,.p5-exit{
-  position: fixed; inset: 0; z-index: 9999; pointer-events: none;
-  background: var(--p5-red);
-  transform: skewX(-18deg) translateX(-120%);
-  box-shadow: 0 0 0 8px #000, 10px 10px 0 #000;
-  border: 6px solid #fff;
-}
-.p5-enter{ animation: p5Enter .55s cubic-bezier(.2,.8,.2,1) both; }
-.p5-exit.p5-exiting{ animation: p5Exit .45s cubic-bezier(.2,.8,.2,1) both; }
-
-@keyframes p5Enter{
-  0%{ transform: skewX(-18deg) translateX(0%); }
-  100%{ transform: skewX(-18deg) translateX(-120%); }
-}
-@keyframes p5Exit{
-  0%{ transform: skewX(-18deg) translateX(-120%); }
-  100%{ transform: skewX(-18deg) translateX(0%); }
-}
-
-/* ===== Command buttons overlay (used on Home) ===== */
-.command-stack{
-  position: relative;
-  display: grid; gap: 14px;
-  width: clamp(240px, 42vw, 500px);
-}
-.command{
-  display:flex; align-items:center; gap:10px;
-  background:#000; color:#fff; text-decoration:none;
-  padding:12px 16px; text-transform:uppercase; letter-spacing:1px;
-  border:4px solid #fff;
-  box-shadow: 6px 6px 0 #000, 0 0 0 4px var(--p5-red);
-  transform: skewX(-12deg);
-  transition: transform .12s ease, border-color .12s ease, color .12s ease;
-}
-.command span{ transform: skewX(12deg); font-size: clamp(1.1rem, 1.8vw, 1.6rem); }
-.command::before{
-  content:"★"; font-weight:900;
-  transform: skewX(12deg) rotate(-8deg);
-  display:inline-block; font-size:1.1em; margin-right:2px;
-  filter: drop-shadow(2px 2px 0 #000);
-}
-.command:hover{ transform: translateY(-3px) skewX(-12deg) scale(1.03); border-color: var(--p5-red); color: var(--p5-red); }
-
-/* Layout helpers for the home hero so buttons overlay the BG */
-.hero{
-  min-height: clamp(60vh, 76vh, 88vh);
-  display:grid; grid-template-columns: 1fr;
-  align-content: center; justify-items: start;
-}
-.hero-inner{
-  margin-left: clamp(12px, 6vw, 80px);
-  display: grid; gap: 18px;
-}
-.hero-title{ max-width: fit-content; }
-
-/* remove the star that was on each button */
-.command::before{ content: none !important; display:none !important; }
-
-/* image-based commands: no inner padding/border box */
-.image-command{
-  background: transparent;
-  border: 0;
-  box-shadow: none;
+.p5-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
   padding: 0;
+  pointer-events: none;
 }
 
-/* keep the container skewed for P5 vibe; de-skew the image itself */
-.image-command .command-img{
-  display:block;
-  width: clamp(260px, 42vw, 560px);
-  height:auto;
-  transform: skewX(12deg);           /* counters parent skew so image looks straight */
+.p5-nav {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  max-width: 100%;
+  pointer-events: auto;
   position: relative;
-  z-index: 2;                         /* above plates */
-  filter: drop-shadow(4px 4px 0 #000);/* crisp comic shadow */
 }
 
-/* plates container sits under the image */
-.image-command .shape-wrapper{
-  position:absolute;
-  inset: -2px -6px;                   /* spill beyond image */
-  z-index:1;
-  pointer-events:none;
-  display:none;                       /* only show on hover/focus */
-  transform: rotate(-6deg);
-}
-
-/* show plates on hover/focus only */
-.image-command:hover .shape-wrapper,
-.image-command:focus-visible .shape-wrapper{ display:block; }
-
-/* alternate angle like your SCSS */
-.image-command:nth-child(even):hover .shape-wrapper,
-.image-command:nth-child(even):focus-visible .shape-wrapper{ transform: rotate(11deg); }
-
-/* individual plates; use additive blend (screen) and contain it to the link */
-.link-wrapper{ isolation:isolate; }   /* keep blending local to the link */
-.shape{ position:absolute; top:0; left:0; right:0; height: 56px; overflow:hidden; }
-.shape svg{ position:absolute; top:0; left:0; }
-
-.shape.red-fill{  mix-blend-mode: screen; animation: jellyRed .45s ease .08s both; }
-.shape.cyan-fill{ mix-blend-mode: screen; animation: jellyCyan .40s ease .05s both; }
-
-/* both plates move; cyan moves more */
-.image-command:hover .shape.cyan-fill,
-.image-command:focus-visible .shape.cyan-fill{
-  transform: scale(3,.12);
-}
-.image-command:hover .shape.red-fill,
-.image-command:focus-visible .shape.red-fill{
-  transform: scale(2.3,.11);
-}
-
-/* gentle wobble (can tune if you want less motion) */
-@keyframes jellyRed{
-  0%  { transform: scale(1.25,1) skewX(10deg) translateY(2px) rotateZ(-8deg); }
-  50% { transform: scale(1.28,1.08) skewX(-12deg) translateY(-1px); }
-  100%{ transform: scale(1.25,1) skewX(10deg) translateY(2px) rotateZ(-8deg); }
-}
-@keyframes jellyCyan{
-  0%  { transform: scale(1.25,1) skewX(20deg) translateY(3px) rotateZ(-10deg); }
-  50% { transform: scale(1.25,1.10) skewX(-15deg) translateY(-2px); }
-  100%{ transform: scale(1.25,1) skewX(20deg) translateY(3px) rotateZ(-10deg); }
-}
-
-/* make sure hover color changes from older rules don’t tint the image */
-.command:hover, .command:focus-visible{
-  color: inherit;
-  background: transparent;
-  border-color: #fff;
-}
-
-/* ===== HOME IMAGE COMMANDS — compact + proper P5 streak ===== */
-
-/* Smaller, tighter list */
-.command-stack{
-  gap: clamp(4px, 0.8vw, 10px);
-}
-.image-command{
-  display:block;
-  margin: 0;                 /* compact */
-  isolation:isolate;         /* keep additive blend local to each link */
-}
-
-/* Image size (you can tweak just this one line anytime) */
-.image-command .cmd-img{
-  display:block;
-  width: clamp(160px, 12vw, 280px);   /* your current choice */
-  height:auto;
-  filter: invert(1) brightness(.18) contrast(1.6);
+/* Logo */
+.p5-logo {
+  display: flex;
+  align-items: center;
+  background: var(--p5-red);
+  padding: 12px 28px 12px 20px;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 20px) 100%, 0 100%);
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  letter-spacing: 3px;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+  transition: all 0.2s ease;
   position: relative;
-  z-index: 2;                         /* above plates */
+  z-index: 2;
 }
 
-/* Container that the plates are clipped to (middle band across the image) */
-.image-command .cmd-visual{ position:relative; display:inline-block; }
-.image-command .plates{
-  position:absolute;
-  /* slightly wider than the image so the tips can flare out */
-  left:-8%; right:-8%;
-  /* vertical position through a CSS var (per-item fine-tune) */
-  top: var(--plate-y, 52%);
-  height: var(--plate-h, clamp(18px, 3.2vw, 34px));  /* thickness of the streak */
-  transform: translateY(-50%) rotate(var(--plate-rot, -8deg));
-  pointer-events:none;
-  display:none;                       /* show on hover/focus */
-  mix-blend-mode: screen;             /* additive blend -> white where they overlap */
+.p5-logo::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border: 2px solid rgba(255,255,255,0.3);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 18px) 100%, 0 100%);
+  pointer-events: none;
 }
 
-/* Show streak on interaction */
-.image-command:hover .plates,
-.image-command:focus-visible .plates{ display:block; }
-
-/* The two plates fill that band and animate */
-.image-command .plate{ position:absolute; inset:0; transform-origin:center; }
-.image-command .plate svg{ width:100%; height:100%; display:block; }
-
-/* Start a little offset so they aren't perfectly aligned */
-.image-command .plate.red   { transform: translateX(-1%) scale(3.0,.13) }
-.image-command .plate.cyan  { transform: translateX( 1%) scale(3.4,.13) }
-
-/* Motion — cyan travels a hair more than red */
-.image-command:hover .plate.red,
-.image-command:focus-visible .plate.red{
-  animation: p5Red 900ms ease-in-out infinite alternate;
-}
-.image-command:hover .plate.cyan,
-.image-command:focus-visible .plate.cyan{
-  animation: p5Cyan 860ms ease-in-out infinite alternate;
+.p5-logo:hover {
+  background: #fff;
+  color: var(--p5-red);
+  text-shadow: none;
 }
 
-@keyframes p5Red{
-  from { transform: translateX(-2%) scale(2.8,.14); }
-  to   { transform: translateX( 1%) scale(3.2,.11); }
-}
-@keyframes p5Cyan{
-  from { transform: translateX(-1%) scale(3.3,.14); }
-  to   { transform: translateX( 2%) scale(3.8,.10); }
+.p5-logo a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-/* Remove any older star/padding visuals if they were inherited */
-.command::before{ content:none !important; display:none !important; }
-
-/* === P5 image commands — CodePen-accurate sizing & streak === */
-/* Per-link controls (feel free to tweak) */
-.image-command {
-  --imgW: clamp(120px, 18vw, 250px);  /* overall PNG width */
-  /* --imgW: clamp(220px, 18vw, 360px);  overall PNG width */
-  --plateH: clamp(150px, 2vw, 220px); /* streak thickness */
-  display: block;
-  margin: 0px 0;                      /* tighter vertical spacing */
+/* Nav links container */
+.nav-links {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin-left: auto;
 }
 
-/* stack tighter overall */
-.command-stack { gap: 0px; }
+.nav-links li {
+  display: flex;
+}
 
-/* The visual box hugs the image size; plates will use this width */
-.image-command .cmd-visual{
+/* Individual nav items — angular red tabs */
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 14px 32px;
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 1rem;
+  font-family: var(--p5-font);
+  border-bottom: 4px solid transparent;
   position: relative;
-  display: inline-block;
-  width: var(--imgW);
+  overflow: hidden;
+  transition: all 0.15s ease;
+  clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
 }
 
-/* Plates wrapper is the width of the image, centered on its midline */
-.image-command .plates{
+/* Hover sweep effect */
+.nav-link::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%; bottom: 0;
+  width: 100%;
+  background: var(--p5-red);
+  transition: left 0.25s var(--p5-transition);
+  z-index: -1;
+}
+
+.nav-link:hover::before,
+.nav-link.active::before {
+  left: 0;
+}
+
+.nav-link:hover {
+  color: #fff;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+}
+
+/* Active state — red background with white text */
+.nav-link.active {
+  color: #fff;
+  font-weight: 700;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+}
+
+/* Selection arrows on active/hover */
+.nav-link.active::after,
+.nav-link:hover::after {
+  content: "";
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #fff;
+  animation: navArrowBounce 0.8s ease-in-out infinite;
+}
+
+@keyframes navArrowBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-3px); }
+}
+
+/* Mobile hamburger */
+.nav-toggle {
+  display: none;
+  background: var(--p5-red);
+  border: none;
+  color: #fff;
+  font-size: 1.8rem;
+  padding: 10px 18px;
+  cursor: pointer;
+  clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+}
+
+/* ── 5. PAGE TRANSITIONS ──────────────────────────────────── */
+
+/* Full-screen transition overlay */
+.p5-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Red angular wipe */
+.p5-wipe {
+  position: absolute;
+  inset: -20%;
+  background: var(--p5-red);
+  transform: skewX(-18deg) translateX(-140%);
+  border-left: 8px solid #fff;
+  border-right: 8px solid #fff;
+  box-shadow: inset 0 0 0 4px rgba(0,0,0,0.3);
+}
+
+/* Enter animation (page loads — wipe exits) */
+.p5-wipe-enter {
+  animation: wipeExit 0.6s var(--p5-transition) 0.05s both;
+}
+
+/* Exit animation (leaving page — wipe enters) */
+.p5-wipe-exit {
+  animation: wipeEnter 0.5s var(--p5-transition) both;
+}
+
+@keyframes wipeEnter {
+  from { transform: skewX(-18deg) translateX(-140%); }
+  to   { transform: skewX(-18deg) translateX(0%); }
+}
+
+@keyframes wipeExit {
+  from { transform: skewX(-18deg) translateX(0%); }
+  to   { transform: skewX(-18deg) translateX(140%); }
+}
+
+/* "TAKE YOUR TIME" text during transition */
+.p5-transition-text {
+  position: relative;
+  z-index: 2;
+  font-family: var(--p5-font);
+  font-size: clamp(1.8rem, 4vw, 3.5rem);
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  color: #fff;
+  text-shadow: 3px 3px 0 #000;
+  opacity: 0;
+  transform: skewX(var(--p5-skew));
+}
+
+.p5-wipe-exit ~ .p5-transition-text {
+  animation: transTextIn 0.3s ease 0.15s forwards, transTextOut 0.2s ease 0.4s forwards;
+}
+
+@keyframes transTextIn {
+  to { opacity: 1; }
+}
+@keyframes transTextOut {
+  to { opacity: 0; transform: skewX(var(--p5-skew)) translateY(-10px); }
+}
+
+/* Star burst transition (All-Out Attack style) */
+.p5-star-burst {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: var(--p5-red);
+  clip-path: circle(0% at 50% 50%);
+  pointer-events: none;
+}
+
+.p5-star-burst.active {
+  animation: starBurstIn 0.4s ease forwards, starBurstOut 0.4s ease 0.5s forwards;
+}
+
+@keyframes starBurstIn {
+  to { clip-path: circle(150% at 50% 50%); }
+}
+@keyframes starBurstOut {
+  to { clip-path: circle(150% at 50% 50%); opacity: 0; }
+}
+
+/* ── 6. INTRO OVERLAY ("Take Your Heart") ──────────────────── */
+
+.p5-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  place-items: center;
+  background: var(--p5-red);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.p5-intro.play { opacity: 1; pointer-events: auto; }
+.p5-intro.done { opacity: 0; transition: opacity 0.3s ease; }
+
+/* Animated diamond BG inside intro */
+.p5-intro::before {
+  content: "";
+  position: absolute;
+  inset: -100px;
+  background-color: var(--p5-dark-red);
+  background-image:
+    linear-gradient(45deg, rgba(0,0,0,0.3) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.3) 75%),
+    linear-gradient(45deg, rgba(0,0,0,0.3) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.3) 75%);
+  background-size: 40px 40px;
+  background-position: 0 0, 20px 20px;
+  animation: diamondScroll 2s linear infinite;
+  z-index: 0;
+}
+
+/* White border frame */
+.p5-intro .intro-frame {
+  position: absolute;
+  inset: 3vh 3vw;
+  border: 5px solid rgba(255,255,255,0.6);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Joker cut-in */
+.p5-intro .intro-joker {
+  position: absolute;
+  height: min(70vh, 680px);
+  width: auto;
+  transform: translateX(-15%) translateY(5%) rotate(-3deg);
+  opacity: 0;
+  filter: drop-shadow(12px 12px 0 rgba(0,0,0,0.5));
+  z-index: 2;
+  animation:
+    jokerSlideIn 0.4s ease 0.25s forwards,
+    jokerSlideOut 0.3s ease 1.6s forwards;
+}
+
+@keyframes jokerSlideIn {
+  to { opacity: 1; transform: translateX(0) translateY(0) rotate(0deg); }
+}
+@keyframes jokerSlideOut {
+  to { opacity: 0; transform: translateX(15%) translateY(-5%) rotate(3deg); }
+}
+
+/* Swoosh streaks */
+.p5-intro .intro-swoosh {
   position: absolute;
   left: 0; right: 0;
-  top: 50%;
-  transform: translateY(-50%);        /* sit across the middle */
-  display: none;                       /* only on hover/focus */
+  top: 47%;
+  height: min(36px, 4vh);
+  mix-blend-mode: screen;
+  opacity: 0;
+  z-index: 3;
 }
 
-/* Show plates and add the alternating tilt just like CodePen */
-.image-command:hover .plates,
-.image-command:focus-visible .plates { display:block; }
-.image-command:nth-child(even):hover .plates,
-.image-command:nth-child(even):focus-visible .plates {
-  transform: translateY(-50%) rotate(11deg);
-}
-.image-command:hover .plates { transform: translateY(-50%) rotate(-6deg); }
+.p5-intro .intro-swoosh svg { width: 120%; height: 100%; }
 
-/* Each plate fills the wrapper width and is CLIPPED */
-.image-command .plates .plate{
+.p5-intro .intro-swoosh.cyan {
+  animation: swooshIn 0.3s ease 0.35s forwards, swooshOut 0.25s ease 1.5s forwards;
+}
+.p5-intro .intro-swoosh.red {
+  top: 53%;
+  animation: swooshIn 0.3s ease 0.42s forwards, swooshOut 0.25s ease 1.55s forwards;
+}
+
+@keyframes swooshIn  { to { opacity: 1; transform: translateX(8%); } }
+@keyframes swooshOut { to { opacity: 0; transform: translateX(30%); } }
+
+/* "Take Your Heart" text */
+.p5-intro .intro-text {
   position: absolute;
-  inset: 0;            /* left:0; right:0; top:0; bottom:0 */
-  height: var(--plateH);
-
-  margin: auto 0;      /* center vertically within .plates */
-  overflow: hidden;    /* <— prevents “rockets” across the page */
-  mix-blend-mode: screen;   /* additive like the Pen */
+  bottom: 12vh;
+  left: 6vw;
+  z-index: 4;
+  opacity: 0;
+  transform: skewX(var(--p5-skew)) translateY(20px) scale(0.9);
+  animation: introTextIn 0.3s ease 0.55s forwards, introTextOut 0.25s ease 1.45s forwards;
 }
 
-/* Make the SVG scale to the clipping box */
-.image-command .plates .plate svg{
-  position: absolute; left: 0; top: 0;
-  width: 100%; height: 100%;
+.p5-intro .intro-text span {
+  display: inline-block;
+  transform: skewX(12deg);
+  background: #000;
+  color: #fff;
+  padding: 8px 24px;
+  font-size: clamp(1.2rem, 2.5vw, 2rem);
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  border: 4px solid #fff;
+  box-shadow: 6px 6px 0 rgba(0,0,0,0.5);
 }
 
-/* Subtle base offsets so red/cyan aren’t perfectly aligned */
-.image-command .plates .red  { transform: translate(-2px,-1px) }
-.image-command .plates .cyan { transform: translate( 3px,  2px) }
+@keyframes introTextIn  { to { opacity: 1; transform: skewX(var(--p5-skew)) translateY(0) scale(1); } }
+@keyframes introTextOut { to { opacity: 0; transform: skewX(var(--p5-skew)) translateY(-15px) scale(0.95); } }
 
-/* Motion: scale a bit on width, very thin on height (like the Pen) */
-.image-command:hover .plates .cyan,
-.image-command:focus-visible .plates .cyan{
-  transform: translate(3px,2px) scale(1.8,.12);
-}
-.image-command:hover .plates .red,
-.image-command:focus-visible .plates .red{
-  transform: translate(-2px,-1px) scale(1.6,.12);
-}
+/* ── 7. HOME PAGE — MAIN MENU SCREEN ──────────────────────── */
 
-/* pivot and perf hint */
-.image-command .cmd-img{
-  transform-origin: 50% 60%;   /* feels like a baseline tilt */
-  will-change: transform;
+.hero {
+  min-height: calc(100dvh - 120px);
+  display: grid;
+  grid-template-columns: 1fr;
+  align-content: center;
+  gap: 30px;
+  padding-top: 20px;
 }
 
-/* run the bounce on hover */
-.image-command:hover .cmd-img{
-  animation: tiltBounce .15s ease forwards;
+.hero-inner {
+  display: grid;
+  gap: 28px;
 }
 
-/* alternate direction every other item, just like the Pen */
-.image-command:nth-child(even):hover .cmd-img{
-  animation-name: tiltBounceAlt;
+/* Title card */
+.hero-title-card {
+  position: relative;
+  background: #000;
+  border: 5px solid #fff;
+  padding: 24px 32px;
+  max-width: fit-content;
+  transform: skewX(var(--p5-skew));
+  box-shadow: 10px 10px 0 rgba(0,0,0,0.8), 0 0 0 5px var(--p5-red);
+  animation: heroCardIn 0.5s var(--p5-transition) both;
 }
 
-/* your existing keyframes work as-is */
-@keyframes tiltBounce{
-  0%   { transform: scale(1) rotate(-7deg); }
-  50%  { transform: scale(1.5) rotate(-7deg); }
-  100% { transform: scale(1.15) rotate(-7deg); }
-}
-@keyframes tiltBounceAlt{
-  0%   { transform: scale(1) rotate(7deg); }
-  50%  { transform: scale(1.5) rotate(7deg); }
-  100% { transform: scale(1.15) rotate(7deg); }
+.hero-title-card > * {
+  transform: skewX(12deg);
 }
 
-/* Optional wobble (kept light); you can remove if you want it static */
-@keyframes jellyLite {
-  0% {
-    width: 100%; transform: scale(1.25,1) skewX(20deg) translateY(3px) rotateX(40deg) rotateY(10deg) rotateZ(-10deg);
-  }
-  50% { width: 100%; transform: scale(1.25,1.1) skewX(-15deg) translateY(-2px) translateZ(-30px); }
-  100% { width: 100%; transform: scale(1.25,1) skewX(20deg) translateY(3px) rotateX(-40deg) rotateY(-10deg) rotateZ(-15deg); }
+.hero-title-card h1 {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  line-height: 1;
+  margin-bottom: 6px;
 }
-/* @keyframes jellyLite {
-  0%   { transform: scale(1.0,1) }
-  50%  { transform: scale(1.06,1.02) }
-  100% { transform: scale(1.0,1) }
-} */
-.image-command:hover .plates .plate { animation: jellyLite .45s linear infinite; }
 
-/* P5-style cursor nubs left/right of the hovered label */
-.image-command{
+.hero-title-card .hero-sub {
+  font-size: clamp(0.9rem, 1.5vw, 1.15rem);
+  opacity: 0.85;
+  font-family: var(--p5-font-body);
+  letter-spacing: 1px;
+}
+
+@keyframes heroCardIn {
+  from { transform: skewX(var(--p5-skew)) translateX(-60px); opacity: 0; }
+  to   { transform: skewX(var(--p5-skew)) translateX(0); opacity: 1; }
+}
+
+/* ── P5 BATTLE MENU COMMANDS ──────────────────────────────── */
+
+.p5-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: menuFadeIn 0.6s ease 0.2s both;
+}
+
+@keyframes menuFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Each menu command */
+.p5-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 28px 14px 22px;
+  background: rgba(0, 0, 0, 0.9);
+  border: 3px solid #fff;
+  border-left: 6px solid var(--p5-red);
+  position: relative;
+  transform: skewX(var(--p5-skew));
+  max-width: 420px;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* Red fill on hover */
+.p5-menu-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--p5-red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s var(--p5-transition);
+  z-index: 0;
+}
+
+.p5-menu-item:hover::before,
+.p5-menu-item:focus-visible::before {
+  transform: scaleX(1);
+}
+
+.p5-menu-item:hover {
+  border-color: #fff;
+  transform: skewX(var(--p5-skew)) translateX(12px) scale(1.02);
+  box-shadow: 8px 4px 0 rgba(0,0,0,0.5);
+}
+
+/* Menu item content */
+.p5-menu-item .menu-icon {
+  width: 48px;
+  height: 48px;
+  position: relative;
+  z-index: 1;
+  filter: brightness(0) invert(1);
+  transform: skewX(12deg);
+  transition: transform 0.2s ease;
+}
+
+.p5-menu-item:hover .menu-icon {
+  transform: skewX(12deg) scale(1.15) rotate(-5deg);
+}
+
+.p5-menu-item .menu-label {
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  position: relative;
+  z-index: 1;
+  transform: skewX(12deg);
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+}
+
+/* Selection cursor (triangle) */
+.p5-menu-item::after {
+  content: "";
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: skewX(12deg) translateY(-50%);
+  width: 0; height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 12px solid #fff;
+  opacity: 0;
+  transition: all 0.15s ease;
+  z-index: 1;
+}
+
+.p5-menu-item:hover::after {
+  opacity: 1;
+  right: 12px;
+}
+
+/* Stagger animation for menu items */
+.p5-menu-item:nth-child(1) { animation: menuItemSlide 0.4s var(--p5-transition) 0.3s both; }
+.p5-menu-item:nth-child(2) { animation: menuItemSlide 0.4s var(--p5-transition) 0.4s both; }
+.p5-menu-item:nth-child(3) { animation: menuItemSlide 0.4s var(--p5-transition) 0.5s both; }
+.p5-menu-item:nth-child(4) { animation: menuItemSlide 0.4s var(--p5-transition) 0.6s both; }
+
+@keyframes menuItemSlide {
+  from { transform: skewX(var(--p5-skew)) translateX(-80px); opacity: 0; }
+  to   { transform: skewX(var(--p5-skew)) translateX(0); opacity: 1; }
+}
+
+/* Decorative star elements */
+.p5-star {
+  position: absolute;
+  color: #fff;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+  pointer-events: none;
+  animation: starFloat 5s ease-in-out infinite;
+  font-size: clamp(12px, 1.5vw, 22px);
+}
+
+.p5-star:nth-child(1) { top: 15%; right: 10%; animation-delay: 0s; }
+.p5-star:nth-child(2) { top: 35%; right: 5%; animation-delay: 1.2s; font-size: 18px; }
+.p5-star:nth-child(3) { bottom: 20%; right: 15%; animation-delay: 2.4s; }
+.p5-star:nth-child(4) { top: 60%; right: 8%; animation-delay: 0.6s; font-size: 14px; }
+.p5-star:nth-child(5) { bottom: 35%; left: 60%; animation-delay: 1.8s; }
+
+@keyframes starFloat {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  15%  { opacity: 1; }
+  50%  { transform: translate(30px, -20px) rotate(180deg); }
+  85%  { opacity: 1; }
+  100% { transform: translate(60px, -40px) rotate(360deg); opacity: 0; }
+}
+
+/* Character silhouette on home page */
+.hero-character {
+  position: fixed;
+  right: -5%;
+  bottom: -5%;
+  height: 90vh;
+  width: auto;
+  opacity: 0.08;
+  filter: brightness(0) invert(1);
+  pointer-events: none;
+  z-index: 0;
+  animation: charBreathe 6s ease-in-out infinite;
+}
+
+@keyframes charBreathe {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50% { transform: scale(1.02) translateY(-8px); }
+}
+
+/* ── 8. ABOUT PAGE — CONFIDANT / SOCIAL STATS ──────────────── */
+
+.confidant-page {
+  display: grid;
+  gap: 30px;
+}
+
+/* Page header banner */
+.page-banner {
+  background: var(--p5-red);
+  padding: 18px 32px;
+  transform: skewX(var(--p5-skew));
+  display: inline-block;
+  max-width: fit-content;
+  border: 4px solid #fff;
+  box-shadow: 8px 8px 0 rgba(0,0,0,0.6);
+  animation: bannerSlide 0.5s var(--p5-transition) both;
   position: relative;
 }
-.image-command::before,
-.image-command::after{
-  content:"";
-  position:absolute; top:50%; translate:0 -50%;
-  border:8px solid transparent;
-  opacity:0; transition:opacity .12s ease, transform .12s ease;
-  z-index:3;
-}
-.image-command::before{ left:-18px;  border-right-color:#fff; filter:drop-shadow(2px 2px 0 #000); }
-.image-command::after { right:-18px; border-left-color:#fff;  filter:drop-shadow(2px 2px 0 #000); }
-.image-command:hover::before,
-.image-command:hover::after{ opacity:1; transform:scale(1.08); }
 
-/* ===== Persona 5: intro cut-in overlay ===== */
-.p5-intro {
-  position: fixed; inset: 0; z-index: 10050;
-  pointer-events: none;              /* ignore clicks */
-  display: grid; place-items: center;
-  opacity: 0; transition: opacity .15s ease;
+.page-banner h2 {
+  transform: skewX(12deg);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.4);
 }
-.p5-intro.play { opacity: 1; pointer-events: auto; }
-.p5-intro.done { opacity: 0; transition: opacity .25s ease; }
 
-/* red comic panel that swooshes in and out */
-.p5-intro .intro-panel{
-  position: absolute; inset: -12vh -12vw;
+@keyframes bannerSlide {
+  from { transform: skewX(var(--p5-skew)) translateX(-100px); opacity: 0; }
+  to   { transform: skewX(var(--p5-skew)) translateX(0); opacity: 1; }
+}
+
+/* Profile section */
+.confidant-profile {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+/* Portrait */
+.confidant-portrait {
+  position: relative;
+}
+
+.confidant-portrait img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border: 5px solid #fff;
+  box-shadow: 10px 10px 0 rgba(0,0,0,0.7), 0 0 0 5px var(--p5-red);
+  animation: portraitReveal 0.6s var(--p5-transition) 0.2s both;
+}
+
+@keyframes portraitReveal {
+  from { clip-path: inset(100% 0 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+/* Rank badge */
+.confidant-portrait .rank-badge {
+  position: absolute;
+  top: -12px;
+  right: -12px;
   background: var(--p5-red);
-  border: 6px solid #fff;
-  box-shadow: 0 0 0 8px #000, 10px 10px 0 #000;
-  transform: skewX(-18deg) translateX(-120%);
-  animation: introPanelIn .45s cubic-bezier(.2,.8,.2,1) .05s forwards,
-             introPanelOut .45s cubic-bezier(.2,.8,.2,1) 1.4s forwards;
+  color: #fff;
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  font-size: 1.4rem;
+  font-weight: 900;
+  border: 3px solid #fff;
+  box-shadow: 4px 4px 0 #000;
+  transform: rotate(8deg);
+  z-index: 2;
+  animation: badgePop 0.3s ease 0.8s both;
 }
 
-/* Joker cut-in silhouette */
-.p5-intro .intro-joker{
-  position: absolute; height: min(76vh, 720px); width: auto;
-  transform: translateX(-10%) translateY(3%) rotate(-1.5deg);
+@keyframes badgePop {
+  from { transform: rotate(8deg) scale(0); }
+  to   { transform: rotate(8deg) scale(1); }
+}
+
+/* Bio dialogue box */
+.confidant-bio {
+  background: #000;
+  border: 4px solid #fff;
+  padding: 20px 24px;
+  position: relative;
+  transform: skewX(-3deg);
+  box-shadow: 8px 8px 0 rgba(0,0,0,0.5);
+  animation: bioSlideIn 0.5s var(--p5-transition) 0.3s both;
+}
+
+.confidant-bio::before {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: 24px;
+  width: 0; height: 0;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-right: 12px solid #fff;
+}
+
+.confidant-bio p {
+  transform: skewX(3deg);
+  font-family: var(--p5-font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: 0.5px;
+}
+
+@keyframes bioSlideIn {
+  from { transform: skewX(-3deg) translateX(40px); opacity: 0; }
+  to   { transform: skewX(-3deg) translateX(0); opacity: 1; }
+}
+
+/* Social Stats bars */
+.social-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.stat-bar {
+  background: rgba(0,0,0,0.9);
+  border: 3px solid #fff;
+  padding: 14px 18px;
+  position: relative;
+  overflow: hidden;
+  transform: skewX(var(--p5-skew));
+  transition: all 0.2s ease;
+}
+
+.stat-bar:hover {
+  border-color: var(--p5-red);
+  transform: skewX(var(--p5-skew)) translateY(-4px);
+  box-shadow: 6px 6px 0 rgba(0,0,0,0.5);
+}
+
+.stat-bar > * {
+  transform: skewX(12deg);
+}
+
+.stat-bar .stat-name {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: 0.8;
+  margin-bottom: 6px;
+}
+
+.stat-bar .stat-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--p5-yellow);
+}
+
+/* Stat level stars */
+.stat-bar .stat-level {
+  display: flex;
+  gap: 3px;
+  margin-top: 6px;
+}
+
+.stat-bar .stat-level .star {
+  width: 14px;
+  height: 14px;
+  background: var(--p5-red);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+.stat-bar .stat-level .star.empty {
+  background: #333;
+}
+
+/* Animated fill bar behind each stat */
+.stat-bar::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: var(--p5-red);
+  width: var(--fill, 0%);
+  transition: width 1s var(--p5-transition);
+  animation: statFill 1.2s var(--p5-transition) 0.5s both;
+}
+
+@keyframes statFill {
+  from { width: 0; }
+  to { width: var(--fill, 80%); }
+}
+
+/* Staggered reveal for stat bars */
+.stat-bar:nth-child(1) { animation: statSlideIn 0.4s var(--p5-transition) 0.4s both; }
+.stat-bar:nth-child(2) { animation: statSlideIn 0.4s var(--p5-transition) 0.5s both; }
+.stat-bar:nth-child(3) { animation: statSlideIn 0.4s var(--p5-transition) 0.6s both; }
+.stat-bar:nth-child(4) { animation: statSlideIn 0.4s var(--p5-transition) 0.7s both; }
+.stat-bar:nth-child(5) { animation: statSlideIn 0.4s var(--p5-transition) 0.8s both; }
+
+@keyframes statSlideIn {
+  from { transform: skewX(var(--p5-skew)) translateX(60px); opacity: 0; }
+  to   { transform: skewX(var(--p5-skew)) translateX(0); opacity: 1; }
+}
+
+/* Skill cards */
+.skill-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.skill-card {
+  background: #000;
+  border: 4px solid #fff;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  box-shadow: 6px 6px 0 rgba(0,0,0,0.6), 0 0 0 4px var(--p5-red);
+}
+
+.skill-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
+  background: var(--p5-red);
+}
+
+.skill-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  border-color: var(--p5-red);
+  box-shadow: 10px 10px 0 rgba(0,0,0,0.6), 0 0 0 4px var(--p5-red), 0 0 30px rgba(255,0,0,0.15);
+}
+
+.skill-card h3 {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  color: var(--p5-red);
+}
+
+.skill-card p {
+  font-family: var(--p5-font-body);
+  font-size: 0.95rem;
+  opacity: 0.85;
+  line-height: 1.5;
+}
+
+/* Card reveal animation */
+.skill-card.reveal {
+  animation: cardReveal 0.5s var(--p5-transition) both;
+}
+
+@keyframes cardReveal {
+  from { transform: translateY(40px) rotateX(10deg); opacity: 0; }
+  to   { transform: translateY(0) rotateX(0deg); opacity: 1; }
+}
+
+/* ── 9. PROJECTS PAGE — PERSONA COMPENDIUM ─────────────────── */
+
+.compendium-page {
+  display: grid;
+  gap: 28px;
+}
+
+.compendium-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+/* Project card — styled like a Persona entry */
+.persona-card {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a0000 100%);
+  border: 3px solid #fff;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s ease;
+  transform-origin: center;
+}
+
+/* Top red accent line */
+.persona-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--p5-red), var(--p5-crimson), var(--p5-red));
+}
+
+/* Diagonal corner cut */
+.persona-card::after {
+  content: "";
+  position: absolute;
+  top: 0; right: 0;
+  width: 50px; height: 50px;
+  background: var(--p5-red);
+  clip-path: polygon(100% 0, 0 0, 100% 100%);
   opacity: 0;
-  filter: drop-shadow(10px 10px 0 #000);
-  animation: jokerIn .38s ease .22s forwards, jokerOut .25s ease 1.35s forwards;
+  transition: opacity 0.2s ease;
 }
 
-/* additive swooshes */
-.p5-intro .intro-swoosh{ position:absolute; inset:auto 0; top: 46%; height: min(28px, 3.1vw); mix-blend-mode: screen; opacity:0; }
-.p5-intro .intro-swoosh svg{ width: 120%; height: 100%; }
-.p5-intro .intro-swoosh.cyan{ animation: swooshIn .28s ease .30s forwards, swooshOut .20s ease 1.28s forwards; }
-.p5-intro .intro-swoosh.red { top: 50%;   animation: swooshIn .28s ease .36s forwards, swooshOut .20s ease 1.32s forwards; }
-
-/* keyframes */
-@keyframes introPanelIn  { from{ transform: skewX(-18deg) translateX(-120%);} to{ transform: skewX(-18deg) translateX(0);} }
-@keyframes introPanelOut { from{ transform: skewX(-18deg) translateX(0);}     to{ transform: skewX(-18deg) translateX(120%);} }
-
-@keyframes jokerIn  { to{ opacity:1; transform: translateX(0) translateY(0) rotate(0deg);} }
-@keyframes jokerOut { to{ opacity:0; transform: translateX(12%) translateY(-4%) rotate(2deg);} }
-
-@keyframes swooshIn  { to{ opacity:1; transform: translateX(6%);} }
-@keyframes swooshOut { to{ opacity:0; transform: translateX(24%);} }
-
-.p5-stars{ position:absolute; left:clamp(8px,5vw,80px); top:22vh; width:0; height:0; pointer-events:none; }
-.p5-stars::before, .p5-stars::after{
-  content:"★"; position:absolute; color:#fff; text-shadow:2px 2px 0 #000;
-  animation: starFloat 4.5s ease-in-out infinite;
-  font-size: clamp(14px,1.6vw,24px);
-}
-.p5-stars::after{ content:"✦"; left:30px; animation-duration:5.2s; animation-delay:.6s; }
-@keyframes starFloat{
-  0%{ transform: translate(-10px, 0) rotate(-10deg); opacity:0 }
-  15%{ opacity:1 }
-  50%{ transform: translate(40px, -26px) rotate(8deg) }
-  100%{ transform: translate(80px, -52px) rotate(16deg); opacity:0 }
+.persona-card:hover::after {
+  opacity: 1;
 }
 
-/* -------- Intro timings you can tweak in one place -------- */
-:root{
-  --intro-panel-in:.55s;
-  --intro-panel-out:.55s;
-  --intro-hold:1.20s;            /* how long things stay on screen */
-  --intro-swoosh-h:min(34px,3.6vh);
+.persona-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  border-color: var(--p5-red);
+  box-shadow: 0 12px 40px rgba(255,0,0,0.2), 8px 8px 0 rgba(0,0,0,0.5);
 }
 
-/* make the overlay red so it reads like a P5 full-screen card */
-.p5-intro{
-  position:fixed; inset:0; z-index:9998;
-  display:grid; place-items:center;
+/* Card header */
+.persona-card .card-header {
+  background: rgba(255,0,0,0.1);
+  padding: 16px 20px 12px;
+  border-bottom: 2px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.persona-card .card-header h3 {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.persona-card .card-header .card-number {
+  font-size: 0.8rem;
+  opacity: 0.5;
+  font-family: var(--p5-font-body);
+}
+
+/* Card body */
+.persona-card .card-body {
+  padding: 16px 20px;
+}
+
+.persona-card .card-body p {
+  font-family: var(--p5-font-body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  opacity: 0.85;
+}
+
+/* Tags */
+.persona-card .card-tags {
+  padding: 12px 20px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.p5-tag {
+  background: transparent;
+  border: 2px solid var(--p5-red);
+  color: var(--p5-red);
+  padding: 3px 12px;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: var(--p5-font);
+  transition: all 0.15s ease;
+}
+
+.p5-tag:hover {
   background: var(--p5-red);
-  opacity:0; transition:opacity .18s ease;
-  pointer-events:none;
-}
-.p5-intro.play{ opacity:1; pointer-events:auto; }
-.p5-intro.done{ opacity:0; transition:opacity .28s ease; }
-
-/* panel in → hold → out */
-.p5-intro .intro-panel{
-  position:absolute; inset:-12vh -12vw;
-  background: transparent;              /* red is on .p5-intro now */
-  border:6px solid #fff;
-  box-shadow:0 0 0 8px #000, 10px 10px 0 #000;
-  transform:skewX(-18deg) translateX(-120%);
-  animation:
-    introPanelIn var(--intro-panel-in) cubic-bezier(.2,.8,.2,1) .05s forwards,
-    introPanelOut var(--intro-panel-out) cubic-bezier(.2,.8,.2,1) calc(.05s + var(--intro-panel-in) + var(--intro-hold)) forwards;
+  color: #fff;
 }
 
-.p5-intro .intro-joker{
-  position:absolute; height:min(70vh,680px); width:auto;
-  transform: translateX(-12%) translateY(4%) rotate(-2deg);
-  opacity:0; filter: drop-shadow(10px 10px 0 #000);
-  animation:
-    jokerIn .40s ease .22s forwards,
-    jokerOut .28s ease  calc(.22s + .40s + var(--intro-hold)) forwards;
+/* Card stagger animation */
+.persona-card:nth-child(1) { animation: compendiumReveal 0.5s var(--p5-transition) 0.15s both; }
+.persona-card:nth-child(2) { animation: compendiumReveal 0.5s var(--p5-transition) 0.25s both; }
+.persona-card:nth-child(3) { animation: compendiumReveal 0.5s var(--p5-transition) 0.35s both; }
+.persona-card:nth-child(4) { animation: compendiumReveal 0.5s var(--p5-transition) 0.45s both; }
+.persona-card:nth-child(5) { animation: compendiumReveal 0.5s var(--p5-transition) 0.55s both; }
+.persona-card:nth-child(6) { animation: compendiumReveal 0.5s var(--p5-transition) 0.65s both; }
+
+@keyframes compendiumReveal {
+  from { transform: translateY(50px) scale(0.95); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
 }
 
-/* cyan/red streaks – a bit thicker and above the image */
-.p5-intro .intro-swoosh{
-  position:absolute; left:4vw; right:4vw; top:48%;
-  height:var(--intro-swoosh-h); opacity:0;
-  mix-blend-mode:screen; z-index:2;
-}
-.p5-intro .intro-swoosh svg{ width:120%; height:100%; }
-.p5-intro .intro-swoosh.cyan{
-  animation:
-    swooshIn  .32s ease .34s forwards,
-    swooshOut .24s ease calc(.34s + .32s + var(--intro-hold)) forwards;
-}
-.p5-intro .intro-swoosh.red{
-  top:52%;
-  animation:
-    swooshIn  .32s ease .40s forwards,
-    swooshOut .24s ease calc(.40s + .32s + var(--intro-hold)) forwards;
+/* ── 10. CONTACT PAGE — P5 CHAT / DIALOGUE ─────────────────── */
+
+.chat-page {
+  display: grid;
+  gap: 24px;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
-/* the big P5-style text badge */
-.p5-intro .intro-text{
-  position:absolute; bottom:10vh; left:6vw;
-  background:#000; color:#fff;
-  padding:.35rem .8rem; text-transform:uppercase;
-  letter-spacing:.08em; font-family:'Fjalla One','Bebas Neue',Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif;
-  border:5px solid #fff;
-  box-shadow:8px 8px 0 #000, 0 0 0 5px var(--p5-red);
-  transform: skewX(-12deg) translateY(20px) scale(.9);
-  opacity:0;
-  animation:
-    introTextIn  .28s ease .52s forwards,
-    introTextOut .22s ease calc(.52s + .28s + var(--intro-hold)) forwards;
+/* Phone frame */
+.phone-frame {
+  background: #111;
+  border: 4px solid #333;
+  border-radius: 24px;
+  padding: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), inset 0 0 0 2px rgba(255,255,255,0.05);
+  position: relative;
+  overflow: hidden;
 }
-.p5-intro .intro-text span{ display:inline-block; transform:skewX(12deg); }
 
-/* keyframes */
-@keyframes introPanelIn  { to { transform:skewX(-18deg) translateX(0); } }
-@keyframes introPanelOut { to { transform:skewX(-18deg) translateX(120%);} }
+.phone-frame::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: #333;
+  border-radius: 4px;
+}
 
-@keyframes jokerIn  { to { opacity:1; transform:translateX(0) translateY(0) rotate(0);} }
-@keyframes jokerOut { to { opacity:0; transform:translateX(12%) translateY(-4%) rotate(2deg);} }
+/* Chat header */
+.chat-header {
+  background: var(--p5-red);
+  margin: -16px -16px 16px;
+  padding: 24px 20px 14px;
+  border-radius: 20px 20px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-@keyframes swooshIn  { to { opacity:1; transform:translateX(6%);} }
-@keyframes swooshOut { to { opacity:0; transform:translateX(24%);} }
+.chat-header .chat-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #000;
+  border: 2px solid #fff;
+  display: grid;
+  place-items: center;
+  font-size: 1.2rem;
+}
 
-@keyframes introTextIn  { to{ opacity:1; transform:skewX(-12deg) translateY(0) scale(1);} }
-@keyframes introTextOut { to{ opacity:0; transform:skewX(-12deg) translateY(-14px) scale(.96);} }
+.chat-header .chat-name {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
 
+.chat-header .chat-status {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  font-family: var(--p5-font-body);
+}
 
+/* Chat messages area */
+.chat-messages {
+  padding: 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 16px;
+}
 
+.chat-bubble {
+  max-width: 80%;
+  padding: 12px 16px;
+  font-family: var(--p5-font-body);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  position: relative;
+  animation: bubbleIn 0.3s ease both;
+}
 
+.chat-bubble.received {
+  align-self: flex-start;
+  background: #1a1a1a;
+  border: 2px solid #333;
+  border-radius: 2px 16px 16px 16px;
+}
 
+.chat-bubble.sent {
+  align-self: flex-end;
+  background: var(--p5-red);
+  color: #fff;
+  border-radius: 16px 2px 16px 16px;
+}
 
+@keyframes bubbleIn {
+  from { transform: translateY(10px) scale(0.95); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
 
+/* Contact form styled as chat input */
+.chat-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
+.chat-form .form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 
+.chat-form label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  opacity: 0.6;
+  font-family: var(--p5-font);
+}
 
+.chat-form input,
+.chat-form textarea {
+  width: 100%;
+  padding: 12px 16px;
+  background: #1a1a1a;
+  border: 2px solid #333;
+  border-radius: 12px;
+  color: #fff;
+  font-family: var(--p5-font-body);
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
 
+.chat-form input:focus,
+.chat-form textarea:focus {
+  border-color: var(--p5-red);
+  box-shadow: 0 0 0 3px rgba(255,0,0,0.15);
+}
 
+.chat-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
 
-  
+/* Send button */
+.p5-send-btn {
+  align-self: flex-end;
+  background: var(--p5-red);
+  color: #fff;
+  border: 3px solid #fff;
+  padding: 10px 28px;
+  font-family: var(--p5-font);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transform: skewX(var(--p5-skew));
+  transition: all 0.15s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.p5-send-btn > span {
+  display: inline-block;
+  transform: skewX(12deg);
+  position: relative;
+  z-index: 1;
+}
+
+.p5-send-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.2s ease;
+  z-index: 0;
+}
+
+.p5-send-btn:hover {
+  color: var(--p5-red);
+  transform: skewX(var(--p5-skew)) scale(1.04);
+  box-shadow: 6px 4px 0 rgba(0,0,0,0.4);
+}
+
+.p5-send-btn:hover::before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ── 11. FOOTER ────────────────────────────────────────────── */
+
+.p5-footer {
+  position: relative;
+  z-index: 1;
+  margin-top: 60px;
+  padding: 20px;
+  text-align: center;
+}
+
+.p5-footer .footer-inner {
+  display: inline-block;
+  background: rgba(0,0,0,0.9);
+  padding: 12px 28px;
+  border: 3px solid rgba(255,255,255,0.3);
+  transform: skewX(var(--p5-skew));
+  font-size: 0.85rem;
+  opacity: 0.7;
+  letter-spacing: 1px;
+}
+
+.p5-footer .footer-inner span {
+  display: inline-block;
+  transform: skewX(12deg);
+}
+
+/* ── 12. AMBIENT DECORATIONS ───────────────────────────────── */
+
+/* Floating particles */
+.p5-particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.p5-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--p5-red);
+  opacity: 0;
+  animation: particleRise 8s linear infinite;
+}
+
+.p5-particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+.p5-particle:nth-child(2) { left: 25%; animation-delay: 1.5s; width: 3px; height: 3px; }
+.p5-particle:nth-child(3) { left: 40%; animation-delay: 3s; }
+.p5-particle:nth-child(4) { left: 55%; animation-delay: 0.8s; width: 5px; height: 5px; }
+.p5-particle:nth-child(5) { left: 70%; animation-delay: 2.2s; }
+.p5-particle:nth-child(6) { left: 85%; animation-delay: 4s; width: 3px; height: 3px; }
+.p5-particle:nth-child(7) { left: 95%; animation-delay: 1s; }
+.p5-particle:nth-child(8) { left: 5%; animation-delay: 3.5s; width: 6px; height: 6px; }
+
+@keyframes particleRise {
+  0%   { bottom: -10px; opacity: 0; transform: translateX(0) rotate(0deg); }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.6; }
+  100% { bottom: 105vh; opacity: 0; transform: translateX(40px) rotate(720deg); }
+}
+
+/* Corner decoration — angular lines */
+.p5-corner-decor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.p5-corner-decor.top-left {
+  top: 80px;
+  left: 0;
+  width: 120px;
+  height: 3px;
+  background: var(--p5-red);
+  transform-origin: left;
+  animation: cornerPulse 3s ease-in-out infinite;
+}
+
+.p5-corner-decor.bottom-right {
+  bottom: 20px;
+  right: 0;
+  width: 120px;
+  height: 3px;
+  background: var(--p5-red);
+  transform-origin: right;
+  animation: cornerPulse 3s ease-in-out infinite 1.5s;
+}
+
+@keyframes cornerPulse {
+  0%, 100% { opacity: 0.3; transform: scaleX(1); }
+  50% { opacity: 0.8; transform: scaleX(1.3); }
+}
+
+/* ── 13. TYPEWRITER TEXT EFFECT ─────────────────────────────── */
+
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid var(--p5-red);
+  animation: typewriterCursor 0.6s step-end infinite;
+}
+
+@keyframes typewriterCursor {
+  from, to { border-color: transparent; }
+  50% { border-color: var(--p5-red); }
+}
+
+/* ── 14. SHARED UTILITY CLASSES ────────────────────────────── */
+
+.skew { transform: skewX(var(--p5-skew)); }
+.de-skew { transform: skewX(12deg); }
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s var(--p5-transition);
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Glitch effect for headings */
+.glitch {
+  position: relative;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+}
+.glitch::before {
+  color: var(--p5-cyan);
+  clip-path: inset(0 0 65% 0);
+  animation: glitchTop 3s linear infinite;
+}
+.glitch::after {
+  color: var(--p5-red);
+  clip-path: inset(65% 0 0 0);
+  animation: glitchBottom 3s linear infinite;
+}
+
+@keyframes glitchTop {
+  0%, 92%, 100% { transform: translate(0); }
+  93% { transform: translate(-4px, -2px); }
+  95% { transform: translate(3px, 1px); }
+  97% { transform: translate(-2px, -1px); }
+}
+@keyframes glitchBottom {
+  0%, 92%, 100% { transform: translate(0); }
+  94% { transform: translate(3px, 2px); }
+  96% { transform: translate(-3px, -1px); }
+  98% { transform: translate(2px, 1px); }
+}
+
+/* ── 15. "ALL-OUT ATTACK" SECTION DIVIDER ──────────────────── */
+
+.p5-divider {
+  position: relative;
+  height: 60px;
+  margin: 30px 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.p5-divider::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--p5-red), var(--p5-red), transparent);
+}
+
+.p5-divider::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 16px;
+  height: 16px;
+  background: var(--p5-red);
+  border: 2px solid #fff;
+}
+
+/* ── 16. RESPONSIVE ────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .p5-main {
+    padding: 90px 16px 40px;
+  }
+
+  .confidant-profile {
+    grid-template-columns: 1fr;
+  }
+
+  .confidant-portrait {
+    max-width: 260px;
+    justify-self: center;
+  }
+
+  .compendium-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-title-card h1 {
+    font-size: clamp(1.8rem, 6vw, 2.8rem);
+  }
+
+  .p5-menu-item {
+    max-width: 100%;
+  }
+
+  .hero-character {
+    display: none;
+  }
+
+  /* Mobile nav */
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 70vw;
+    max-width: 320px;
+    height: 100dvh;
+    background: rgba(0,0,0,0.97);
+    flex-direction: column;
+    align-items: stretch;
+    padding: 80px 0 0;
+    transition: right 0.35s var(--p5-transition);
+    border-left: 4px solid var(--p5-red);
+    z-index: 200;
+  }
+
+  .nav-links.open {
+    right: 0;
+  }
+
+  .nav-links li {
+    width: 100%;
+  }
+
+  .nav-link {
+    clip-path: none;
+    padding: 18px 28px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .nav-toggle {
+    display: flex;
+    align-items: center;
+    z-index: 201;
+    position: relative;
+  }
+}
+
+@media (max-width: 520px) {
+  .social-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-title-card {
+    padding: 16px 20px;
+  }
+
+  .p5-menu-item {
+    padding: 10px 18px 10px 16px;
+  }
+
+  .p5-menu-item .menu-label {
+    font-size: 1rem;
+  }
+
+  .phone-frame {
+    border-radius: 16px;
+    padding: 12px;
+  }
+}
+
+/* ── 17. LOADING STATE ─────────────────────────────────────── */
+
+.p5-loading {
+  position: fixed;
+  inset: 0;
+  z-index: 11000;
+  background: var(--p5-black);
+  display: grid;
+  place-items: center;
+  transition: opacity 0.3s ease;
+}
+
+.p5-loading.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.p5-loading-spinner {
+  width: 60px;
+  height: 60px;
+  position: relative;
+}
+
+.p5-loading-spinner::before {
+  content: "★";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 2.5rem;
+  color: var(--p5-red);
+  animation: loadSpin 1s linear infinite;
+}
+
+@keyframes loadSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── 18. PAGE-SPECIFIC BODY STATES ─────────────────────────── */
+
+/* Each page shows different background pattern */
+.page-home .p5-bg-diamonds { display: block; }
+.page-home .p5-bg-stripes,
+.page-home .p5-bg-halftone,
+.page-home .p5-bg-crosshatch { display: none; }
+
+.page-about .p5-bg-stripes { display: block; }
+.page-about .p5-bg-diamonds,
+.page-about .p5-bg-halftone,
+.page-about .p5-bg-crosshatch { display: none; }
+
+.page-projects .p5-bg-halftone { display: block; }
+.page-projects .p5-bg-diamonds,
+.page-projects .p5-bg-stripes,
+.page-projects .p5-bg-crosshatch { display: none; }
+
+.page-contact .p5-bg-crosshatch { display: block; }
+.page-contact .p5-bg-diamonds,
+.page-contact .p5-bg-stripes,
+.page-contact .p5-bg-halftone { display: none; }
+
+/* ── 19. SOUND INDICATOR ───────────────────────────────────── */
+
+.sound-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+  background: rgba(0,0,0,0.8);
+  border: 2px solid rgba(255,255,255,0.2);
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+}
+
+.sound-toggle:hover {
+  border-color: var(--p5-red);
+  background: rgba(255,0,0,0.2);
+}
+
+.sound-toggle.muted {
+  opacity: 0.4;
+}
+
+/* ── 20. PRINT STYLES ──────────────────────────────────────── */
+@media print {
+  .p5-bg-layer,
+  .p5-particles,
+  .p5-corner-decor,
+  .p5-transition-overlay,
+  .p5-intro,
+  .sound-toggle,
+  .hero-character { display: none !important; }
+
+  body { background: #fff; color: #000; }
+}
