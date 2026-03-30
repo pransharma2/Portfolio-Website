@@ -35,5 +35,35 @@
 
   <!-- Background character silhouette -->
   <img class="hero-character" src="{{ url_for('static', filename='img/joker-cutin.png') }}" alt="" aria-hidden="true">
+
+  <!-- P5-style Weather & Date Widget (top-right corner) -->
+  <div id="p5-weather-widget" class="p5-weather-widget">
+    <div class="wgt-date-row">
+      <!-- Month (stacked 3-layer sprites) -->
+      <div class="wgt-month-top wgt-sprite wgt-month-sprite"></div>
+      <div class="wgt-month-mid wgt-sprite wgt-month-sprite"></div>
+      <div class="wgt-month-base wgt-sprite wgt-month-sprite"></div>
+      <!-- Date tens -->
+      <div class="wgt-date-tens-top wgt-sprite wgt-num-sprite"></div>
+      <div class="wgt-date-tens-mid wgt-sprite wgt-num-sprite"></div>
+      <div class="wgt-date-tens-base wgt-sprite wgt-num-sprite"></div>
+      <!-- Date ones -->
+      <div class="wgt-date-ones-top wgt-sprite wgt-num-sprite"></div>
+      <div class="wgt-date-ones-mid wgt-sprite wgt-num-sprite"></div>
+      <div class="wgt-date-ones-base wgt-sprite wgt-num-sprite"></div>
+    </div>
+    <div class="wgt-bottom-row">
+      <!-- Weekday sprite -->
+      <div class="wgt-weekday"></div>
+      <!-- Weather icon -->
+      <div class="wgt-weather-card"></div>
+      <div class="wgt-weather-sprite"></div>
+    </div>
+    <!-- Time & temp (text-based for simplicity) -->
+    <div class="wgt-info-row">
+      <span class="wgt-time">00:00AM</span>
+      <span class="wgt-temp">--&deg;C</span>
+    </div>
+  </div>
 </section>
 {% endblock %}

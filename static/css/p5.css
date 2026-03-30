@@ -1681,7 +1681,184 @@ ul { list-style: none; }
   opacity: 0.4;
 }
 
-/* ── 20. PRINT STYLES ──────────────────────────────────────── */
+/* ── 20. P5 WEATHER & DATE WIDGET ──────────────────────────── */
+
+@font-face {
+  font-family: 'P5Hatty';
+  src: url('../fonts/p5hatty.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'EarwigFactory';
+  src: url('../fonts/earwig-factory.ttf') format('truetype');
+  font-display: swap;
+}
+
+.p5-weather-widget {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 50;
+  transform: rotate(-8deg);
+  transform-origin: top right;
+  animation: widgetBounceIn 0.6s cubic-bezier(.47,1.64,.41,.8) 0.8s both;
+  pointer-events: none;
+}
+
+@keyframes widgetBounceIn {
+  from { transform: rotate(-8deg) translateY(-40px) scale(0.5); opacity: 0; }
+  to   { transform: rotate(-8deg) translateY(0) scale(1); opacity: 1; }
+}
+
+/*
+  Sprite dimensions (from PNGs):
+    numbers_spritesheet_3: 1000x450 = 10 cols x 3 rows, cell 100x150
+    month-number-sprites:  1440x360 = 12 cols x 3 rows, cell 120x120
+    weekday_sprites:        573x222 =  3 cols x 3 rows, cell 191x74
+    weather_spritesheet4:   300x222 =  4 cols x 3 rows, cell  75x74
+    weather-card-sprite:    100x99  = single image
+
+  Scale factor: display each number cell at 46px wide
+    numbers: 46/100 = 0.46 → bg-size: 460px 207px, cell: 46x69
+    month:   50/120 = 0.417 → bg-size: 600px 150px, cell: 50x50
+    weekday: 76/191 = 0.398 → bg-size: 228px 88px, cell: 76x29
+    weather: 38/75  = 0.507 → bg-size: 152px 112px, cell: 38x37
+*/
+
+/* Date row: month + date tens + date ones, each as 3-layer stack */
+.wgt-date-row {
+  display: grid;
+  grid-template-columns: 50px 46px 46px;
+  grid-template-rows: 69px;
+  gap: 0;
+  position: relative;
+}
+
+/* Number spritesheet: 10 cols x 3 rows, cell 100x150, scaled to 46x69 */
+.wgt-num-sprite {
+  background-image: url('../img/weather/numbers_spritesheet_3.png');
+  background-repeat: no-repeat;
+  background-size: 460px 207px;
+  width: 46px;
+  height: 69px;
+}
+
+/* Month spritesheet: 12 cols x 3 rows, cell 120x120, scaled to 50x50 */
+.wgt-month-sprite {
+  background-image: url('../img/weather/month-number-sprites.png');
+  background-repeat: no-repeat;
+  background-size: 600px 150px;
+  width: 50px;
+  height: 50px;
+}
+
+/* All stacked layers overlap in same grid cell */
+.wgt-month-top   { grid-column: 1; grid-row: 1; z-index: 3; transform: rotate(-2deg); }
+.wgt-month-mid   { grid-column: 1; grid-row: 1; z-index: 2; transform: rotate(1deg) translate(1px, 1px); }
+.wgt-month-base  { grid-column: 1; grid-row: 1; z-index: 1; transform: rotate(-1deg) translate(-1px, 2px); }
+
+.wgt-date-tens-top  { grid-column: 2; grid-row: 1; z-index: 3; transform: rotate(-3deg); }
+.wgt-date-tens-mid  { grid-column: 2; grid-row: 1; z-index: 2; transform: rotate(1deg) translate(1px, 1px); }
+.wgt-date-tens-base { grid-column: 2; grid-row: 1; z-index: 1; transform: rotate(-1deg) translate(-1px, 2px); }
+
+.wgt-date-ones-top  { grid-column: 3; grid-row: 1; z-index: 3; transform: rotate(-2deg); }
+.wgt-date-ones-mid  { grid-column: 3; grid-row: 1; z-index: 2; transform: rotate(2deg) translate(1px, 1px); }
+.wgt-date-ones-base { grid-column: 3; grid-row: 1; z-index: 1; transform: rotate(-1deg) translate(-1px, 2px); }
+
+/* Bottom row: weekday + weather */
+.wgt-bottom-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: -4px;
+  position: relative;
+  height: 44px;
+}
+
+/* Weekday: 3 cols x 3 rows, cell 191x74, scaled to 76x29 */
+.wgt-weekday {
+  background-image: url('../img/weather/weekday_sprites.png');
+  background-repeat: no-repeat;
+  background-size: 228px 88px;
+  width: 76px;
+  height: 29px;
+  transform: rotate(-4deg);
+}
+
+/* Weather card: single 100x99 image scaled to 44x43 */
+.wgt-weather-card {
+  background-image: url('../img/weather/weather-card-sprite.png');
+  background-size: 44px 43px;
+  background-repeat: no-repeat;
+  width: 44px;
+  height: 43px;
+  position: absolute;
+  right: 0;
+  top: -6px;
+}
+
+/* Weather icon: 4 cols x 3 rows, cell 75x74, scaled to 38x37 */
+.wgt-weather-sprite {
+  background-image: url('../img/weather/weather_spritesheet4.png');
+  background-repeat: no-repeat;
+  background-size: 152px 112px;
+  width: 38px;
+  height: 37px;
+  position: absolute;
+  right: 3px;
+  top: 0;
+  z-index: 2;
+}
+
+/* Time & temperature text */
+.wgt-info-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 2px;
+  padding-left: 2px;
+}
+
+.wgt-time {
+  font-family: 'EarwigFactory', var(--p5-font);
+  font-size: 1rem;
+  color: #fff;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.7);
+  letter-spacing: 1px;
+}
+
+.wgt-temp {
+  font-family: 'P5Hatty', var(--p5-font);
+  font-size: 0.9rem;
+  color: var(--p5-yellow);
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.7);
+}
+
+/* Widget responsive */
+@media (max-width: 900px) {
+  .p5-weather-widget {
+    top: auto;
+    bottom: 60px;
+    right: 10px;
+    transform: rotate(-6deg) scale(0.85);
+  }
+
+  @keyframes widgetBounceIn {
+    from { transform: rotate(-6deg) scale(0.4) translateY(20px); opacity: 0; }
+    to   { transform: rotate(-6deg) scale(0.85) translateY(0); opacity: 1; }
+  }
+}
+
+@media (max-width: 520px) {
+  .p5-weather-widget {
+    transform: rotate(-5deg) scale(0.7);
+    right: 5px;
+    bottom: 50px;
+  }
+}
+
+/* ── 21. PRINT STYLES ──────────────────────────────────────── */
 @media print {
   .p5-bg-layer,
   .p5-particles,
@@ -1689,6 +1866,7 @@ ul { list-style: none; }
   .p5-transition-overlay,
   .p5-intro,
   .sound-toggle,
+  .p5-weather-widget,
   .hero-character { display: none !important; }
 
   body { background: #fff; color: #000; }
