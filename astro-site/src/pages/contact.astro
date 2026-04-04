@@ -1,0 +1,74 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Contact — Send a Calling Card" page="contact">
+  <!-- Page Banner -->
+  <section class="p5-page-banner">
+    <h1 class="p5-banner-title">Calling Card</h1>
+  </section>
+
+  <!-- Phone-Frame Chat Interface -->
+  <section class="p5-contact-section">
+    <div class="p5-phone-frame">
+      <!-- Chat Header -->
+      <div class="p5-chat-header">
+        <div class="p5-chat-avatar" aria-hidden="true">P</div>
+        <div class="p5-chat-header-info">
+          <span class="p5-chat-name">Phantom Dev</span>
+          <span class="p5-chat-status">Online</span>
+        </div>
+      </div>
+
+      <!-- Chat Messages -->
+      <div class="p5-chat-messages">
+        <div class="p5-chat-bubble p5-chat-received">
+          <p>Hey there! Welcome to the Phantom Thieves hideout.</p>
+        </div>
+        <div class="p5-chat-bubble p5-chat-received">
+          <p>Got something on your mind? Send me a calling card below.</p>
+        </div>
+      </div>
+
+      <!-- Contact Form (styled as chat input) -->
+      <form class="p5-chat-form" action="#" method="post">
+        <div class="p5-chat-input-group">
+          <label for="contact-name" class="p5-chat-label">Name</label>
+          <input
+            type="text"
+            id="contact-name"
+            name="name"
+            class="p5-chat-input"
+            placeholder="Your codename..."
+            required
+            autocomplete="name"
+          />
+        </div>
+        <div class="p5-chat-input-group">
+          <label for="contact-email" class="p5-chat-label">Email</label>
+          <input
+            type="email"
+            id="contact-email"
+            name="email"
+            class="p5-chat-input"
+            placeholder="phantom@example.com"
+            required
+            autocomplete="email"
+          />
+        </div>
+        <div class="p5-chat-input-group">
+          <label for="contact-message" class="p5-chat-label">Message</label>
+          <textarea
+            id="contact-message"
+            name="message"
+            class="p5-chat-input p5-chat-textarea"
+            placeholder="Write your calling card..."
+            rows="4"
+            required
+          ></textarea>
+        </div>
+        <button type="submit" class="p5-chat-send-btn">Send Calling Card</button>
+      </form>
+    </div>
+  </section>
+</Layout>

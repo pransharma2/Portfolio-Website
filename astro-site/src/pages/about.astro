@@ -1,0 +1,105 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ArcanaCards from '../components/ArcanaCards';
+
+const stats = [
+  { label: 'Knowledge', detail: 'Data Science', stars: 4, icon: '/img/fixed_traits_from_user/knowledge.png' },
+  { label: 'Proficiency', detail: 'Python', stars: 5, icon: '/img/fixed_traits_from_user/Proficiency.png' },
+  { label: 'Charm', detail: 'Power BI', stars: 4, icon: '/img/fixed_traits_from_user/charm.png' },
+  { label: 'Guts', detail: 'ETL Pipelines', stars: 4, icon: '/img/fixed_traits_from_user/Guts.png' },
+  { label: 'Kindness', detail: 'Dashboards', stars: 3, icon: '/img/fixed_traits_from_user/Kindness.png' },
+];
+
+const skills = [
+  {
+    title: 'Data Science',
+    description: 'Exploratory analysis, machine learning models, and statistical inference to uncover hidden patterns in data.',
+  },
+  {
+    title: 'Python Development',
+    description: 'Building robust scripts, APIs, and automation tools with clean, maintainable Python code.',
+  },
+  {
+    title: 'Visualization',
+    description: 'Crafting interactive dashboards and compelling data stories with Power BI, Tableau, and custom visuals.',
+  },
+];
+---
+
+<Layout title="About — Confidant Profile" page="about">
+  <!-- Confidants video placeholder — will be added later -->
+
+  <!-- Page Banner -->
+  <section class="p5-page-banner">
+    <h1 class="p5-banner-title">Confidant Profile</h1>
+  </section>
+
+  <!-- Profile Section -->
+  <section class="p5-profile-section">
+    <div class="p5-profile-card">
+      <div class="p5-profile-portrait">
+        <img
+          src="/img/1_P1ZpJoADmVLHN2vjq0cmqw_1762760206212.jpg"
+          alt="Prantap portrait photo"
+          loading="lazy"
+          class="p5-portrait-img"
+        />
+        <span class="p5-star-rank-badge" aria-label="Star rank">&#9733;</span>
+      </div>
+      <div class="p5-profile-bio">
+        <p>
+          Data scientist and developer who turns raw data into actionable insights.
+          Skilled in Python, Power BI, and building end-to-end data pipelines.
+          Always looking for new shadows to defeat in the Metaverse of analytics.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Stats Section -->
+  <section class="p5-social-stats">
+    <h2 class="p5-section-heading">Social Stats</h2>
+    <div class="p5-stats-grid">
+      {stats.map((stat) => (
+        <div class="p5-stat-bar">
+          <img
+            src={stat.icon}
+            alt={`${stat.label} icon`}
+            loading="lazy"
+            class="p5-stat-icon"
+          />
+          <div class="p5-stat-info">
+            <span class="p5-stat-label">{stat.label}</span>
+            <span class="p5-stat-detail">{stat.detail}</span>
+          </div>
+          <div class="p5-stat-stars" aria-label={`${stat.stars} out of 5`}>
+            {Array.from({ length: 5 }).map((_, i) => (
+              <span class:list={['p5-star', { filled: i < stat.stars }]}>&#9733;</span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Divider -->
+  <hr class="p5-divider" />
+
+  <!-- Skill Cards -->
+  <section class="p5-skills-section">
+    <h2 class="p5-section-heading">Skills</h2>
+    <div class="p5-skills-grid">
+      {skills.map((skill) => (
+        <div class="p5-skill-card">
+          <h3 class="p5-skill-title">{skill.title}</h3>
+          <p class="p5-skill-description">{skill.description}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Arcana Cards -->
+  <section class="p5-arcana-section">
+    <ArcanaCards client:visible />
+  </section>
+</Layout>

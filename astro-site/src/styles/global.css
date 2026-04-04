@@ -1,0 +1,1462 @@
+@import url('https://fonts.googleapis.com/css2?family=Arsenal:ital,wght@0,400;0,700;1,400;1,700&family=Bebas+Neue&family=Fjalla+One&display=swap');
+
+/* ============================================================
+   PERSONA 5 PORTFOLIO - GLOBAL STYLES
+   Astro + React + Motion Migration
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. FONTS
+   ------------------------------------------------------------ */
+
+@font-face {
+  font-family: 'P5Hatty';
+  src: url('/fonts/p5hatty.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ------------------------------------------------------------
+   2. CSS CUSTOM PROPERTIES
+   ------------------------------------------------------------ */
+
+:root {
+  /* P5 Color Palette */
+  --p5-red: #ff0000;
+  --p5-dark-red: #cc0000;
+  --p5-crimson: #d41428;
+  --p5-black: #0d0d0d;
+  --p5-white: #ffffff;
+  --p5-yellow: #ffd700;
+
+  /* Font Stacks */
+  --p5-font: 'Fjalla One', 'Bebas Neue', 'Arsenal', Impact, sans-serif;
+  --p5-font-body: 'Arsenal', sans-serif;
+
+  /* Spacing */
+  --nav-height: 70px;
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-med: 0.4s ease;
+  --transition-slow: 0.8s ease;
+}
+
+/* ------------------------------------------------------------
+   3. RESET
+   ------------------------------------------------------------ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img,
+video {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* ------------------------------------------------------------
+   4. SMOOTH SCROLL & REDUCED MOTION
+   ------------------------------------------------------------ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ------------------------------------------------------------
+   5. SELECTION & SCROLLBAR
+   ------------------------------------------------------------ */
+
+::selection {
+  background: var(--p5-red);
+  color: var(--p5-white);
+}
+
+::-moz-selection {
+  background: var(--p5-red);
+  color: var(--p5-white);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--p5-black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--p5-red);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--p5-dark-red);
+}
+
+/* Firefox scrollbar */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--p5-red) var(--p5-black);
+}
+
+/* ------------------------------------------------------------
+   6. BASE BODY STYLES
+   ------------------------------------------------------------ */
+
+body {
+  font-family: var(--p5-font-body);
+  background-color: var(--p5-black);
+  color: var(--p5-white);
+  overflow-x: hidden;
+  line-height: 1.6;
+  min-height: 100vh;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   7. ANIMATED BACKGROUND PATTERNS
+   Each page gets a unique pattern via body class.
+   Only the active page pattern is visible (opacity: 1).
+   ============================================================ */
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  z-index: -3;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--transition-slow);
+}
+
+/* --- Home: Scrolling Diamond Checkerboard --- */
+body.page-home::before {
+  opacity: 1;
+  background-color: var(--p5-dark-red);
+  background-image:
+    linear-gradient(45deg, var(--p5-black) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--p5-black) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--p5-black) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--p5-black) 75%);
+  background-size: 60px 60px;
+  background-position:
+    0 0,
+    0 30px,
+    30px -30px,
+    -30px 0;
+  animation: bg-diamonds 12s linear infinite;
+}
+
+@keyframes bg-diamonds {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-60px, -60px);
+  }
+}
+
+/* --- About: Moving Diagonal Stripes --- */
+body.page-about::before {
+  opacity: 1;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--p5-black) 0px,
+    var(--p5-black) 10px,
+    var(--p5-dark-red) 10px,
+    var(--p5-dark-red) 20px
+  );
+  animation: bg-stripes 8s linear infinite;
+}
+
+@keyframes bg-stripes {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(28px, -28px);
+  }
+}
+
+/* --- Projects: Pulsing Halftone Grid --- */
+body.page-projects::before {
+  opacity: 1;
+  background-color: var(--p5-black);
+  background-image: radial-gradient(var(--p5-red) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  animation: bg-halftone 4s ease-in-out infinite alternate;
+}
+
+@keyframes bg-halftone {
+  0% {
+    background-size: 24px 24px;
+    opacity: 1;
+  }
+  100% {
+    background-size: 30px 30px;
+    opacity: 0.7;
+  }
+}
+
+/* --- Contact: Crosshatch Pattern --- */
+body.page-contact::before {
+  opacity: 1;
+  background-color: var(--p5-black);
+  background-image:
+    linear-gradient(0deg, transparent 48%, var(--p5-red) 48%, var(--p5-red) 52%, transparent 52%),
+    linear-gradient(90deg, transparent 48%, var(--p5-red) 48%, var(--p5-red) 52%, transparent 52%);
+  background-size: 40px 40px;
+  animation: bg-crosshatch 10s linear infinite;
+}
+
+@keyframes bg-crosshatch {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate(-40px, -40px) rotate(0deg);
+  }
+}
+
+/* ============================================================
+   8. FLOATING PARTICLES
+   8 small red dots floating around the viewport.
+   ============================================================ */
+
+.particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--p5-red);
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: particle-float 20s infinite ease-in-out;
+}
+
+.particle:nth-child(1) { top: 10%; left: 15%; animation-delay: 0s;   animation-duration: 18s; }
+.particle:nth-child(2) { top: 25%; left: 75%; animation-delay: -3s;  animation-duration: 22s; }
+.particle:nth-child(3) { top: 50%; left: 40%; animation-delay: -6s;  animation-duration: 16s; }
+.particle:nth-child(4) { top: 70%; left: 85%; animation-delay: -9s;  animation-duration: 24s; }
+.particle:nth-child(5) { top: 85%; left: 25%; animation-delay: -2s;  animation-duration: 20s; }
+.particle:nth-child(6) { top: 35%; left: 55%; animation-delay: -5s;  animation-duration: 19s; }
+.particle:nth-child(7) { top: 60%; left: 10%; animation-delay: -8s;  animation-duration: 21s; }
+.particle:nth-child(8) { top: 15%; left: 90%; animation-delay: -11s; animation-duration: 17s; }
+
+@keyframes particle-float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.6;
+  }
+  25% {
+    transform: translate(80px, -60px) scale(1.2);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(-40px, 100px) scale(0.8);
+    opacity: 0.4;
+  }
+  75% {
+    transform: translate(60px, 40px) scale(1.1);
+    opacity: 0.7;
+  }
+}
+
+/* ============================================================
+   9. CORNER DECORATIONS
+   Small geometric shapes in top-left and bottom-right.
+   ============================================================ */
+
+.corner-decor {
+  position: fixed;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.corner-decor--top-left {
+  top: 20px;
+  left: 20px;
+  width: 40px;
+  height: 40px;
+  border-top: 3px solid var(--p5-red);
+  border-left: 3px solid var(--p5-red);
+}
+
+.corner-decor--top-left::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 10px;
+  height: 10px;
+  background: var(--p5-red);
+  transform: rotate(45deg);
+}
+
+.corner-decor--bottom-right {
+  bottom: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-bottom: 3px solid var(--p5-red);
+  border-right: 3px solid var(--p5-red);
+}
+
+.corner-decor--bottom-right::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 10px;
+  height: 10px;
+  background: var(--p5-red);
+  transform: rotate(45deg);
+}
+
+/* ============================================================
+   10. STAGE VIGNETTE OVERLAY
+   Radial gradient from transparent center to dark edges.
+   ============================================================ */
+
+.vignette {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 40%,
+    rgba(0, 0, 0, 0.3) 70%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+}
+
+/* ============================================================
+   11. NAVIGATION
+   Fixed header, P5 styled nav links, mobile hamburger.
+   ============================================================ */
+
+.nav-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--nav-height);
+  z-index: 100;
+  background: rgba(13, 13, 13, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  border-bottom: 2px solid var(--p5-red);
+}
+
+/* Logo */
+.nav-logo {
+  font-family: var(--p5-font);
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.nav-logo .logo-phantom {
+  color: var(--p5-white);
+}
+
+.nav-logo .logo-dev {
+  color: var(--p5-yellow);
+}
+
+/* Nav Links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-link {
+  font-family: var(--p5-font);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--p5-white);
+  padding: 0.5rem 1.2rem;
+  position: relative;
+  transition: color var(--transition-fast), background var(--transition-fast);
+  clip-path: polygon(8% 0%, 100% 0%, 92% 100%, 0% 100%);
+}
+
+.nav-link:hover {
+  color: var(--p5-white);
+  background: var(--p5-red);
+  transform: skewX(-3deg);
+}
+
+.nav-link.active {
+  background: var(--p5-red);
+  color: var(--p5-white);
+}
+
+/* Hamburger Menu */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  z-index: 110;
+}
+
+.nav-hamburger span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background: var(--p5-white);
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+  transform-origin: center;
+}
+
+.nav-hamburger.open span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 6px);
+}
+
+.nav-hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-hamburger.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -6px);
+}
+
+/* Mobile Nav Overlay */
+.nav-mobile-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(13, 13, 13, 0.97);
+  z-index: 99;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.nav-mobile-overlay.open {
+  display: flex;
+}
+
+.nav-mobile-overlay .nav-link {
+  font-size: 1.5rem;
+  padding: 0.8rem 2rem;
+}
+
+/* ============================================================
+   12. MAIN CONTENT WRAPPER
+   ============================================================ */
+
+main {
+  padding-top: var(--nav-height);
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   13. FOOTER
+   ============================================================ */
+
+.site-footer {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  background: rgba(0, 0, 0, 0.6);
+  border-top: 1px solid rgba(255, 0, 0, 0.3);
+  font-family: var(--p5-font-body);
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+  position: relative;
+  z-index: 1;
+}
+
+.site-footer a {
+  color: var(--p5-red);
+  transition: color var(--transition-fast);
+}
+
+.site-footer a:hover {
+  color: var(--p5-yellow);
+}
+
+/* ============================================================
+   14. UTILITY: P5 DIVIDER
+   Horizontal red gradient line with diamond shape in center.
+   ============================================================ */
+
+.p5-divider {
+  width: 100%;
+  max-width: 600px;
+  height: 2px;
+  margin: 2rem auto;
+  position: relative;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--p5-red) 20%,
+    var(--p5-red) 80%,
+    transparent 100%
+  );
+}
+
+.p5-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background: var(--p5-red);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+/* ============================================================
+   15. UTILITY: PAGE BANNER
+   Section title with P5 styling - skewed, bold, uppercase.
+   ============================================================ */
+
+.page-banner {
+  display: inline-block;
+  font-family: var(--p5-font);
+  font-size: 3rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--p5-white);
+  background: var(--p5-red);
+  padding: 0.6rem 2.5rem;
+  transform: skewX(-5deg);
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.page-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -8px;
+  width: 8px;
+  height: 100%;
+  background: var(--p5-dark-red);
+  transform: skewY(-10deg);
+  transform-origin: top right;
+}
+
+.page-banner::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background: var(--p5-dark-red);
+  transform: skewX(-10deg);
+  transform-origin: top left;
+}
+
+/* ============================================================
+   16. GENERAL HEADING STYLES
+   ============================================================ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--p5-font);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1.2;
+}
+
+h1 { font-size: 3rem; }
+h2 { font-size: 2.2rem; }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.3rem; }
+
+/* ============================================================
+   17. LINK & BUTTON BASE STYLES
+   ============================================================ */
+
+.p5-btn {
+  display: inline-block;
+  font-family: var(--p5-font);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 0.75rem 2rem;
+  background: var(--p5-red);
+  color: var(--p5-white);
+  border: none;
+  clip-path: polygon(6% 0%, 100% 0%, 94% 100%, 0% 100%);
+  transition: background var(--transition-fast), transform var(--transition-fast);
+  cursor: pointer;
+}
+
+.p5-btn:hover {
+  background: var(--p5-dark-red);
+  transform: scale(1.03);
+}
+
+.p5-btn--outline {
+  background: transparent;
+  border: 2px solid var(--p5-red);
+  color: var(--p5-red);
+}
+
+.p5-btn--outline:hover {
+  background: var(--p5-red);
+  color: var(--p5-white);
+}
+
+/* ============================================================
+   18. SECTION WRAPPER
+   ============================================================ */
+
+.section {
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-family: var(--p5-font);
+  font-size: 2.4rem;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  position: relative;
+  display: inline-block;
+}
+
+.section-title::after {
+  content: '';
+  display: block;
+  width: 60%;
+  height: 3px;
+  background: var(--p5-red);
+  margin-top: 0.5rem;
+}
+
+/* ============================================================
+   19. RESPONSIVE BREAKPOINTS
+   ============================================================ */
+
+/* --- Tablet / Small Desktop (960px) --- */
+@media (max-width: 960px) {
+  :root {
+    --nav-height: 60px;
+  }
+
+  .page-banner {
+    font-size: 2.2rem;
+    padding: 0.5rem 1.8rem;
+  }
+
+  h1 { font-size: 2.4rem; }
+  h2 { font-size: 1.8rem; }
+  h3 { font-size: 1.4rem; }
+
+  .section {
+    padding: 3rem 1.5rem;
+  }
+
+  .nav-link {
+    font-size: 0.9rem;
+    padding: 0.4rem 1rem;
+  }
+}
+
+/* --- Mobile (768px) --- */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .nav-hamburger {
+    display: flex;
+  }
+
+  .corner-decor {
+    display: none;
+  }
+}
+
+/* --- Small Mobile (640px) --- */
+@media (max-width: 640px) {
+  :root {
+    --nav-height: 55px;
+  }
+
+  .page-banner {
+    font-size: 1.6rem;
+    padding: 0.4rem 1.2rem;
+    letter-spacing: 1.5px;
+  }
+
+  h1 { font-size: 1.8rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.2rem; }
+
+  .section {
+    padding: 2rem 1rem;
+  }
+
+  .nav-logo {
+    font-size: 1.4rem;
+  }
+
+  .p5-divider {
+    max-width: 300px;
+  }
+
+  .p5-btn {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.5rem;
+  }
+}
+
+/* ============================================================
+   20. HOME / HERO
+   ============================================================ */
+.hero {
+  position: relative;
+  min-height: calc(100dvh - var(--nav-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  overflow: hidden;
+}
+
+.hero-video-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.hero-video-bg video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-video-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(130deg, rgba(0,0,0,0.6) 20%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0.7) 100%);
+}
+
+.hero-inner {
+  position: relative;
+  display: grid;
+  gap: 1.5rem;
+  max-width: 44rem;
+  width: 100%;
+}
+
+.hero-title-card {
+  background: rgba(0,0,0,0.82);
+  padding: 1.5rem 2rem;
+  border: 2px solid rgba(255,255,255,0.15);
+  clip-path: polygon(0 0, calc(100% - 2rem) 0, 100% 1.8rem, 100% 100%, 1.8rem 100%, 0 calc(100% - 1.8rem));
+}
+
+.hero-title-card h1 {
+  font-family: var(--p5-font);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.hero-sub {
+  margin-top: 0.5rem;
+  font-family: var(--p5-font-body);
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.75);
+}
+
+.p5-menu {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.p5-menu-item {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  max-width: 28rem;
+  overflow: hidden;
+  border: 2px solid rgba(255,255,255,0.15);
+  background: rgba(0,0,0,0.82);
+  clip-path: polygon(0 0, calc(100% - 1.2rem) 0, 100% 1rem, 100% 100%, 1rem 100%, 0 calc(100% - 1rem));
+  transition: transform 140ms ease, border-color 140ms linear, background-color 140ms linear;
+  text-decoration: none;
+  color: inherit;
+}
+
+.p5-menu-item:hover {
+  transform: translate(0.5rem, -0.25rem);
+  border-color: var(--p5-red);
+  background: rgba(255,0,0,0.12);
+}
+
+.menu-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  object-fit: contain;
+}
+
+.menu-label {
+  font-family: var(--p5-font);
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.hero-character {
+  position: absolute;
+  right: -2rem;
+  bottom: -2rem;
+  width: min(22rem, 35vw);
+  opacity: 0.12;
+  filter: contrast(1.2) brightness(0.8);
+  pointer-events: none;
+}
+
+/* ============================================================
+   21. ABOUT / CONFIDANT PROFILE
+   ============================================================ */
+.confidant-page {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.confidant-profile {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.5rem;
+  background: rgba(0,0,0,0.7);
+  padding: 1.5rem;
+  border: 2px solid rgba(255,255,255,0.12);
+  clip-path: polygon(0 0, calc(100% - 2rem) 0, 100% 1.8rem, 100% 100%, 1.8rem 100%, 0 calc(100% - 1.8rem));
+}
+
+.confidant-portrait {
+  position: relative;
+  width: 10rem;
+}
+
+.confidant-portrait img {
+  width: 100%;
+  height: auto;
+  border: 2px solid rgba(255,255,255,0.2);
+  clip-path: polygon(0 0, calc(100% - 1rem) 0, 100% 1rem, 100% 100%, 1rem 100%, 0 calc(100% - 1rem));
+}
+
+.rank-badge {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--p5-red);
+  color: var(--p5-yellow);
+  font-size: 1.2rem;
+  clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+}
+
+.confidant-bio {
+  background: rgba(0,0,0,0.5);
+  padding: 1rem;
+  border-left: 3px solid var(--p5-red);
+  font-family: var(--p5-font-body);
+  line-height: 1.6;
+}
+
+.social-stats {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.stat-bar {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.stat-icon {
+  width: 2rem;
+  height: auto;
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.stat-name {
+  font-family: var(--p5-font);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.5);
+}
+
+.stat-value {
+  font-family: var(--p5-font);
+  font-size: 0.95rem;
+  text-transform: uppercase;
+}
+
+.stat-stars {
+  display: flex;
+  gap: 0.15rem;
+}
+
+.star {
+  width: 1rem;
+  height: 1rem;
+  background: var(--p5-yellow);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+.star.empty {
+  background: rgba(255,255,255,0.15);
+}
+
+.skill-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.skill-card {
+  padding: 1.2rem;
+  background: rgba(0,0,0,0.7);
+  border: 2px solid rgba(255,255,255,0.12);
+  clip-path: polygon(0 0, calc(100% - 1rem) 0, 100% 1rem, 100% 100%, 1rem 100%, 0 calc(100% - 1rem));
+}
+
+.skill-card h3 {
+  font-family: var(--p5-font);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  color: var(--p5-red);
+}
+
+.skill-card p {
+  font-family: var(--p5-font-body);
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.5;
+}
+
+/* ============================================================
+   22. ARCANA CARDS
+   ============================================================ */
+.arcana-section {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.arcana-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
+
+.arcana-card {
+  perspective: 1200px;
+  cursor: pointer;
+  min-height: 12rem;
+}
+
+.arcana-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 12rem;
+}
+
+.arcana-card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border: 2px solid rgba(255,255,255,0.15);
+  clip-path: polygon(0 0, calc(100% - 0.8rem) 0, 100% 0.8rem, 100% 100%, 0.8rem 100%, 0 calc(100% - 0.8rem));
+}
+
+.arcana-card-front {
+  background: linear-gradient(145deg, rgba(13,13,13,0.95), rgba(30,0,0,0.95));
+}
+
+.arcana-card-front img {
+  width: 4rem;
+  height: auto;
+  filter: drop-shadow(0 0 8px rgba(255,215,0,0.3));
+}
+
+.arcana-flip-hint {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  font-family: var(--p5-font);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.4);
+  background: rgba(0,0,0,0.6);
+  padding: 0.1rem 0.4rem;
+}
+
+.arcana-card-back {
+  background: linear-gradient(145deg, rgba(204,0,0,0.9), rgba(0,0,0,0.95));
+  transform: rotateY(180deg);
+  gap: 0.5rem;
+  text-align: center;
+}
+
+.arcana-rank {
+  font-family: var(--p5-font);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  background: rgba(255,255,255,0.9);
+  color: #0d0d0d;
+  padding: 0.1rem 0.5rem;
+}
+
+.arcana-card-back h3 {
+  font-family: var(--p5-font);
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+
+.arcana-card-back p {
+  font-family: var(--p5-font-body);
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.8);
+}
+
+/* ============================================================
+   23. PROJECTS / COMPENDIUM
+   ============================================================ */
+.compendium-page {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.compendium-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.persona-card {
+  position: relative;
+  display: grid;
+  gap: 0.75rem;
+  min-height: 14rem;
+  padding: 1.2rem;
+  overflow: hidden;
+  background: rgba(0,0,0,0.85);
+  border: 2px solid rgba(255,255,255,0.15);
+  clip-path: polygon(0 0, calc(100% - 2rem) 0, 100% 1.8rem, 100% 100%, 1.8rem 100%, 0 calc(100% - 1.8rem));
+  transition: transform 170ms ease, border-color 170ms linear;
+}
+
+.persona-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--p5-red), var(--p5-dark-red));
+}
+
+.persona-card:hover {
+  transform: translate(0.5rem, -0.35rem);
+  border-color: rgba(255,255,255,0.3);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.card-header h3 {
+  font-family: var(--p5-font);
+  text-transform: uppercase;
+}
+
+.card-number {
+  font-family: var(--p5-font);
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+}
+
+.card-body p {
+  font-family: var(--p5-font-body);
+  color: rgba(255,255,255,0.7);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.p5-tag {
+  font-family: var(--p5-font);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.5rem;
+  background: rgba(255,0,0,0.15);
+  border: 1px solid rgba(255,0,0,0.3);
+  color: var(--p5-red);
+}
+
+/* ============================================================
+   24. CONTACT / CHAT
+   ============================================================ */
+.chat-page {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.phone-frame {
+  max-width: 36rem;
+  margin: 0 auto;
+  width: 100%;
+  background: rgba(0,0,0,0.75);
+  border: 2px solid rgba(255,255,255,0.12);
+  clip-path: polygon(0 0, calc(100% - 1.5rem) 0, 100% 1.5rem, 100% 100%, 1.5rem 100%, 0 calc(100% - 1.5rem));
+  overflow: hidden;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: rgba(255,0,0,0.1);
+  border-bottom: 2px solid rgba(255,0,0,0.2);
+}
+
+.chat-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--p5-red);
+  color: white;
+  font-family: var(--p5-font);
+  font-size: 1.2rem;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.chat-name {
+  font-family: var(--p5-font);
+  font-size: 1rem;
+}
+
+.chat-status {
+  font-family: var(--p5-font-body);
+  font-size: 0.75rem;
+  color: #00e676;
+}
+
+.chat-messages {
+  padding: 1rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.chat-bubble {
+  max-width: 80%;
+  padding: 0.75rem 1rem;
+  font-family: var(--p5-font-body);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  animation: bubbleIn 0.3s ease-out both;
+}
+
+.chat-bubble.received {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 0 12px 12px 12px;
+  justify-self: start;
+}
+
+.chat-bubble.sent {
+  background: rgba(255,0,0,0.2);
+  border: 1px solid rgba(255,0,0,0.3);
+  border-radius: 12px 0 12px 12px;
+  justify-self: end;
+}
+
+@keyframes bubbleIn {
+  from { opacity: 0; transform: translateY(0.5rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.chat-form {
+  padding: 1rem;
+  display: grid;
+  gap: 0.75rem;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.form-row {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.form-row label {
+  font-family: var(--p5-font);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.5);
+}
+
+.form-row input,
+.form-row textarea {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: white;
+  padding: 0.6rem 0.8rem;
+  font-family: var(--p5-font-body);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 150ms;
+}
+
+.form-row input:focus,
+.form-row textarea:focus {
+  border-color: var(--p5-red);
+}
+
+.p5-send-btn {
+  font-family: var(--p5-font);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background: var(--p5-red);
+  color: white;
+  cursor: pointer;
+  clip-path: polygon(0 0, calc(100% - 1rem) 0, 100% 100%, 0 100%);
+  transition: background 150ms;
+}
+
+.p5-send-btn:hover {
+  background: #ff3333;
+}
+
+/* ============================================================
+   25. SOUND TOGGLE
+   ============================================================ */
+.p5-sound-toggle-wrapper {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 50;
+}
+
+.p5-sound-toggle {
+  width: 2.8rem;
+  height: 2.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.85);
+  border: 2px solid rgba(255,255,255,0.15);
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  clip-path: polygon(0 0, calc(100% - 0.5rem) 0, 100% 0.5rem, 100% 100%, 0.5rem 100%, 0 calc(100% - 0.5rem));
+  transition: border-color 150ms;
+}
+
+.p5-sound-toggle:hover {
+  border-color: var(--p5-red);
+}
+
+.p5-sound-toggle.muted {
+  opacity: 0.5;
+}
+
+/* ============================================================
+   26. CONFIDANTS VIDEO SECTION
+   ============================================================ */
+.confidants-video-section {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border: 2px solid rgba(255,255,255,0.1);
+  clip-path: polygon(0 0, calc(100% - 2rem) 0, 100% 1.8rem, 100% 100%, 1.8rem 100%, 0 calc(100% - 1.8rem));
+}
+
+.confidants-video-section video {
+  width: 100%;
+  display: block;
+}
+
+.confidants-video-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.5) 100%);
+  pointer-events: none;
+}
+
+/* ============================================================
+   27. RESPONSIVE ADDITIONS
+   ============================================================ */
+@media (max-width: 960px) {
+  .confidant-profile {
+    grid-template-columns: 1fr;
+  }
+
+  .confidant-portrait {
+    width: 8rem;
+    margin: 0 auto;
+  }
+
+  .skill-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .compendium-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .arcana-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-inner {
+    padding: 0 0.5rem;
+  }
+
+  .hero-character {
+    display: none;
+  }
+
+  .p5-menu-item {
+    grid-template-columns: 2.5rem 1fr;
+    padding: 0.85rem 1rem;
+  }
+
+  .arcana-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .arcana-card {
+    min-height: 10rem;
+  }
+
+  .arcana-card-inner {
+    min-height: 10rem;
+  }
+}

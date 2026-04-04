@@ -1,0 +1,53 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const projects = [
+  {
+    number: '001',
+    title: 'Data Pipeline Monitor',
+    description: 'Power BI + ADF monitoring app.',
+    tags: ['Power BI', 'ADF', 'Snowflake'],
+  },
+  {
+    number: '002',
+    title: 'City of Ember Lesson Pack',
+    description: 'ELA + Social Studies activities.',
+    tags: ['Teaching', 'Curriculum'],
+  },
+  {
+    number: '003',
+    title: 'Tableau Energy Viz',
+    description: 'OPMA 421 dashboard.',
+    tags: ['Tableau', 'Viz'],
+  },
+];
+---
+
+<Layout title="Projects — Persona Compendium" page="projects">
+  <!-- Page Banner -->
+  <section class="p5-page-banner">
+    <h1 class="p5-banner-title">Persona Compendium</h1>
+  </section>
+
+  <!-- Project Grid -->
+  <section class="p5-projects-section">
+    <div class="p5-project-grid">
+      {projects.map((project) => (
+        <article class="p5-project-card">
+          <div class="p5-project-header">
+            <h2 class="p5-project-title">{project.title}</h2>
+            <span class="p5-project-number">No. {project.number}</span>
+          </div>
+          <div class="p5-project-body">
+            <p class="p5-project-description">{project.description}</p>
+          </div>
+          <div class="p5-project-tags">
+            {project.tags.map((tag) => (
+              <span class="p5-project-tag">{tag}</span>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+</Layout>
