@@ -5,49 +5,64 @@ const projects = [
   {
     number: '001',
     title: 'Data Pipeline Monitor',
-    description: 'Power BI + ADF monitoring app.',
-    tags: ['Power BI', 'ADF', 'Snowflake'],
+    description: 'Power BI app monitoring Suncor\'s orchestration tools — pipeline statuses, Iceberg table refreshes, triggers, Snowflake query history — pulling from Log Analytics Workspaces across source-to-bronze, bronze-to-silver, and silver-to-gold layers.',
+    tags: ['Power BI', 'Azure', 'Snowflake', 'Log Analytics'],
   },
   {
     number: '002',
-    title: 'City of Ember Lesson Pack',
-    description: 'ELA + Social Studies activities.',
-    tags: ['Teaching', 'Curriculum'],
+    title: 'Dim/Fact Automation',
+    description: 'Reusable automation scripts (Python to Streamlit app) enabling any project team to accelerate Snowflake migration. Saves $550 per object and ~3 hours per build.',
+    tags: ['Python', 'Streamlit', 'Snowflake', 'Automation'],
   },
   {
     number: '003',
-    title: 'Tableau Energy Viz',
-    description: 'OPMA 421 dashboard.',
-    tags: ['Tableau', 'Viz'],
+    title: 'SAP Migration Pipeline',
+    description: 'Shifted ingestion of 400 SAP tables from SLT to Datasphere by upgrading orchestration tooling, driving 300K+ in annual savings.',
+    tags: ['SAP', 'Azure Data Factory', 'ETL'],
+  },
+  {
+    number: '004',
+    title: 'IoT Data Ingestion',
+    description: 'Azure Data Factory pipelines for Otodata and DXFleet source systems (IoT fuel tank & fleet vehicle data) with dynamic pagination and batching logic.',
+    tags: ['ADF', 'IoT', 'REST API', 'Pipelines'],
+  },
+  {
+    number: '005',
+    title: 'Incident Automation',
+    description: 'PBI reports consolidating pipeline failures across data factories using Log Analytics, then automating incident ticket generation in ServiceNow to shift team focus from triaging to troubleshooting.',
+    tags: ['Power BI', 'ServiceNow', 'Automation'],
+  },
+  {
+    number: '006',
+    title: 'DS&ML Club Workshops',
+    description: 'Interactive workshops for 50+ students per session covering neural networks, data engineering, and cloud analytics. 90%+ satisfaction ratings with incentive-based engagement programs.',
+    tags: ['Teaching', 'Data Science', 'Machine Learning'],
   },
 ];
 ---
 
 <Layout title="Projects — Persona Compendium" page="projects">
   <!-- Page Banner -->
-  <section class="p5-page-banner">
-    <h1 class="p5-banner-title">Persona Compendium</h1>
-  </section>
+  <div class="page-banner">Persona Compendium</div>
 
-  <!-- Project Grid -->
-  <section class="p5-projects-section">
-    <div class="p5-project-grid">
+  <div class="compendium-page">
+    <div class="compendium-grid">
       {projects.map((project) => (
-        <article class="p5-project-card">
-          <div class="p5-project-header">
-            <h2 class="p5-project-title">{project.title}</h2>
-            <span class="p5-project-number">No. {project.number}</span>
+        <article class="persona-card">
+          <div class="card-header">
+            <h3>{project.title}</h3>
+            <span class="card-number">No. {project.number}</span>
           </div>
-          <div class="p5-project-body">
-            <p class="p5-project-description">{project.description}</p>
+          <div class="card-body">
+            <p>{project.description}</p>
           </div>
-          <div class="p5-project-tags">
+          <div class="card-tags">
             {project.tags.map((tag) => (
-              <span class="p5-project-tag">{tag}</span>
+              <span class="p5-tag">{tag}</span>
             ))}
           </div>
         </article>
       ))}
     </div>
-  </section>
+  </div>
 </Layout>
