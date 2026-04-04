@@ -3,103 +3,103 @@ import Layout from '../layouts/Layout.astro';
 import ArcanaCards from '../components/ArcanaCards';
 
 const stats = [
-  { label: 'Knowledge', detail: 'Data Science', stars: 4, icon: '/img/fixed_traits_from_user/knowledge.png' },
-  { label: 'Proficiency', detail: 'Python', stars: 5, icon: '/img/fixed_traits_from_user/Proficiency.png' },
-  { label: 'Charm', detail: 'Power BI', stars: 4, icon: '/img/fixed_traits_from_user/charm.png' },
-  { label: 'Guts', detail: 'ETL Pipelines', stars: 4, icon: '/img/fixed_traits_from_user/Guts.png' },
-  { label: 'Kindness', detail: 'Dashboards', stars: 3, icon: '/img/fixed_traits_from_user/Kindness.png' },
+  { label: 'Knowledge', detail: 'Data Science & Analytics', stars: 4, icon: '/img/fixed_traits_from_user/knowledge.png' },
+  { label: 'Proficiency', detail: 'Python / SQL / PySpark', stars: 5, icon: '/img/fixed_traits_from_user/Proficiency.png' },
+  { label: 'Charm', detail: 'Power BI / Tableau', stars: 4, icon: '/img/fixed_traits_from_user/charm.png' },
+  { label: 'Guts', detail: 'ETL & Data Pipelines', stars: 4, icon: '/img/fixed_traits_from_user/Guts.png' },
+  { label: 'Kindness', detail: 'Workshops & Mentoring', stars: 3, icon: '/img/fixed_traits_from_user/Kindness.png' },
 ];
 
 const skills = [
   {
-    title: 'Data Science',
-    description: 'Exploratory analysis, machine learning models, and statistical inference to uncover hidden patterns in data.',
+    title: 'Data Engineering',
+    description: 'Building Azure Data Factory pipelines, Snowflake migrations, and automated ingestion for enterprise data platforms.',
   },
   {
-    title: 'Python Development',
-    description: 'Building robust scripts, APIs, and automation tools with clean, maintainable Python code.',
+    title: 'BI & Visualization',
+    description: 'Power BI apps, Tableau dashboards, and interactive reports that turn raw data into actionable decisions.',
   },
   {
-    title: 'Visualization',
-    description: 'Crafting interactive dashboards and compelling data stories with Power BI, Tableau, and custom visuals.',
+    title: 'Python & Automation',
+    description: 'Streamlit apps, reusable automation scripts, and PySpark workflows that save hundreds of hours.',
   },
 ];
 ---
 
 <Layout title="About — Confidant Profile" page="about">
-  <!-- Confidants video placeholder — will be added later -->
-
   <!-- Page Banner -->
-  <section class="p5-page-banner">
-    <h1 class="p5-banner-title">Confidant Profile</h1>
-  </section>
+  <div class="page-banner">Confidant Profile</div>
 
-  <!-- Profile Section -->
-  <section class="p5-profile-section">
-    <div class="p5-profile-card">
-      <div class="p5-profile-portrait">
+  <div class="confidant-page">
+    <!-- Profile Section -->
+    <div class="confidant-profile">
+      <div class="confidant-portrait">
         <img
           src="/img/1_P1ZpJoADmVLHN2vjq0cmqw_1762760206212.jpg"
           alt="Prantap portrait photo"
           loading="lazy"
-          class="p5-portrait-img"
         />
-        <span class="p5-star-rank-badge" aria-label="Star rank">&#9733;</span>
+        <span class="rank-badge" aria-label="Star rank">&#9733;</span>
       </div>
-      <div class="p5-profile-bio">
+      <div class="confidant-bio">
         <p>
-          Data scientist and developer who turns raw data into actionable insights.
-          Skilled in Python, Power BI, and building end-to-end data pipelines.
+          <strong>Prantap Sharma</strong> — Data Analytics & Engineering specialist based in Calgary, AB.
+          Pursuing a dual BComm in Business Analytics and BSc in Computer Science at the University of Calgary.
+          Experienced in building enterprise data pipelines at Suncor Energy, sustaining data warehouses at SDK Tek Services,
+          and leading workshops for 50+ students as Workshop Director of the DS&ML Club.
           Always looking for new shadows to defeat in the Metaverse of analytics.
         </p>
       </div>
     </div>
-  </section>
 
-  <!-- Social Stats Section -->
-  <section class="p5-social-stats">
-    <h2 class="p5-section-heading">Social Stats</h2>
-    <div class="p5-stats-grid">
+    <!-- Social Stats Section -->
+    <div class="social-stats">
       {stats.map((stat) => (
-        <div class="p5-stat-bar">
+        <div class="stat-bar">
           <img
             src={stat.icon}
             alt={`${stat.label} icon`}
             loading="lazy"
-            class="p5-stat-icon"
+            class="stat-icon"
           />
-          <div class="p5-stat-info">
-            <span class="p5-stat-label">{stat.label}</span>
-            <span class="p5-stat-detail">{stat.detail}</span>
+          <div class="stat-info">
+            <span class="stat-name">{stat.label}</span>
+            <span class="stat-value">{stat.detail}</span>
           </div>
-          <div class="p5-stat-stars" aria-label={`${stat.stars} out of 5`}>
+          <div class="stat-stars" aria-label={`${stat.stars} out of 5`}>
             {Array.from({ length: 5 }).map((_, i) => (
-              <span class:list={['p5-star', { filled: i < stat.stars }]}>&#9733;</span>
+              <span class:list={['star', { empty: i >= stat.stars }]} />
             ))}
           </div>
         </div>
       ))}
     </div>
-  </section>
 
-  <!-- Divider -->
-  <hr class="p5-divider" />
+    <hr class="p5-divider" />
 
-  <!-- Skill Cards -->
-  <section class="p5-skills-section">
-    <h2 class="p5-section-heading">Skills</h2>
-    <div class="p5-skills-grid">
+    <!-- Skill Cards -->
+    <div class="skill-cards">
       {skills.map((skill) => (
-        <div class="p5-skill-card">
-          <h3 class="p5-skill-title">{skill.title}</h3>
-          <p class="p5-skill-description">{skill.description}</p>
+        <div class="skill-card">
+          <h3>{skill.title}</h3>
+          <p>{skill.description}</p>
         </div>
       ))}
     </div>
-  </section>
 
-  <!-- Arcana Cards -->
-  <section class="p5-arcana-section">
+    <hr class="p5-divider" />
+
+    <!-- Confidants Video Showcase -->
+    <div class="confidants-video-section">
+      <video autoplay muted loop playsinline preload="auto">
+        <source src="/img/persona_5_confidants_50mbs.mp4" type="video/mp4" />
+      </video>
+      <div class="confidants-video-overlay"></div>
+    </div>
+
+    <hr class="p5-divider" />
+
+    <!-- Arcana Cards -->
     <ArcanaCards client:visible />
-  </section>
+  </div>
 </Layout>
