@@ -42,64 +42,65 @@ const navLinks = [
     <title>{title}</title>
   </head>
   <body class={`page-${page}`}>
-    <!-- Animated Background Layer -->
-    <div class="p5-bg-layer">
-      <div class="p5-bg-diamonds"></div>
-      <div class="p5-bg-stripes"></div>
-      <div class="p5-bg-halftone"></div>
-      <div class="p5-bg-crosshatch"></div>
-      <div class="p5-bg-vignette"></div>
-    </div>
-
     <!-- Floating Particles -->
-    <div class="p5-particles">
-      <div class="p5-particle"></div>
-      <div class="p5-particle"></div>
-      <div class="p5-particle"></div>
-      <div class="p5-particle"></div>
-      <div class="p5-particle"></div>
-      <div class="p5-particle"></div>
-      <div class="p5-particle"></div>
-      <div class="p5-particle"></div>
+    <div class="particles">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
     </div>
 
     <!-- Corner Decorations -->
-    <div class="p5-corner-decor p5-corner-top-left"></div>
-    <div class="p5-corner-decor p5-corner-bottom-right"></div>
+    <div class="corner-decor corner-decor--top-left"></div>
+    <div class="corner-decor corner-decor--bottom-right"></div>
 
     <!-- Header -->
-    <header class="p5-header">
-      <nav class="p5-nav">
-        <a href="/" class="p5-logo">Phantom Dev</a>
+    <header class="nav-header">
+      <a href="/" class="nav-logo">
+        <span class="logo-phantom">Phantom</span><span class="logo-dev">Dev</span>
+      </a>
 
-        <button class="p5-hamburger" aria-label="Toggle navigation" aria-expanded="false">
-          <span class="p5-hamburger-line"></span>
-          <span class="p5-hamburger-line"></span>
-          <span class="p5-hamburger-line"></span>
-        </button>
+      <button class="nav-hamburger" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
-        <ul class="p5-nav-links">
-          {navLinks.map((link) => (
-            <li>
-              <a
-                href={link.href}
-                class:list={['p5-nav-link', { active: page === link.key }]}
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <div class="nav-links">
+        {navLinks.map((link) => (
+          <a
+            href={link.href}
+            class:list={['nav-link', { active: page === link.key }]}
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
     </header>
 
+    <!-- Mobile Nav Overlay -->
+    <nav class="nav-mobile-overlay" aria-label="Mobile navigation">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class:list={['nav-link', { active: page === link.key }]}
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+
     <!-- Main Content -->
-    <main class="p5-main">
+    <main>
       <slot />
     </main>
 
     <!-- Footer -->
-    <footer class="p5-footer">
+    <footer class="site-footer">
       <p>&copy; 2025 Prantap &bull; Persona 5 Portfolio</p>
     </footer>
 
@@ -113,12 +114,12 @@ const navLinks = [
 
     <script>
       // Hamburger menu toggle
-      const hamburger = document.querySelector('.p5-hamburger');
-      const navLinks = document.querySelector('.p5-nav-links');
+      const hamburger = document.querySelector('.nav-hamburger');
+      const overlay = document.querySelector('.nav-mobile-overlay');
 
-      if (hamburger && navLinks) {
+      if (hamburger && overlay) {
         hamburger.addEventListener('click', () => {
-          const isOpen = navLinks.classList.toggle('open');
+          const isOpen = overlay.classList.toggle('open');
           hamburger.classList.toggle('open');
           hamburger.setAttribute('aria-expanded', String(isOpen));
         });
