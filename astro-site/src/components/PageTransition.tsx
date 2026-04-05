@@ -42,10 +42,11 @@ export default function PageTransition() {
     e.preventDefault();
     setCovering(true);
 
-    // Navigate after the cover animation has fully filled the viewport
+    // Navigate after the cover animation has fully filled the viewport.
+    // 300ms pre-wipe video window + 380ms wipe + 60ms red trail + ~310ms hold = ~1050ms total.
     setTimeout(() => {
       window.location.href = href;
-    }, 750);
+    }, 1050);
   }, []);
 
   useEffect(() => {
@@ -83,11 +84,11 @@ export default function PageTransition() {
             <source src="/img/Take Your TIme.webm0001-0167.mp4" type="video/mp4" />
           </video>
 
-          {/* Black wipe — sweeps in as a diagonal parallelogram on top of video */}
+          {/* Black wipe — 300ms after click so the video plays visibly first */}
           <motion.div
             initial={{ clipPath: 'polygon(0% 0%, 14% 0%, 0% 100%, 0% 100%)' }}
             animate={{ clipPath: 'polygon(0% 0%, 115% 0%, 100% 100%, 0% 100%)' }}
-            transition={{ duration: 0.38, ease: [0.76, 0, 0.24, 1] }}
+            transition={{ duration: 0.38, delay: 0.3, ease: [0.76, 0, 0.24, 1] }}
             style={{ position: 'absolute', inset: 0, background: '#0d0d0d', zIndex: 1 }}
           />
 
@@ -95,15 +96,15 @@ export default function PageTransition() {
           <motion.div
             initial={{ clipPath: 'polygon(0% 0%, 14% 0%, 0% 100%, 0% 100%)' }}
             animate={{ clipPath: 'polygon(0% 0%, 115% 0%, 100% 100%, 0% 100%)' }}
-            transition={{ duration: 0.38, delay: 0.06, ease: [0.76, 0, 0.24, 1] }}
+            transition={{ duration: 0.38, delay: 0.36, ease: [0.76, 0, 0.24, 1] }}
             style={{ position: 'absolute', inset: 0, background: '#cc0000', zIndex: 2 }}
           />
 
-          {/* "Take Your Heart" centred text card */}
+          {/* "Take Your Heart" centred text card — appears mid-wipe for impact */}
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.18, delay: 0.28 }}
+            transition={{ duration: 0.18, delay: 0.54 }}
             style={{
               position: 'absolute',
               inset: 0,

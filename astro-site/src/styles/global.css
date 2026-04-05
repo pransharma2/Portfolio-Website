@@ -210,19 +210,27 @@ body.page-about::before {
   animation: none; /* static — sections provide their own visual depth */
 }
 
-/* --- Projects: Drifting star pattern (red/black, inspired by P5 StarPattern) --- */
+/* --- Projects: Rotating red star-field (faithful StarPattern approximation) ---
+   The BuyMyBeard/StarPattern reference shows a dense field of 5-pointed red
+   stars rotating slowly on black — a hallmark of P5's Velvet Room / menu UI.
+   We approximate it with a geometrically-correct 8-star SVG tile on a 200%×200%
+   pseudo-element that rotates around the viewport centre (transform-origin: 25% 25%).
+   Stars range from large (R=24) to tiny (R=5) at 35–85% opacity for depth.
+   ------------------------------------------------------------------ */
 body.page-projects::before {
   opacity: 1;
   background-color: var(--p5-black);
-  /* Two-size star tile: large star + small corner star for visual rhythm */
-  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'><polygon points='80,30 92,64 128,65 99,86 109,121 80,100 51,121 61,86 32,65 68,64' fill='%23cc0000' opacity='0.22'/><polygon points='140,122 144,134 157,134 147,142 151,155 140,147 129,155 133,142 123,134 136,134' fill='%23cc0000' opacity='0.13'/></svg>");
-  background-size: 160px 160px;
-  animation: bg-stars-drift 28s linear infinite;
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><polygon points='100,76 105.9,91.9 122.8,92.6 109.5,103.1 114.1,119.4 100,110 85.9,119.4 90.5,103.1 77.2,92.6 94.1,91.9' fill='%23cc0000' opacity='0.85'/><polygon points='28,39 30.9,47.9 40.4,48 32.8,53.5 35.6,62.5 28,57 20.4,62.5 23.2,53.5 15.6,48 25.1,47.9' fill='%23cc0000' opacity='0.6'/><polygon points='167,29 169.9,37.9 179.4,38 171.8,43.5 174.6,52.5 167,47 159.4,52.5 162.2,43.5 154.6,38 164.1,37.9' fill='%23cc0000' opacity='0.6'/><polygon points='55,153 57.1,159.2 63.6,159.2 57.3,163.1 60.3,169.3 55,165.5 49.7,169.3 52.7,163.1 46.4,159.2 52.9,159.2' fill='%23cc0000' opacity='0.45'/><polygon points='168,146 170.1,152.2 176.6,152.2 171.3,156.1 173.3,162.3 168,158.5 162.7,162.3 164.7,156.1 159.4,152.2 165.9,152.2' fill='%23cc0000' opacity='0.45'/><polygon points='135,77 136.2,80.4 139.8,80.5 136.9,82.6 137.9,86 135,84 132.1,86 133.1,82.6 130.2,80.5 133.8,80.4' fill='%23cc0000' opacity='0.38'/><polygon points='70,120 71.2,123.4 74.8,123.5 71.9,125.6 72.9,129 70,127 67.1,129 68.1,125.6 65.2,123.5 68.8,123.4' fill='%23cc0000' opacity='0.38'/><polygon points='12,139 14.1,145.2 20.6,145.2 14.3,149.1 17.3,155.3 12,151.5 6.7,155.3 9.7,149.1 3.4,145.2 9.9,145.2' fill='%23cc0000' opacity='0.5'/></svg>");
+  background-size: 200px 200px;
+  /* Rotate around the viewport centre: element is 200%×200% at top:0 left:0,
+     so viewport centre = (50vw, 50vh) = (25%, 25%) of this element's dimensions. */
+  transform-origin: 25% 25%;
+  animation: star-field-rotate 120s linear infinite;
 }
 
-@keyframes bg-stars-drift {
-  0%   { background-position: 0 0; }
-  100% { background-position: 160px 160px; }
+@keyframes star-field-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
 /* --- Contact: Crosshatch Pattern --- */
@@ -1529,19 +1537,23 @@ h4 { font-size: 1.3rem; }
 .p5-intro::before {
   content: '';
   position: absolute;
-  inset: -20%;
-  background-image: repeating-conic-gradient(
-    rgba(0, 0, 0, 0.25) 0deg 45deg,
-    transparent 45deg 90deg
+  inset: 0;
+  /* Diagonal stripes — classic P5 UI texture, slides rather than spins */
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(0, 0, 0, 0.14) 0px,
+    rgba(0, 0, 0, 0.14) 9px,
+    transparent 9px,
+    transparent 32px
   );
-  background-size: 60px 60px;
-  animation: intro-checker 3s linear infinite;
+  animation: intro-stripes 2.4s linear infinite;
   z-index: 0;
 }
 
-@keyframes intro-checker {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+/* Shift by one stripe period along -45° direction for seamless loop */
+@keyframes intro-stripes {
+  from { background-position: 0 0; }
+  to   { background-position: -41px 41px; }
 }
 
 .p5-intro-joker {
@@ -1605,35 +1617,24 @@ h4 { font-size: 1.3rem; }
   gap: 2px;
 }
 
-.wgt-bottom-row {
+/* Mid row: weekday sprite + weather card (flex, baseline-aligned) */
+.wgt-mid-row {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 }
 
-.wgt-weekday {
-  width: 76px;
-  height: 29px;
-  background-image: url('/img/weather/weekday_sprites.png');
-  background-size: 228px 88px;
+/* Weather card: uses weather-card-sprite.png as decorative frame.
+   The weather condition icon (Sprite component) is centered inside it. */
+.wgt-card-wrap {
+  width: 56px;
+  height: 55px;          /* proportional to the 100×99 source sprite */
+  background-image: url('/img/weather/weather-card-sprite.png');
+  background-size: 56px 55px;
   background-repeat: no-repeat;
-  flex-shrink: 0;
-}
-
-.wgt-weather-card {
-  width: 80px;
-  height: 29px;
-  background: rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  flex-shrink: 0;
-}
-
-.wgt-weather-sprite {
-  width: 38px;
-  height: 37px;
-  background-image: url('/img/weather/weather_spritesheet4.png');
-  background-size: 152px 112px;
-  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
 
@@ -1647,7 +1648,7 @@ h4 { font-size: 1.3rem; }
 .wgt-time,
 .wgt-temp {
   font-family: var(--p5-font);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #fff;
   text-shadow: 1px 1px 0 #000, 2px 2px 0 rgba(0, 0, 0, 0.4);
   letter-spacing: 0.05em;
