@@ -201,46 +201,28 @@ body.page-home::before {
   }
 }
 
-/* --- About: Moving Diagonal Stripes --- */
+/* --- About: Subtle static dot grid (replaces harsh stripe) --- */
 body.page-about::before {
-  opacity: 1;
-  background: repeating-linear-gradient(
-    -45deg,
-    var(--p5-black) 0px,
-    var(--p5-black) 10px,
-    var(--p5-dark-red) 10px,
-    var(--p5-dark-red) 20px
-  );
-  animation: bg-stripes 8s linear infinite;
+  opacity: 0.4;
+  background: var(--p5-black);
+  background-image: radial-gradient(rgba(180, 0, 0, 0.45) 1px, transparent 1px);
+  background-size: 24px 24px;
+  animation: none; /* static — sections provide their own visual depth */
 }
 
-@keyframes bg-stripes {
-  0% {
-    transform: translate(0, 0);
-  }
-  100% {
-    transform: translate(28px, -28px);
-  }
-}
-
-/* --- Projects: Pulsing Halftone Grid --- */
+/* --- Projects: Drifting star pattern (red/black, inspired by P5 StarPattern) --- */
 body.page-projects::before {
   opacity: 1;
   background-color: var(--p5-black);
-  background-image: radial-gradient(var(--p5-red) 1.5px, transparent 1.5px);
-  background-size: 24px 24px;
-  animation: bg-halftone 4s ease-in-out infinite alternate;
+  /* Two-size star tile: large star + small corner star for visual rhythm */
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'><polygon points='80,30 92,64 128,65 99,86 109,121 80,100 51,121 61,86 32,65 68,64' fill='%23cc0000' opacity='0.22'/><polygon points='140,122 144,134 157,134 147,142 151,155 140,147 129,155 133,142 123,134 136,134' fill='%23cc0000' opacity='0.13'/></svg>");
+  background-size: 160px 160px;
+  animation: bg-stars-drift 28s linear infinite;
 }
 
-@keyframes bg-halftone {
-  0% {
-    background-size: 24px 24px;
-    opacity: 1;
-  }
-  100% {
-    background-size: 30px 30px;
-    opacity: 0.7;
-  }
+@keyframes bg-stars-drift {
+  0%   { background-position: 0 0; }
+  100% { background-position: 160px 160px; }
 }
 
 /* --- Contact: Crosshatch Pattern --- */
@@ -534,15 +516,40 @@ main {
    ============================================================ */
 
 .site-footer {
-  text-align: center;
-  padding: 1.5rem 1rem;
-  background: rgba(0, 0, 0, 0.6);
-  border-top: 1px solid rgba(255, 0, 0, 0.3);
-  font-family: var(--p5-font-body);
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.5);
+  padding: 1.5rem 2rem;
+  background: rgba(0, 0, 0, 0.85);
+  border-top: 2px solid var(--p5-red);
   position: relative;
   z-index: 1;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.footer-logo {
+  font-family: var(--p5-font);
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--p5-white);
+}
+
+.footer-dev {
+  color: var(--p5-yellow);
+}
+
+.footer-divider {
+  color: rgba(255, 0, 0, 0.4);
+}
+
+.footer-copy {
+  font-family: var(--p5-font-body);
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.35);
 }
 
 .site-footer a {
@@ -1166,8 +1173,9 @@ h4 { font-size: 1.3rem; }
 }
 
 .persona-card:hover {
-  transform: translate(0.5rem, -0.35rem);
-  border-color: rgba(255,255,255,0.3);
+  transform: translate(0.4rem, -0.5rem);
+  border-color: rgba(255, 60, 60, 0.4);
+  box-shadow: 0 8px 32px rgba(180, 0, 0, 0.28);
 }
 
 .card-header {
@@ -1458,5 +1466,195 @@ h4 { font-size: 1.3rem; }
 
   .arcana-card-inner {
     min-height: 10rem;
+  }
+}
+
+/* ============================================================
+   28. PAGE REVEAL OVERLAY
+   Covers the screen on page entry, then sweeps out to reveal content.
+   ============================================================ */
+#p5-page-reveal {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  pointer-events: none;
+  clip-path: polygon(0% 0%, 115% 0%, 100% 100%, 0% 100%);
+  background: #cc0000;
+  animation: p5-reveal 0.55s cubic-bezier(0.76, 0, 0.24, 1) 0.05s both;
+}
+
+@keyframes p5-reveal {
+  from { clip-path: polygon(0% 0%, 115% 0%, 100% 100%, 0% 100%); }
+  to   { clip-path: polygon(100% 0%, 115% 0%, 115% 100%, 100% 100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #p5-page-reveal { display: none; }
+}
+
+/* ============================================================
+   29. SCROLL REVEAL UTILITY
+   ============================================================ */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(1.5rem);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ============================================================
+   30. JOKER CUT-IN INTRO
+   Full-screen session intro overlay on the home page.
+   ============================================================ */
+.p5-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 9200;
+  overflow: hidden;
+  background: #cc0000;
+}
+
+.p5-intro::before {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  background-image: repeating-conic-gradient(
+    rgba(0, 0, 0, 0.25) 0deg 45deg,
+    transparent 45deg 90deg
+  );
+  background-size: 60px 60px;
+  animation: intro-checker 3s linear infinite;
+  z-index: 0;
+}
+
+@keyframes intro-checker {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.p5-intro-joker {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 95vh;
+  max-height: 900px;
+  width: auto;
+  object-fit: contain;
+  z-index: 2;
+  filter: drop-shadow(-8px 0 24px rgba(0, 0, 0, 0.6));
+}
+
+.p5-intro-swoosh {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.5);
+  z-index: 3;
+}
+
+.p5-intro-text {
+  position: absolute;
+  bottom: 12%;
+  left: 50%;
+  transform: translateX(-50%) skewX(-8deg);
+  z-index: 4;
+  text-align: center;
+}
+
+.p5-intro-text span {
+  display: block;
+  font-family: var(--p5-font);
+  font-size: clamp(2rem, 5vw, 4rem);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #fff;
+  text-shadow: 4px 4px 0 #000, 6px 6px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================================
+   31. WEATHER WIDGET
+   P5-style sprite-based date/weather display (home page, fixed top-right).
+   ============================================================ */
+.p5-weather-widget {
+  position: fixed;
+  top: calc(var(--nav-height) + 1rem);
+  right: 1rem;
+  z-index: 400;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  pointer-events: none;
+}
+
+.wgt-date-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.wgt-bottom-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.wgt-weekday {
+  width: 76px;
+  height: 29px;
+  background-image: url('/img/weather/weekday_sprites.png');
+  background-size: 228px 88px;
+  background-repeat: no-repeat;
+  flex-shrink: 0;
+}
+
+.wgt-weather-card {
+  width: 80px;
+  height: 29px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.wgt-weather-sprite {
+  width: 38px;
+  height: 37px;
+  background-image: url('/img/weather/weather_spritesheet4.png');
+  background-size: 152px 112px;
+  background-repeat: no-repeat;
+  flex-shrink: 0;
+}
+
+.wgt-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.wgt-time,
+.wgt-temp {
+  font-family: var(--p5-font);
+  font-size: 0.9rem;
+  color: #fff;
+  text-shadow: 1px 1px 0 #000, 2px 2px 0 rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 640px) {
+  .p5-weather-widget {
+    display: none;
   }
 }

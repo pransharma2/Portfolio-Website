@@ -11,10 +11,10 @@ interface Props {
 const { title, page } = Astro.props;
 
 const navLinks = [
-  { label: 'Home', href: '/', key: 'home' },
-  { label: 'About', href: '/about', key: 'about' },
+  { label: 'Home',     href: '/',         key: 'home'     },
+  { label: 'About',    href: '/about',    key: 'about'    },
   { label: 'Projects', href: '/projects', key: 'projects' },
-  { label: 'Contact', href: '/contact', key: 'contact' },
+  { label: 'Contact',  href: '/contact',  key: 'contact'  },
 ];
 ---
 
@@ -23,26 +23,25 @@ const navLinks = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Persona 5 themed portfolio website" />
+    <meta name="description" content="Prantap Sharma — Data Analytics & Engineering portfolio" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/png" href="/img/favicon.png" />
-    <link
-      rel="preconnect"
-      href="https://fonts.googleapis.com"
-    />
-    <link
-      rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin
-    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Arsenal:ital,wght@0,400;0,700;1,400;1,700&family=Bebas+Neue&family=Fjalla+One&display=swap"
       rel="stylesheet"
     />
     <title>{title}</title>
   </head>
+
   <body class={`page-${page}`}>
-    <!-- Floating Particles -->
+
+    <!-- Page-reveal sweep: starts covering, animates off to reveal new page -->
+    <!-- Plays on every hard navigation, creating a cinematic entry feel -->
+    <div id="p5-page-reveal" aria-hidden="true"></div>
+
+    <!-- Floating ambient particles -->
     <div class="particles">
       <div class="particle"></div>
       <div class="particle"></div>
@@ -54,23 +53,28 @@ const navLinks = [
       <div class="particle"></div>
     </div>
 
-    <!-- Corner Decorations -->
+    <!-- Corner geometric decorations -->
     <div class="corner-decor corner-decor--top-left"></div>
     <div class="corner-decor corner-decor--bottom-right"></div>
 
-    <!-- Header -->
+    <!-- ── Navigation ── -->
     <header class="nav-header">
       <a href="/" class="nav-logo">
         <span class="logo-phantom">Phantom</span><span class="logo-dev">Dev</span>
       </a>
 
-      <button class="nav-hamburger" aria-label="Toggle navigation" aria-expanded="false">
+      <button
+        class="nav-hamburger"
+        aria-label="Toggle navigation"
+        aria-expanded="false"
+        aria-controls="nav-mobile"
+      >
         <span></span>
         <span></span>
         <span></span>
       </button>
 
-      <div class="nav-links">
+      <div class="nav-links" role="navigation" aria-label="Main navigation">
         {navLinks.map((link) => (
           <a
             href={link.href}
@@ -82,8 +86,8 @@ const navLinks = [
       </div>
     </header>
 
-    <!-- Mobile Nav Overlay -->
-    <nav class="nav-mobile-overlay" aria-label="Mobile navigation">
+    <!-- Mobile nav overlay -->
+    <nav id="nav-mobile" class="nav-mobile-overlay" aria-label="Mobile navigation">
       {navLinks.map((link) => (
         <a
           href={link.href}
@@ -94,28 +98,32 @@ const navLinks = [
       ))}
     </nav>
 
-    <!-- Main Content -->
+    <!-- Main content -->
     <main>
       <slot />
     </main>
 
     <!-- Footer -->
     <footer class="site-footer">
-      <p>&copy; 2025 Prantap &bull; Persona 5 Portfolio</p>
+      <div class="footer-inner">
+        <span class="footer-logo">Phantom<span class="footer-dev">Dev</span></span>
+        <span class="footer-divider">—</span>
+        <span class="footer-copy">&copy; 2025 Prantap Sharma</span>
+      </div>
     </footer>
 
-    <!-- Sound Toggle -->
+    <!-- Fixed UI: sound toggle -->
     <div class="p5-sound-toggle-wrapper">
       <SoundToggle client:load />
     </div>
 
-    <!-- Page Transition Overlay -->
+    <!-- Full-screen cinematic page transition overlay -->
     <PageTransition client:load />
 
     <script>
-      // Hamburger menu toggle
-      const hamburger = document.querySelector('.nav-hamburger');
-      const overlay = document.querySelector('.nav-mobile-overlay');
+      // ── Hamburger menu toggle ──────────────────────────────────
+      const hamburger = document.querySelector('.nav-hamburger') as HTMLButtonElement | null;
+      const overlay   = document.querySelector('.nav-mobile-overlay') as HTMLElement | null;
 
       if (hamburger && overlay) {
         hamburger.addEventListener('click', () => {
@@ -123,6 +131,28 @@ const navLinks = [
           hamburger.classList.toggle('open');
           hamburger.setAttribute('aria-expanded', String(isOpen));
         });
+        // Close on any nav link click (mobile)
+        overlay.querySelectorAll('.nav-link').forEach(link => {
+          link.addEventListener('click', () => {
+            overlay.classList.remove('open');
+            hamburger.classList.remove('open');
+            hamburger.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+
+      // ── Scroll-reveal with IntersectionObserver ────────────────
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const io = new IntersectionObserver(
+          entries => entries.forEach(e => {
+            if (e.isIntersecting) {
+              e.target.classList.add('revealed');
+              io.unobserve(e.target);
+            }
+          }),
+          { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+        );
+        document.querySelectorAll('.scroll-reveal').forEach(el => io.observe(el));
       }
     </script>
   </body>

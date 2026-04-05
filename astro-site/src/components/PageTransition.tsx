@@ -1,145 +1,137 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
+/**
+ * PageTransition — intercepts internal link clicks and plays a full-screen
+ * cinematic wipe before navigating to the new page.
+ *
+ * Cover animation (on click):
+ *   1. "Take Your TIme" video plays full-screen as the base layer
+ *   2. Black diagonal panel sweeps left→right across 100vw×100vh (0.38s)
+ *   3. Red diagonal panel follows with a 60ms delay (0.38s)
+ *   4. "Take Your Heart" text card appears center-screen (0.18s, at 0.28s)
+ *   5. Hard navigation fires at 0.75s (panels hold while new page loads)
+ *
+ * Reveal animation (on new page load) is handled by #p5-page-reveal in Layout
+ * via a CSS keyframe — no JS coordination needed.
+ *
+ * Respects prefers-reduced-motion: skips animation entirely and navigates instantly.
+ */
 export default function PageTransition() {
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const targetHref = useRef<string>('');
+  const [covering, setCovering] = useState(false);
+
+  const handleClick = useCallback((e: MouseEvent) => {
+    const anchor = (e.target as Element).closest('a[href]') as HTMLAnchorElement | null;
+    if (!anchor) return;
+
+    const href = anchor.getAttribute('href') ?? '';
+
+    // Only intercept same-origin internal links
+    if (!href.startsWith('/')) return;
+    // Respect modifier keys (open in new tab, etc.)
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    if (anchor.target === '_blank') return;
+
+    // Don't transition to the current page
+    const targetPath = new URL(href, location.href).pathname;
+    if (targetPath === location.pathname) return;
+
+    // Bail on reduced-motion — just navigate directly
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    e.preventDefault();
+    setCovering(true);
+
+    // Navigate after the cover animation has fully filled the viewport
+    setTimeout(() => {
+      window.location.href = href;
+    }, 750);
+  }, []);
 
   useEffect(() => {
-    // Listen for sound toggle events
-    const handleSoundToggle = (e: Event) => {
-      const detail = (e as CustomEvent).detail;
-      if (videoRef.current) {
-        videoRef.current.muted = detail.muted;
-      }
-    };
-    window.addEventListener('p5-sound-toggle', handleSoundToggle);
-
-    // Intercept internal link clicks
-    const handleClick = (e: MouseEvent) => {
-      const anchor = (e.target as HTMLElement).closest('a');
-      if (!anchor || !anchor.href) return;
-      if (anchor.target && anchor.target !== '_self') return;
-      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-
-      const url = new URL(anchor.href, window.location.href);
-      if (url.origin !== window.location.origin) return;
-      if (url.pathname === window.location.pathname) return;
-
-      // Check reduced motion preference
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-      e.preventDefault();
-      targetHref.current = anchor.href;
-      setIsTransitioning(true);
-
-      // Navigate after transition covers screen
-      setTimeout(() => {
-        window.location.href = anchor.href;
-      }, 600);
-    };
-
     document.addEventListener('click', handleClick);
-
-    return () => {
-      document.removeEventListener('click', handleClick);
-      window.removeEventListener('p5-sound-toggle', handleSoundToggle);
-    };
-  }, []);
+    return () => document.removeEventListener('click', handleClick);
+  }, [handleClick]);
 
   return (
     <AnimatePresence>
-      {isTransitioning && (
-        <>
-          {/* Black background sweep */}
-          <motion.div
-            className="p5-transition-bg"
-            initial={{ x: '-100%' }}
-            animate={{ x: '0%' }}
-            transition={{ duration: 0.35, ease: [0.7, 0, 0.3, 1] }}
+      {covering && (
+        <motion.div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9500,
+            pointerEvents: 'none',
+            overflow: 'hidden',
+          }}
+          aria-hidden="true"
+        >
+          {/* Full-screen transition video — base layer */}
+          <video
+            autoPlay
+            muted
+            playsInline
             style={{
-              position: 'fixed',
+              position: 'absolute',
               inset: 0,
-              zIndex: 9998,
-              background: '#0d0d0d',
-              pointerEvents: 'none',
-            }}
-          />
-
-          {/* Red diagonal slashes */}
-          <motion.div
-            className="p5-transition-slashes"
-            initial={{ x: '-100%' }}
-            animate={{ x: '0%' }}
-            transition={{ duration: 0.3, ease: [0.7, 0, 0.3, 1], delay: 0.05 }}
-            style={{
-              position: 'fixed',
-              inset: '-20% -30%',
-              zIndex: 9999,
-              background: `repeating-linear-gradient(
-                -26deg,
-                #ff0000 0 3.5rem,
-                transparent 3.5rem 7rem
-              )`,
-              pointerEvents: 'none',
-            }}
-          />
-
-          {/* "Take Your Time" text */}
-          <motion.span
-            className="p5-transition-text"
-            initial={{ opacity: 0, scale: 1.3 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.25, ease: [0.7, 0, 0.3, 1], delay: 0.1 }}
-            style={{
-              position: 'fixed',
-              left: '50%',
-              top: '50%',
-              transform: 'translate(-50%, -50%) skewX(-6deg)',
-              zIndex: 10000,
-              color: '#fff',
-              fontFamily: "'Fjalla One', 'Bebas Neue', Impact, sans-serif",
-              fontSize: 'clamp(2rem, 5vw, 3.8rem)',
-              letterSpacing: '0.22em',
-              textTransform: 'uppercase',
-              whiteSpace: 'nowrap',
-              textShadow: '3px 3px 0 #ff0000, -1px -1px 0 rgba(0,0,0,0.6)',
-              pointerEvents: 'none',
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              zIndex: 0,
             }}
           >
-            Take Your Time
-          </motion.span>
+            <source src="/img/Take Your TIme.webm0001-0167.mp4" type="video/mp4" />
+          </video>
 
-          {/* "Take Your Time" video in bottom-right */}
+          {/* Black wipe — sweeps in as a diagonal parallelogram on top of video */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ clipPath: 'polygon(0% 0%, 14% 0%, 0% 100%, 0% 100%)' }}
+            animate={{ clipPath: 'polygon(0% 0%, 115% 0%, 100% 100%, 0% 100%)' }}
+            transition={{ duration: 0.38, ease: [0.76, 0, 0.24, 1] }}
+            style={{ position: 'absolute', inset: 0, background: '#0d0d0d', zIndex: 1 }}
+          />
+
+          {/* Red wipe — trails the black panel by 60ms */}
+          <motion.div
+            initial={{ clipPath: 'polygon(0% 0%, 14% 0%, 0% 100%, 0% 100%)' }}
+            animate={{ clipPath: 'polygon(0% 0%, 115% 0%, 100% 100%, 0% 100%)' }}
+            transition={{ duration: 0.38, delay: 0.06, ease: [0.76, 0, 0.24, 1] }}
+            style={{ position: 'absolute', inset: 0, background: '#cc0000', zIndex: 2 }}
+          />
+
+          {/* "Take Your Heart" centred text card */}
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.15 }}
+            transition={{ duration: 0.18, delay: 0.28 }}
             style={{
-              position: 'fixed',
-              bottom: '1rem',
-              right: '1rem',
-              zIndex: 10001,
-              width: 'min(200px, 30vw)',
-              pointerEvents: 'none',
+              position: 'absolute',
+              inset: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 3,
             }}
           >
-            <video
-              ref={videoRef}
-              src="/img/Take Your TIme.webm0001-0167.mp4"
-              autoPlay
-              muted
-              playsInline
+            <span
               style={{
-                width: '100%',
-                height: 'auto',
-                borderRadius: '4px',
-                mixBlendMode: 'screen',
+                fontFamily: "'Fjalla One', 'Bebas Neue', Impact, sans-serif",
+                fontSize: 'clamp(1.4rem, 4vw, 3rem)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.22em',
+                color: '#fff',
+                background: '#000',
+                padding: '0.5em 2em',
+                border: '3px solid rgba(255,255,255,0.85)',
+                transform: 'skewX(-8deg)',
+                display: 'inline-block',
+                boxShadow: '6px 6px 0 rgba(0,0,0,0.4)',
               }}
-            />
+            >
+              Take Your Heart
+            </span>
           </motion.div>
-        </>
+        </motion.div>
       )}
     </AnimatePresence>
   );

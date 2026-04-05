@@ -1,11 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import JokerCutIn from '../components/JokerCutIn';
+import WeatherWidget from '../components/WeatherWidget';
 ---
 
 <Layout title="Home — Phantom Dev Portfolio" page="home">
   <!-- Hero Section -->
   <section class="hero">
-    <!-- Fullscreen Background Video -->
+    <!-- Fullscreen looping background video (muted by default; SoundToggle controls audio) -->
     <div class="hero-video-bg">
       <video
         autoplay
@@ -25,7 +27,7 @@ import Layout from '../layouts/Layout.astro';
         <p class="hero-sub">Take Your Heart &mdash; enter the Metaverse of my work.</p>
       </div>
 
-      <!-- Battle Menu Navigation -->
+      <!-- P5-style battle menu navigation -->
       <nav class="p5-menu" aria-label="Quick navigation">
         <a href="/about" class="p5-menu-item">
           <img src="/img/about-me.png" alt="" loading="lazy" class="menu-icon" />
@@ -41,13 +43,11 @@ import Layout from '../layouts/Layout.astro';
         </a>
       </nav>
     </div>
-
-    <!-- Joker Silhouette Decoration -->
-    <img
-      src="/img/joker-cutin.png"
-      alt=""
-      loading="lazy"
-      class="hero-character"
-    />
   </section>
+
+  <!-- Joker cut-in intro animation (once per session) -->
+  <JokerCutIn client:load />
+
+  <!-- P5 weather/date widget (top-right of home page) -->
+  <WeatherWidget client:load />
 </Layout>
