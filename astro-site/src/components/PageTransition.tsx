@@ -42,11 +42,11 @@ export default function PageTransition() {
     e.preventDefault();
     setCovering(true);
 
-    // Navigate after the cover animation has fully filled the viewport.
-    // 300ms pre-wipe video window + 380ms wipe + 60ms red trail + ~310ms hold = ~1050ms total.
+    // Navigate after the cover animation fills the viewport.
+    // 500ms video-only window + 380ms wipe + 60ms red trail + ~360ms hold = ~1300ms total.
     setTimeout(() => {
       window.location.href = href;
-    }, 1050);
+    }, 1300);
   }, []);
 
   useEffect(() => {
@@ -67,44 +67,62 @@ export default function PageTransition() {
           }}
           aria-hidden="true"
         >
-          {/* Full-screen transition video — base layer */}
+          {/* ── Nav bar overlay — keeps navigation readable during the transition ── */}
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: 'var(--nav-height)',
+              background: 'rgba(0,0,0,0.88)',
+              zIndex: 4,
+              backdropFilter: 'blur(4px)',
+            }}
+          />
+
+          {/* ── Transition video — framed in the content area below the nav ── */}
           <video
             autoPlay
             muted
             playsInline
             style={{
               position: 'absolute',
-              inset: 0,
+              top: 'var(--nav-height)',
+              left: 0,
+              right: 0,
+              bottom: 0,
               width: '100%',
-              height: '100%',
+              height: 'calc(100% - var(--nav-height))',
               objectFit: 'cover',
+              objectPosition: 'center top',
               zIndex: 0,
             }}
           >
             <source src="/img/Take Your TIme.webm0001-0167.mp4" type="video/mp4" />
           </video>
 
-          {/* Black wipe — 300ms after click so the video plays visibly first */}
+          {/* ── Black wipe — 500ms delay so the video plays visibly first ── */}
           <motion.div
             initial={{ clipPath: 'polygon(0% 0%, 14% 0%, 0% 100%, 0% 100%)' }}
             animate={{ clipPath: 'polygon(0% 0%, 115% 0%, 100% 100%, 0% 100%)' }}
-            transition={{ duration: 0.38, delay: 0.3, ease: [0.76, 0, 0.24, 1] }}
+            transition={{ duration: 0.38, delay: 0.5, ease: [0.76, 0, 0.24, 1] }}
             style={{ position: 'absolute', inset: 0, background: '#0d0d0d', zIndex: 1 }}
           />
 
-          {/* Red wipe — trails the black panel by 60ms */}
+          {/* ── Red wipe — trails black panel by 60ms ── */}
           <motion.div
             initial={{ clipPath: 'polygon(0% 0%, 14% 0%, 0% 100%, 0% 100%)' }}
             animate={{ clipPath: 'polygon(0% 0%, 115% 0%, 100% 100%, 0% 100%)' }}
-            transition={{ duration: 0.38, delay: 0.36, ease: [0.76, 0, 0.24, 1] }}
+            transition={{ duration: 0.38, delay: 0.56, ease: [0.76, 0, 0.24, 1] }}
             style={{ position: 'absolute', inset: 0, background: '#cc0000', zIndex: 2 }}
           />
 
-          {/* "Take Your Heart" centred text card — appears mid-wipe for impact */}
+          {/* ── "Take Your Heart" text card — appears mid-wipe for impact ── */}
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.18, delay: 0.54 }}
+            transition={{ duration: 0.18, delay: 0.7 }}
             style={{
               position: 'absolute',
               inset: 0,

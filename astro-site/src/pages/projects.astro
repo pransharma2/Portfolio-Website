@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import StarPatternCanvas from '../components/StarPatternCanvas';
 
 const projects = [
   {
@@ -42,6 +43,9 @@ const projects = [
 ---
 
 <Layout title="Projects — Persona Compendium" page="projects">
+  <!-- WebGL star-field — faithful port of BuyMyBeard/StarPattern, loads after page is idle -->
+  <StarPatternCanvas client:idle />
+
   <!-- Page Banner -->
   <div class="page-banner">Persona Compendium</div>
 
