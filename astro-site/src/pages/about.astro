@@ -1,14 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ArcanaCards from '../components/ArcanaCards';
-
-const stats = [
-  { label: 'Knowledge', detail: 'Data Science & Analytics', stars: 4, icon: '/img/fixed_traits_from_user/knowledge.png' },
-  { label: 'Proficiency', detail: 'Python / SQL / PySpark', stars: 5, icon: '/img/fixed_traits_from_user/Proficiency.png' },
-  { label: 'Charm', detail: 'Power BI / Tableau', stars: 4, icon: '/img/fixed_traits_from_user/charm.png' },
-  { label: 'Guts', detail: 'ETL & Data Pipelines', stars: 4, icon: '/img/fixed_traits_from_user/Guts.png' },
-  { label: 'Kindness', detail: 'Workshops & Mentoring', stars: 3, icon: '/img/fixed_traits_from_user/Kindness.png' },
-];
 
 const missions = [
   {
@@ -54,73 +45,45 @@ const skills = [
 ---
 
 <Layout title="About — Confidant Profile" page="about">
-  <!-- Page Banner -->
   <div class="page-banner">Confidant Profile</div>
 
   <div class="confidant-page">
 
-    <!-- ── Section: Profile + Stats ── -->
-    <div class="about-profile-block">
-
-      <!-- Portrait + Bio -->
-      <div class="confidant-profile">
-        <div class="confidant-portrait">
-          <img
-            src="/img/1_P1ZpJoADmVLHN2vjq0cmqw_1762760206212.jpg"
-            alt="Prantap portrait photo"
-            loading="lazy"
-          />
-          <span class="rank-badge" aria-label="Star rank">&#9733;</span>
+    <!-- ── 1. Profile: who I am ── -->
+    <div class="confidant-profile">
+      <div class="confidant-portrait">
+        <img
+          src="/img/1_P1ZpJoADmVLHN2vjq0cmqw_1762760206212.jpg"
+          alt="Prantap portrait photo"
+          loading="lazy"
+        />
+        <span class="rank-badge" aria-label="Star rank">&#9733;</span>
+      </div>
+      <div class="confidant-bio">
+        <div class="confidant-bio-header">
+          <span class="confidant-name">Prantap Sharma</span>
+          <span class="confidant-location">Calgary, AB</span>
         </div>
-        <div class="confidant-bio">
-          <div class="confidant-bio-header">
-            <span class="confidant-name">Prantap Sharma</span>
-            <span class="confidant-location">Calgary, AB</span>
-          </div>
-          <p>
-            Data Analytics &amp; Engineering specialist pursuing a dual BComm in Business Analytics
-            and BSc in Computer Science at the University of Calgary. Experienced building enterprise
-            data pipelines at Suncor Energy, sustaining data warehouses at SDK Tek Services, and
-            leading workshops for 50+ students as Workshop Director of the DS&amp;ML Club.
-          </p>
-          <div class="confidant-tags">
-            <span class="p5-tag">Azure</span>
-            <span class="p5-tag">Snowflake</span>
-            <span class="p5-tag">Power BI</span>
-            <span class="p5-tag">Python</span>
-            <span class="p5-tag">PySpark</span>
-          </div>
+        <p>
+          Data Analytics &amp; Engineering specialist pursuing a dual BComm in Business Analytics
+          and BSc in Computer Science at the University of Calgary. Experienced building enterprise
+          data pipelines at Suncor Energy, sustaining data warehouses at SDK Tek Services, and
+          leading workshops for 50+ students as Workshop Director of the DS&amp;ML Club.
+        </p>
+        <div class="confidant-tags">
+          <span class="p5-tag">Azure</span>
+          <span class="p5-tag">Snowflake</span>
+          <span class="p5-tag">Power BI</span>
+          <span class="p5-tag">Python</span>
+          <span class="p5-tag">PySpark</span>
+          <span class="p5-tag">U of C</span>
         </div>
       </div>
-
-      <!-- Social Stats -->
-      <div class="social-stats">
-        {stats.map((stat) => (
-          <div class="stat-bar">
-            <img
-              src={stat.icon}
-              alt={`${stat.label} icon`}
-              loading="lazy"
-              class="stat-icon"
-            />
-            <div class="stat-info">
-              <span class="stat-name">{stat.label}</span>
-              <span class="stat-value">{stat.detail}</span>
-            </div>
-            <div class="stat-stars" aria-label={`${stat.stars} out of 5`}>
-              {Array.from({ length: 5 }).map((_, i) => (
-                <span class:list={['star', { empty: i >= stat.stars }]} />
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-
     </div>
 
     <hr class="p5-divider" />
 
-    <!-- ── Section: Infiltration Log (Experience Timeline) ── -->
+    <!-- ── 2. Infiltration Log: experience timeline ── -->
     <div>
       <div class="section-header">Infiltration Log</div>
       <div class="mission-log">
@@ -138,7 +101,7 @@ const skills = [
 
     <hr class="p5-divider" />
 
-    <!-- ── Section: Skill Domains ── -->
+    <!-- ── 3. Skill Domains ── -->
     <div>
       <div class="section-header">Skill Domains</div>
       <div class="skill-cards">
@@ -151,21 +114,6 @@ const skills = [
         ))}
       </div>
     </div>
-
-    <hr class="p5-divider" />
-
-    <!-- ── Section: Confidants Video ── -->
-    <div class="confidants-video-section">
-      <video autoplay muted loop playsinline preload="auto">
-        <source src="/img/persona_5_confidants_50mbs.mp4" type="video/mp4" />
-      </video>
-      <div class="confidants-video-overlay"></div>
-    </div>
-
-    <hr class="p5-divider" />
-
-    <!-- ── Section: Arcana Deck ── -->
-    <ArcanaCards client:visible />
 
   </div>
 </Layout>

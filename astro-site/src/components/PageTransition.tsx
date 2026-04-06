@@ -91,8 +91,9 @@ export default function PageTransition() {
               inset: 0,
               width: '100%',
               height: '100%',
-              objectFit: 'cover',
+              objectFit: 'contain',
               objectPosition: 'center center',
+              background: '#0d0d0d',
               zIndex: 0,
             }}
           >
