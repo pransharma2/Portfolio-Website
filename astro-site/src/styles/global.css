@@ -916,8 +916,14 @@ h4 { font-size: 1.3rem; }
    ============================================================ */
 .confidant-page {
   display: grid;
-  gap: 1.5rem;
+  gap: 2rem;
   padding: 1rem;
+}
+
+/* Profile block: portrait+bio on top, stats below (single column) */
+.about-profile-block {
+  display: grid;
+  gap: 1.2rem;
 }
 
 .confidant-profile {
@@ -963,6 +969,39 @@ h4 { font-size: 1.3rem; }
   border-left: 3px solid var(--p5-red);
   font-family: var(--p5-font-body);
   line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.confidant-bio-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.confidant-name {
+  font-family: var(--p5-font);
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--p5-white);
+}
+
+.confidant-location {
+  font-family: var(--p5-font);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.4);
+}
+
+.confidant-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.25rem;
 }
 
 .social-stats {
@@ -1033,6 +1072,15 @@ h4 { font-size: 1.3rem; }
   background: rgba(0,0,0,0.7);
   border: 2px solid rgba(255,255,255,0.12);
   clip-path: polygon(0 0, calc(100% - 1rem) 0, 100% 1rem, 100% 100%, 1rem 100%, 0 calc(100% - 1rem));
+}
+
+.skill-number {
+  font-family: var(--p5-font);
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.25);
+  letter-spacing: 0.2em;
+  display: block;
+  margin-bottom: 0.25rem;
 }
 
 .skill-card h3 {
@@ -1657,5 +1705,127 @@ h4 { font-size: 1.3rem; }
 @media (max-width: 640px) {
   .p5-weather-widget {
     display: none;
+  }
+}
+
+/* ============================================================
+   32. SECTION HEADER (sub-banner used inside About sections)
+   ============================================================ */
+.section-header {
+  font-family: var(--p5-font);
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--p5-white);
+  background: var(--p5-red);
+  display: inline-block;
+  padding: 0.25rem 1.4rem 0.25rem 0.9rem;
+  /* Right edge angled in to match P5 UI chrome */
+  clip-path: polygon(0 0, 100% 0, calc(100% - 0.7rem) 100%, 0 100%);
+  margin-bottom: 1.2rem;
+}
+
+/* ============================================================
+   33. MISSION LOG (INFILTRATION LOG — EXPERIENCE TIMELINE)
+   ============================================================ */
+.mission-log {
+  position: relative;
+  display: grid;
+  gap: 0;
+  padding-left: 2.5rem;
+}
+
+/* Vertical red timeline bar */
+.mission-log::before {
+  content: '';
+  position: absolute;
+  left: 0.55rem;
+  top: 0.4rem;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--p5-red) 65%, transparent);
+}
+
+.mission-entry {
+  position: relative;
+  padding: 1rem 1rem 1.5rem 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mission-entry:last-child {
+  border-bottom: none;
+}
+
+/* 5-pointed star timeline marker */
+.mission-entry::before {
+  content: '';
+  position: absolute;
+  left: -2.05rem;
+  top: 1.4rem;
+  width: 0.72rem;
+  height: 0.72rem;
+  background: var(--p5-red);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+.mission-op {
+  font-family: var(--p5-font);
+  font-size: 0.58rem;
+  color: var(--p5-red);
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  margin-bottom: 0.1rem;
+}
+
+.mission-org {
+  font-family: var(--p5-font);
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  color: var(--p5-white);
+  letter-spacing: 0.04em;
+}
+
+.mission-role {
+  font-family: var(--p5-font);
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.6rem;
+}
+
+.mission-date {
+  font-family: var(--p5-font-body);
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  float: right;
+  margin-top: 0.1rem;
+}
+
+.mission-desc {
+  font-family: var(--p5-font-body);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.65;
+  border-left: 2px solid rgba(204, 0, 0, 0.5);
+  padding-left: 0.75rem;
+  clear: both;
+}
+
+@media (max-width: 640px) {
+  .mission-log {
+    padding-left: 1.75rem;
+  }
+
+  .mission-date {
+    float: none;
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  .mission-org {
+    font-size: 1rem;
   }
 }

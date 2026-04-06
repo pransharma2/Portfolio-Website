@@ -10,16 +10,43 @@ const stats = [
   { label: 'Kindness', detail: 'Workshops & Mentoring', stars: 3, icon: '/img/fixed_traits_from_user/Kindness.png' },
 ];
 
+const missions = [
+  {
+    op: 'Operation: Pipeline Vanguard',
+    org: 'Suncor Energy',
+    role: 'Data Engineering Analyst — Co-op',
+    date: 'May 2024 — Present',
+    description: 'Built Azure Data Factory pipelines, Power BI monitoring apps, and incident automation across source-to-gold data layers. Migrated 400 SAP tables from SLT to Datasphere, driving 300K+ in annual savings.',
+  },
+  {
+    op: 'Operation: Data Vault',
+    org: 'SDK Tek Services',
+    role: 'Data & Analytics Developer',
+    date: 'Jan 2023 — Apr 2024',
+    description: 'Sustained enterprise data warehouses and delivered BI reports and analytics support across client engagements. Built reusable Snowflake migration automation saving ~3 hours and $550 per object.',
+  },
+  {
+    op: 'Operation: Phantom Curriculum',
+    org: 'DS&ML Club — UCalgary',
+    role: 'Workshop Director',
+    date: 'Sep 2022 — Present',
+    description: 'Designed and delivered hands-on sessions for 50+ students covering neural networks, data engineering, and cloud analytics. Sustained 90%+ satisfaction ratings with incentive-based engagement programs.',
+  },
+];
+
 const skills = [
   {
+    number: '01',
     title: 'Data Engineering',
     description: 'Building Azure Data Factory pipelines, Snowflake migrations, and automated ingestion for enterprise data platforms.',
   },
   {
+    number: '02',
     title: 'BI & Visualization',
     description: 'Power BI apps, Tableau dashboards, and interactive reports that turn raw data into actionable decisions.',
   },
   {
+    number: '03',
     title: 'Python & Automation',
     description: 'Streamlit apps, reusable automation scripts, and PySpark workflows that save hundreds of hours.',
   },
@@ -31,65 +58,103 @@ const skills = [
   <div class="page-banner">Confidant Profile</div>
 
   <div class="confidant-page">
-    <!-- Profile Section -->
-    <div class="confidant-profile">
-      <div class="confidant-portrait">
-        <img
-          src="/img/1_P1ZpJoADmVLHN2vjq0cmqw_1762760206212.jpg"
-          alt="Prantap portrait photo"
-          loading="lazy"
-        />
-        <span class="rank-badge" aria-label="Star rank">&#9733;</span>
-      </div>
-      <div class="confidant-bio">
-        <p>
-          <strong>Prantap Sharma</strong> — Data Analytics & Engineering specialist based in Calgary, AB.
-          Pursuing a dual BComm in Business Analytics and BSc in Computer Science at the University of Calgary.
-          Experienced in building enterprise data pipelines at Suncor Energy, sustaining data warehouses at SDK Tek Services,
-          and leading workshops for 50+ students as Workshop Director of the DS&ML Club.
-          Always looking for new shadows to defeat in the Metaverse of analytics.
-        </p>
-      </div>
-    </div>
 
-    <!-- Social Stats Section -->
-    <div class="social-stats">
-      {stats.map((stat) => (
-        <div class="stat-bar">
+    <!-- ── Section: Profile + Stats ── -->
+    <div class="about-profile-block">
+
+      <!-- Portrait + Bio -->
+      <div class="confidant-profile">
+        <div class="confidant-portrait">
           <img
-            src={stat.icon}
-            alt={`${stat.label} icon`}
+            src="/img/1_P1ZpJoADmVLHN2vjq0cmqw_1762760206212.jpg"
+            alt="Prantap portrait photo"
             loading="lazy"
-            class="stat-icon"
           />
-          <div class="stat-info">
-            <span class="stat-name">{stat.label}</span>
-            <span class="stat-value">{stat.detail}</span>
+          <span class="rank-badge" aria-label="Star rank">&#9733;</span>
+        </div>
+        <div class="confidant-bio">
+          <div class="confidant-bio-header">
+            <span class="confidant-name">Prantap Sharma</span>
+            <span class="confidant-location">Calgary, AB</span>
           </div>
-          <div class="stat-stars" aria-label={`${stat.stars} out of 5`}>
-            {Array.from({ length: 5 }).map((_, i) => (
-              <span class:list={['star', { empty: i >= stat.stars }]} />
-            ))}
+          <p>
+            Data Analytics &amp; Engineering specialist pursuing a dual BComm in Business Analytics
+            and BSc in Computer Science at the University of Calgary. Experienced building enterprise
+            data pipelines at Suncor Energy, sustaining data warehouses at SDK Tek Services, and
+            leading workshops for 50+ students as Workshop Director of the DS&amp;ML Club.
+          </p>
+          <div class="confidant-tags">
+            <span class="p5-tag">Azure</span>
+            <span class="p5-tag">Snowflake</span>
+            <span class="p5-tag">Power BI</span>
+            <span class="p5-tag">Python</span>
+            <span class="p5-tag">PySpark</span>
           </div>
         </div>
-      ))}
+      </div>
+
+      <!-- Social Stats -->
+      <div class="social-stats">
+        {stats.map((stat) => (
+          <div class="stat-bar">
+            <img
+              src={stat.icon}
+              alt={`${stat.label} icon`}
+              loading="lazy"
+              class="stat-icon"
+            />
+            <div class="stat-info">
+              <span class="stat-name">{stat.label}</span>
+              <span class="stat-value">{stat.detail}</span>
+            </div>
+            <div class="stat-stars" aria-label={`${stat.stars} out of 5`}>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <span class:list={['star', { empty: i >= stat.stars }]} />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
     </div>
 
     <hr class="p5-divider" />
 
-    <!-- Skill Cards -->
-    <div class="skill-cards">
-      {skills.map((skill) => (
-        <div class="skill-card">
-          <h3>{skill.title}</h3>
-          <p>{skill.description}</p>
-        </div>
-      ))}
+    <!-- ── Section: Infiltration Log (Experience Timeline) ── -->
+    <div>
+      <div class="section-header">Infiltration Log</div>
+      <div class="mission-log">
+        {missions.map((m) => (
+          <div class="mission-entry">
+            <span class="mission-date">{m.date}</span>
+            <div class="mission-op">{m.op}</div>
+            <div class="mission-org">{m.org}</div>
+            <div class="mission-role">{m.role}</div>
+            <p class="mission-desc">{m.description}</p>
+          </div>
+        ))}
+      </div>
     </div>
 
     <hr class="p5-divider" />
 
-    <!-- Confidants Video Showcase -->
+    <!-- ── Section: Skill Domains ── -->
+    <div>
+      <div class="section-header">Skill Domains</div>
+      <div class="skill-cards">
+        {skills.map((skill) => (
+          <div class="skill-card">
+            <span class="skill-number">{skill.number}</span>
+            <h3>{skill.title}</h3>
+            <p>{skill.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <hr class="p5-divider" />
+
+    <!-- ── Section: Confidants Video ── -->
     <div class="confidants-video-section">
       <video autoplay muted loop playsinline preload="auto">
         <source src="/img/persona_5_confidants_50mbs.mp4" type="video/mp4" />
@@ -99,7 +164,8 @@ const skills = [
 
     <hr class="p5-divider" />
 
-    <!-- Arcana Cards -->
+    <!-- ── Section: Arcana Deck ── -->
     <ArcanaCards client:visible />
+
   </div>
 </Layout>

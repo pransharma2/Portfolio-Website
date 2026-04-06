@@ -81,21 +81,18 @@ export default function PageTransition() {
             }}
           />
 
-          {/* ── Transition video — framed in the content area below the nav ── */}
+          {/* ── Transition video — full viewport, centered so nothing is cropped ── */}
           <video
             autoPlay
             muted
             playsInline
             style={{
               position: 'absolute',
-              top: 'var(--nav-height)',
-              left: 0,
-              right: 0,
-              bottom: 0,
+              inset: 0,
               width: '100%',
-              height: 'calc(100% - var(--nav-height))',
+              height: '100%',
               objectFit: 'cover',
-              objectPosition: 'center top',
+              objectPosition: 'center center',
               zIndex: 0,
             }}
           >
