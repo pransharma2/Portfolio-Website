@@ -64,6 +64,7 @@ export default function PageTransition() {
             zIndex: 9500,
             pointerEvents: 'none',
             overflow: 'hidden',
+            background: '#000',
           }}
           aria-hidden="true"
         >
@@ -93,7 +94,7 @@ export default function PageTransition() {
               height: '100%',
               objectFit: 'contain',
               objectPosition: 'center center',
-              background: '#0d0d0d',
+              background: '#000',
               zIndex: 0,
             }}
           >

@@ -229,27 +229,25 @@ body.page-projects::before {
    receiving a Phantom Thieves calling card.
    ----------------------------------------------------------------------- */
 body.page-contact::before {
-  /* Override the base 200%×200% sizing — we want a viewport-sized element */
   width: 100%;
   height: 100%;
   opacity: 1;
   animation: none;
   background:
-    /* 1. Near-opaque dark overlay — controls image show-through (~9%) */
-    linear-gradient(rgba(4, 0, 0, 0.91), rgba(4, 0, 0, 0.91)),
-    /* 2. Subtle P5 diagonal line texture over the whole surface */
+    /* Near-opaque overlay — keep the ghost art subtle but present (~12% show-through) */
+    linear-gradient(rgba(4, 0, 0, 0.88), rgba(4, 0, 0, 0.88)),
+    /* Fine diagonal stripe texture — P5 UI grid feel */
     repeating-linear-gradient(
       -38deg,
       transparent 0px, transparent 44px,
-      rgba(180, 0, 0, 0.032) 44px, rgba(180, 0, 0, 0.032) 46px
+      rgba(180, 0, 0, 0.04) 44px, rgba(180, 0, 0, 0.04) 46px
     ),
-    /* 3. Bottom-centre red spotlight — the "stage" of the calling card */
-    radial-gradient(ellipse 70% 50% at 50% 110%, rgba(150, 0, 0, 0.40) 0%, transparent 65%),
-    /* 4. Top-left directional accent (Phantom Thieves entrance light) */
-    radial-gradient(ellipse 45% 30% at 0% 0%, rgba(170, 0, 0, 0.15) 0%, transparent 70%),
-    /* 5. P5MainMenu art — anchored right, provides the ghost star-pattern texture */
+    /* Stronger bottom-centre red vignette — the calling card "stage" */
+    radial-gradient(ellipse 80% 55% at 50% 115%, rgba(160, 0, 0, 0.55) 0%, transparent 65%),
+    /* Top-right directional accent */
+    radial-gradient(ellipse 50% 35% at 100% 0%, rgba(180, 0, 0, 0.18) 0%, transparent 70%),
+    /* P5MainMenu ghost art */
     url('/img/Additional_optional_backgrounds/Persona5MainMenuPNG.png') right center / 65% auto no-repeat,
-    /* 6. Base colour */
     #040000;
 }
 
@@ -1137,19 +1135,18 @@ h4 { font-size: 1.3rem; }
   gap: 1rem;
 }
 
+/* ── Base card — expandable, P5-styled ── */
 .persona-card {
   position: relative;
-  display: grid;
-  gap: 0.75rem;
-  min-height: 14rem;
-  padding: 1.2rem;
   overflow: hidden;
-  background: rgba(0,0,0,0.85);
-  border: 2px solid rgba(255,255,255,0.15);
+  background: rgba(0, 0, 0, 0.85);
+  border: 2px solid rgba(255, 255, 255, 0.12);
   clip-path: polygon(0 0, calc(100% - 2rem) 0, 100% 1.8rem, 100% 100%, 1.8rem 100%, 0 calc(100% - 1.8rem));
-  transition: transform 170ms ease, border-color 170ms linear;
+  /* Chromatic-aberration inspired hover: adapted from vue_persona_ui p5-hover-animation-mix */
+  transition: border-color 160ms linear, box-shadow 160ms ease;
 }
 
+/* Red left-edge accent bar */
 .persona-card::before {
   content: '';
   position: absolute;
@@ -1158,42 +1155,163 @@ h4 { font-size: 1.3rem; }
   bottom: 0;
   width: 4px;
   background: linear-gradient(180deg, var(--p5-red), var(--p5-dark-red));
+  z-index: 1;
+}
+
+/* Red ghost layer — slides offset on hover (adapted P5 chromatic aberration) */
+.persona-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(204, 0, 0, 0.07);
+  transform: translate(0, 0);
+  opacity: 0;
+  transition: transform 220ms ease, opacity 220ms ease;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .persona-card:hover {
-  transform: translate(0.4rem, -0.5rem);
   border-color: rgba(255, 60, 60, 0.4);
   box-shadow: 0 8px 32px rgba(180, 0, 0, 0.28);
+}
+
+.persona-card:hover::after {
+  transform: translate(4px, -3px);
+  opacity: 1;
+}
+
+/* Expanded state — brighter border */
+.persona-card--open {
+  border-color: rgba(255, 60, 60, 0.5);
+}
+
+/* ── Toggle button — fills card header area ── */
+.card-toggle {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 1.2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  margin-bottom: 0.2rem;
 }
 
 .card-header h3 {
   font-family: var(--p5-font);
   text-transform: uppercase;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.card-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  margin-left: 0.5rem;
 }
 
 .card-number {
   font-family: var(--p5-font);
-  font-size: 0.8rem;
-  color: rgba(255,255,255,0.4);
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.35);
 }
 
-.card-body p {
+.card-chevron {
+  font-size: 1rem;
+  color: var(--p5-red);
+  display: inline-block;
+  line-height: 1;
+}
+
+.card-company {
+  font-family: var(--p5-font);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 0.5rem;
+}
+
+.card-summary {
   font-family: var(--p5-font-body);
-  color: rgba(255,255,255,0.7);
-  font-size: 0.9rem;
-  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  margin-bottom: 0.6rem;
 }
 
 .card-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
+}
+
+/* ── Expanded detail section ── */
+.card-detail-inner {
+  padding: 0 1.2rem 1.2rem;
+  display: grid;
+  gap: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding-top: 0.85rem;
+  margin-top: 0.1rem;
+}
+
+.card-description {
+  font-family: var(--p5-font-body);
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.65;
+}
+
+.card-outcome {
+  background: rgba(180, 0, 0, 0.12);
+  border-left: 3px solid var(--p5-red);
+  padding: 0.6rem 0.75rem;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.card-outcome-label {
+  font-family: var(--p5-font);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--p5-red);
+}
+
+.card-outcome p {
+  font-family: var(--p5-font-body);
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.5;
+}
+
+.card-link {
+  font-family: var(--p5-font);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--p5-red);
+  text-decoration: none;
+  display: inline-block;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid rgba(204, 0, 0, 0.4);
+  transition: color 150ms, border-color 150ms;
+}
+
+.card-link:hover {
+  color: #ff3333;
+  border-color: #ff3333;
 }
 
 .p5-tag {
@@ -1719,5 +1837,104 @@ h4 { font-size: 1.3rem; }
 
   .mission-org {
     font-size: 1rem;
+  }
+}
+
+/* ============================================================
+   34. CONTACT PAGE — CALLING CARD STAR DECORATIONS
+   Inspired by p5ausa.com's geometric star-burst background motif.
+   Large 5-pointed stars positioned at corners, pulsing at different
+   rates and rotations to create layered depth without motion noise.
+   ============================================================ */
+.contact-deco {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+/* 5-pointed star clip-path shared across all star variants */
+.contact-star {
+  position: absolute;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+/* Large star — bottom-left, slow pulse */
+.contact-star--lg {
+  bottom: -12%;
+  left: -8%;
+  width: clamp(280px, 45vw, 580px);
+  height: clamp(280px, 45vw, 580px);
+  background: radial-gradient(ellipse at 50% 50%,
+    rgba(200, 0, 0, 0.22) 0%,
+    rgba(140, 0, 0, 0.10) 45%,
+    transparent 72%
+  );
+  transform: rotate(-12deg);
+  animation: star-breathe-lg 7s ease-in-out infinite;
+}
+
+/* Medium star — top-right, slightly faster, different phase */
+.contact-star--md {
+  top: -6%;
+  right: -6%;
+  width: clamp(180px, 28vw, 340px);
+  height: clamp(180px, 28vw, 340px);
+  background: radial-gradient(ellipse at 50% 50%,
+    rgba(180, 0, 0, 0.18) 0%,
+    rgba(120, 0, 0, 0.07) 45%,
+    transparent 70%
+  );
+  transform: rotate(22deg);
+  animation: star-breathe-md 5.5s ease-in-out infinite;
+  animation-delay: -2s;
+}
+
+/* Small star — upper-left third, quickest pulse */
+.contact-star--sm {
+  top: 22%;
+  left: 6%;
+  width: clamp(80px, 12vw, 140px);
+  height: clamp(80px, 12vw, 140px);
+  background: rgba(180, 0, 0, 0.18);
+  transform: rotate(8deg);
+  animation: star-breathe-sm 4s ease-in-out infinite;
+  animation-delay: -1s;
+}
+
+/* Diagonal red accent band — evokes the P5 UI slash motif */
+.contact-band {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    -32deg,
+    transparent 0%,
+    transparent 35%,
+    rgba(155, 0, 0, 0.07) 35%,
+    rgba(155, 0, 0, 0.07) 40%,
+    transparent 40%
+  );
+}
+
+@keyframes star-breathe-lg {
+  0%, 100% { transform: rotate(-12deg) scale(0.92); opacity: 0.75; }
+  50%       { transform: rotate(-12deg) scale(1.06); opacity: 1;    }
+}
+
+@keyframes star-breathe-md {
+  0%, 100% { transform: rotate(22deg) scale(1.06); opacity: 0.65; }
+  50%       { transform: rotate(22deg) scale(0.91); opacity: 0.95; }
+}
+
+@keyframes star-breathe-sm {
+  0%, 100% { transform: rotate(8deg) scale(0.88); opacity: 0.55; }
+  50%       { transform: rotate(8deg) scale(1.12); opacity: 0.85; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-star,
+  .contact-band {
+    animation: none;
   }
 }

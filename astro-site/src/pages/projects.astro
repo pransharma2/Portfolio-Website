@@ -1,49 +1,21 @@
 ---
+/**
+ * projects.astro — layout shell only.
+ *
+ * TO UPDATE PROJECT CONTENT (text, tags, outcomes):
+ *   → Edit src/data/projects.ts  ← that's the only file you need.
+ *
+ * TO CHANGE CARD LAYOUT / ADD NEW SECTIONS:
+ *   → Edit this file or ProjectCard.tsx.
+ */
 import Layout from '../layouts/Layout.astro';
 import StarPatternCanvas from '../components/StarPatternCanvas';
-
-const projects = [
-  {
-    number: '001',
-    title: 'Data Pipeline Monitor',
-    description: 'Power BI app monitoring Suncor\'s orchestration tools — pipeline statuses, Iceberg table refreshes, triggers, Snowflake query history — pulling from Log Analytics Workspaces across source-to-bronze, bronze-to-silver, and silver-to-gold layers.',
-    tags: ['Power BI', 'Azure', 'Snowflake', 'Log Analytics'],
-  },
-  {
-    number: '002',
-    title: 'Dim/Fact Automation',
-    description: 'Reusable automation scripts (Python to Streamlit app) enabling any project team to accelerate Snowflake migration. Saves $550 per object and ~3 hours per build.',
-    tags: ['Python', 'Streamlit', 'Snowflake', 'Automation'],
-  },
-  {
-    number: '003',
-    title: 'SAP Migration Pipeline',
-    description: 'Shifted ingestion of 400 SAP tables from SLT to Datasphere by upgrading orchestration tooling, driving 300K+ in annual savings.',
-    tags: ['SAP', 'Azure Data Factory', 'ETL'],
-  },
-  {
-    number: '004',
-    title: 'IoT Data Ingestion',
-    description: 'Azure Data Factory pipelines for Otodata and DXFleet source systems (IoT fuel tank & fleet vehicle data) with dynamic pagination and batching logic.',
-    tags: ['ADF', 'IoT', 'REST API', 'Pipelines'],
-  },
-  {
-    number: '005',
-    title: 'Incident Automation',
-    description: 'PBI reports consolidating pipeline failures across data factories using Log Analytics, then automating incident ticket generation in ServiceNow to shift team focus from triaging to troubleshooting.',
-    tags: ['Power BI', 'ServiceNow', 'Automation'],
-  },
-  {
-    number: '006',
-    title: 'DS&ML Club Workshops',
-    description: 'Interactive workshops for 50+ students per session covering neural networks, data engineering, and cloud analytics. 90%+ satisfaction ratings with incentive-based engagement programs.',
-    tags: ['Teaching', 'Data Science', 'Machine Learning'],
-  },
-];
+import ProjectCard from '../components/ProjectCard';
+import { projects } from '../data/projects';
 ---
 
 <Layout title="Projects — Persona Compendium" page="projects">
-  <!-- WebGL star-field — faithful port of BuyMyBeard/StarPattern, loads after page is idle -->
+  <!-- WebGL star-field -->
   <StarPatternCanvas client:idle />
 
   <!-- Page Banner -->
@@ -52,20 +24,7 @@ const projects = [
   <div class="compendium-page">
     <div class="compendium-grid">
       {projects.map((project) => (
-        <article class="persona-card">
-          <div class="card-header">
-            <h3>{project.title}</h3>
-            <span class="card-number">No. {project.number}</span>
-          </div>
-          <div class="card-body">
-            <p>{project.description}</p>
-          </div>
-          <div class="card-tags">
-            {project.tags.map((tag) => (
-              <span class="p5-tag">{tag}</span>
-            ))}
-          </div>
-        </article>
+        <ProjectCard client:load project={project} />
       ))}
     </div>
   </div>
