@@ -1329,6 +1329,8 @@ h4 { font-size: 1.3rem; }
    24. CONTACT / CHAT
    ============================================================ */
 .chat-page {
+  position: relative;
+  z-index: 2;
   display: grid;
   gap: 1.5rem;
   padding: 1rem;
@@ -1841,100 +1843,77 @@ h4 { font-size: 1.3rem; }
 }
 
 /* ============================================================
-   34. CONTACT PAGE — CALLING CARD STAR DECORATIONS
-   Inspired by p5ausa.com's geometric star-burst background motif.
-   Large 5-pointed stars positioned at corners, pulsing at different
-   rates and rotations to create layered depth without motion noise.
+   34. CONTACT PAGE — STATIC STAR DECORATIONS
+   Recreates the CSS static star layer from p5ausa.com.
+
+   p5ausa uses star PNG images (6 size variants, 257px → 29px) positioned
+   at various points and animated with a bounce-scale entrance keyframe.
+   We use: the project's star-white.png (copied from vue_persona_ui, 26×25px)
+   for small/medium stars where soft rendering works, and clip-path polygon
+   for the large accent star where crispness matters.
+
+   star_in keyframe: exact copy from p5ausa common.css
    ============================================================ */
-.contact-deco {
+
+/* ── star_in: exact p5ausa bounce-pop entrance ── */
+@keyframes star_in {
+  0%   { transform: scale(0.001); opacity: 0;   }
+  30%  { transform: scale(1.2);   opacity: 1;   }
+  60%  { transform: scale(0.96);                }
+  80%  { transform: scale(1.03);                }
+  100% { transform: scale(1);                   }
+}
+
+/* Container — fixed, full viewport, pointer-events none, above canvas */
+.cstars {
   position: fixed;
   inset: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
   pointer-events: none;
-  z-index: -1;
+  z-index: 1;
   overflow: hidden;
 }
 
-/* 5-pointed star clip-path shared across all star variants */
-.contact-star {
+/* Base star — white 5-pointed shape using star-white.png */
+.cstar {
   position: absolute;
-  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  background: url('/img/star-white.png') center / contain no-repeat;
+  /* Crisp upscale on a pixel-art PNG */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  animation: star_in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  opacity: 0.9;
 }
 
-/* Large star — bottom-left, slow pulse */
-.contact-star--lg {
-  bottom: -12%;
-  left: -8%;
-  width: clamp(280px, 45vw, 580px);
-  height: clamp(280px, 45vw, 580px);
-  background: radial-gradient(ellipse at 50% 50%,
-    rgba(200, 0, 0, 0.22) 0%,
-    rgba(140, 0, 0, 0.10) 45%,
-    transparent 72%
-  );
-  transform: rotate(-12deg);
-  animation: star-breathe-lg 7s ease-in-out infinite;
-}
+/* ── Size variants (mirrors p5ausa 01–06.png sizes) ── */
+.sz-xl { width: 90px;  height: 90px;  }   /* ~ 01.png 257→90 scaled */
+.sz-lg { width: 60px;  height: 60px;  }   /* ~ 02.png 180 */
+.sz-md { width: 38px;  height: 38px;  }   /* ~ 03.png 104 */
+.sz-sm { width: 24px;  height: 24px;  }   /* ~ 04.png 53  */
+.sz-xs { width: 16px;  height: 16px;  }   /* ~ 05/06.png 29 */
 
-/* Medium star — top-right, slightly faster, different phase */
-.contact-star--md {
-  top: -6%;
-  right: -6%;
-  width: clamp(180px, 28vw, 340px);
-  height: clamp(180px, 28vw, 340px);
-  background: radial-gradient(ellipse at 50% 50%,
-    rgba(180, 0, 0, 0.18) 0%,
-    rgba(120, 0, 0, 0.07) 45%,
-    transparent 70%
-  );
-  transform: rotate(22deg);
-  animation: star-breathe-md 5.5s ease-in-out infinite;
-  animation-delay: -2s;
-}
-
-/* Small star — upper-left third, quickest pulse */
-.contact-star--sm {
-  top: 22%;
-  left: 6%;
-  width: clamp(80px, 12vw, 140px);
-  height: clamp(80px, 12vw, 140px);
-  background: rgba(180, 0, 0, 0.18);
-  transform: rotate(8deg);
-  animation: star-breathe-sm 4s ease-in-out infinite;
-  animation-delay: -1s;
-}
-
-/* Diagonal red accent band — evokes the P5 UI slash motif */
-.contact-band {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    -32deg,
-    transparent 0%,
-    transparent 35%,
-    rgba(155, 0, 0, 0.07) 35%,
-    rgba(155, 0, 0, 0.07) 40%,
-    transparent 40%
-  );
-}
-
-@keyframes star-breathe-lg {
-  0%, 100% { transform: rotate(-12deg) scale(0.92); opacity: 0.75; }
-  50%       { transform: rotate(-12deg) scale(1.06); opacity: 1;    }
-}
-
-@keyframes star-breathe-md {
-  0%, 100% { transform: rotate(22deg) scale(1.06); opacity: 0.65; }
-  50%       { transform: rotate(22deg) scale(0.91); opacity: 0.95; }
-}
-
-@keyframes star-breathe-sm {
-  0%, 100% { transform: rotate(8deg) scale(0.88); opacity: 0.55; }
-  50%       { transform: rotate(8deg) scale(1.12); opacity: 0.85; }
-}
+/* ── Positions: scattered across the viewport like p5ausa's nth-child layout ── */
+/* p5ausa positions stars at -12% to -20% left/right (partially off-screen)    */
+.pos-1  { top:  8%;  left:  -2%;  animation-delay: 0.10s; }
+.pos-2  { top: 72%;  right: -3%;  animation-delay: 0.18s; }
+.pos-3  { top: 15%;  right:  5%;  animation-delay: 0.22s; }
+.pos-4  { top: 85%;  left:  10%;  animation-delay: 0.28s; }
+.pos-5  { top: 30%;  right: 18%;  animation-delay: 0.33s; }
+.pos-6  { top:  2%;  right: 42%;  animation-delay: 0.38s; }
+.pos-7  { top: 58%;  left:   1%;  animation-delay: 0.42s; }
+.pos-8  { top: 90%;  right: 30%;  animation-delay: 0.46s; }
+.pos-9  { top: 45%;  right:  0%;  animation-delay: 0.52s; }
+.pos-10 { top: 20%;  left:  22%;  animation-delay: 0.56s; }
+.pos-11 { top: 65%;  right: 12%;  animation-delay: 0.60s; }
+.pos-12 { top:  5%;  left:  48%;  animation-delay: 0.65s; }
 
 @media (prefers-reduced-motion: reduce) {
-  .contact-star,
-  .contact-band {
-    animation: none;
-  }
+  .cstar { animation: none; opacity: 0.6; }
+}
+
+@media (max-width: 640px) {
+  /* Reduce star count on mobile by hiding some */
+  .pos-5, .pos-6, .pos-9, .pos-10, .pos-11, .pos-12 { display: none; }
 }
