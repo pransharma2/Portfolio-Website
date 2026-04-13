@@ -1,0 +1,31 @@
+---
+/**
+ * projects.astro — layout shell only.
+ *
+ * TO UPDATE PROJECT CONTENT (text, tags, outcomes):
+ *   → Edit src/data/projects.ts  ← that's the only file you need.
+ *
+ * TO CHANGE CARD LAYOUT / ADD NEW SECTIONS:
+ *   → Edit this file or ProjectCard.tsx.
+ */
+import Layout from '../layouts/Layout.astro';
+import StarPatternCanvas from '../components/StarPatternCanvas';
+import ProjectCard from '../components/ProjectCard';
+import { projects } from '../data/projects';
+---
+
+<Layout title="Projects — Persona Compendium" page="projects">
+  <!-- WebGL star-field -->
+  <StarPatternCanvas client:idle />
+
+  <!-- Page Banner -->
+  <div class="page-banner">Persona Compendium</div>
+
+  <div class="compendium-page">
+    <div class="compendium-grid">
+      {projects.map((project) => (
+        <ProjectCard client:load project={project} />
+      ))}
+    </div>
+  </div>
+</Layout>
