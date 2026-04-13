@@ -4,9 +4,7 @@ import JokerCutIn from '../components/JokerCutIn';
 import WeatherWidget from '../components/WeatherWidget';
 import ProofStrip from '../components/ProofStrip';
 import TextReveal from '../components/TextReveal';
-import WorkshopSection from '../components/WorkshopSection';
 import { impactMetrics } from '../data/metrics';
-import { workshops } from '../data/workshops';
 ---
 
 <Layout title="Home — Phantom Dev Portfolio" page="home">
@@ -28,6 +26,14 @@ import { workshops } from '../data/workshops';
 
     <div class="hero-inner">
       <div class="hero-title-card">
+        <!-- Joker mask accent (Part 7) -->
+        <img
+          src="/img/jokersmask.png"
+          alt=""
+          class="hero-mask-accent"
+          loading="lazy"
+          aria-hidden="true"
+        />
         <h1>Prantap's Portfolio</h1>
         <p class="hero-sub">Take Your Heart &mdash; enter the Metaverse of my work.</p>
       </div>
@@ -55,9 +61,6 @@ import { workshops } from '../data/workshops';
     Impact at a Glance
   </TextReveal>
   <ProofStrip client:idle metrics={impactMetrics} />
-
-  <!-- Featured workshops preview -->
-  <WorkshopSection client:idle workshops={workshops} />
 
   <!-- Joker cut-in intro animation (once per session) -->
   <JokerCutIn client:load />

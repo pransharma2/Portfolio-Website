@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ContactCanvas from '../components/ContactCanvas';
-import MagneticHover from '../components/MagneticHover';
+import ContactForm from '../components/ContactForm';
 import TextReveal from '../components/TextReveal';
 ---
 
@@ -66,44 +66,8 @@ import TextReveal from '../components/TextReveal';
         </div>
       </div>
 
-      <!-- Contact Form -->
-      <form class="chat-form" action="#" method="post">
-        <div class="form-row">
-          <label for="contact-name">Name</label>
-          <input
-            type="text"
-            id="contact-name"
-            name="name"
-            placeholder="Your codename..."
-            required
-            autocomplete="name"
-          />
-        </div>
-        <div class="form-row">
-          <label for="contact-email">Email</label>
-          <input
-            type="email"
-            id="contact-email"
-            name="email"
-            placeholder="phantom@example.com"
-            required
-            autocomplete="email"
-          />
-        </div>
-        <div class="form-row">
-          <label for="contact-message">Message</label>
-          <textarea
-            id="contact-message"
-            name="message"
-            placeholder="Write your calling card..."
-            rows="4"
-            required
-          ></textarea>
-        </div>
-        <MagneticHover client:load strength={8}>
-          <button type="submit" class="p5-send-btn">Send Calling Card</button>
-        </MagneticHover>
-      </form>
+      <!-- Functional Contact Form (Web3Forms) -->
+      <ContactForm client:load />
     </div>
   </div>
 </Layout>

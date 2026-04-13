@@ -35,10 +35,21 @@ export interface Project {
   /** Featured project — shown larger / highlighted. */
   featured?: boolean;
   /** Grouping category for potential filtering. */
-  category?: 'data-engineering' | 'automation' | 'analytics' | 'teaching' | 'web';
+  category?: 'data-engineering' | 'automation' | 'analytics' | 'teaching' | 'web' | 'workshops';
   /** Project status. */
   status?: 'completed' | 'in-progress' | 'ongoing';
 }
+
+/** All filter categories shown in the UI. */
+export const CATEGORY_LABELS: Record<string, string> = {
+  all: 'All',
+  'data-engineering': 'Engineering',
+  automation: 'Automation',
+  analytics: 'Analytics',
+  workshops: 'Workshops',
+  teaching: 'Teaching',
+  web: 'Web',
+};
 
 export const projects: Project[] = [
   {
@@ -121,5 +132,58 @@ export const projects: Project[] = [
     tags: ['Teaching', 'Data Science', 'Machine Learning', 'Python', 'Cloud Analytics'],
     category: 'teaching',
     status: 'ongoing',
+  },
+  // ── Workshop archive (migrated from homepage WorkshopSection) ──
+  {
+    number: 'W01',
+    title: 'Neural Networks from Scratch',
+    company: 'UCalgary — DS&ML Club',
+    role: 'Workshop Lead',
+    summary: 'Live-coding a neural network from scratch in Python — forward pass, backpropagation, gradient descent — then connecting it to PyTorch.',
+    description:
+      'Walked through building a neural network from scratch in Python — forward pass, backpropagation, gradient descent — then connected it to PyTorch for comparison. Focused on intuition over math notation.',
+    outcome: '55+ attendees. Focused on intuition over math notation.',
+    tags: ['Python', 'NumPy', 'PyTorch', 'Jupyter'],
+    category: 'workshops',
+    status: 'completed',
+  },
+  {
+    number: 'W02',
+    title: 'Cloud Data Engineering 101',
+    company: 'UCalgary — DS&ML Club',
+    role: 'Workshop Lead',
+    summary: 'End-to-end data journey in the cloud — ingestion, transformation, storage, orchestration — with a live ADF-to-Snowflake demo.',
+    description:
+      'Covered the end-to-end journey of data in the cloud — ingestion, transformation, storage, and orchestration. Live demo of an Azure Data Factory pipeline pulling from a REST API into a Snowflake warehouse.',
+    outcome: '50+ attendees. Live demo of an Azure Data Factory pipeline pulling from a REST API into Snowflake.',
+    tags: ['Azure', 'Snowflake', 'Data Factory', 'SQL'],
+    category: 'workshops',
+    status: 'completed',
+  },
+  {
+    number: 'W03',
+    title: 'SQL for Data Science',
+    company: 'UCalgary — DS&ML Club',
+    role: 'Workshop Lead',
+    summary: 'Hands-on lab covering window functions, CTEs, aggregation patterns, and real analytical queries on a shared dataset.',
+    description:
+      'Interactive session covering window functions, CTEs, aggregation patterns, and real analytical queries. Students worked through exercises on a shared dataset, building from basic selects to complex multi-step analyses.',
+    outcome: '60+ attendees. Students built from basic selects to complex multi-step analyses.',
+    tags: ['SQL', 'PostgreSQL', 'DBeaver'],
+    category: 'workshops',
+    status: 'completed',
+  },
+  {
+    number: 'W04',
+    title: 'Python for ML Workflows',
+    company: 'UCalgary — DS&ML Club',
+    role: 'Workshop Lead',
+    summary: 'End-to-end ML workflow — data cleaning, feature engineering, model training with scikit-learn, evaluation, and serialization.',
+    description:
+      'End-to-end ML workflow in Python — data cleaning with pandas, feature engineering, model training with scikit-learn, evaluation metrics, and model serialization. Emphasized reproducibility and clean notebook structure.',
+    outcome: '45+ attendees. Emphasized reproducibility and clean notebook structure.',
+    tags: ['Python', 'pandas', 'scikit-learn', 'Jupyter'],
+    category: 'workshops',
+    status: 'completed',
   },
 ];

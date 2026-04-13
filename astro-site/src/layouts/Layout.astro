@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import SoundToggle from '../components/SoundToggle';
+import ThemeToggle from '../components/ThemeToggle';
 import PageTransition from '../components/PageTransition';
 
 interface Props {
@@ -32,6 +33,17 @@ const navLinks = [
       href="https://fonts.googleapis.com/css2?family=Arsenal:ital,wght@0,400;0,700;1,400;1,700&family=Bebas+Neue&family=Fjalla+One&display=swap"
       rel="stylesheet"
     />
+    <!-- Anti-flash: set theme before paint -->
+    <script is:inline>
+      (function(){
+        var t = 'dark';
+        try { t = localStorage.getItem('theme') || t; } catch(e){}
+        if (t !== 'dark' && t !== 'light') {
+          t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
     <title>{title}</title>
   </head>
 
@@ -112,8 +124,9 @@ const navLinks = [
       </div>
     </footer>
 
-    <!-- Fixed UI: sound toggle -->
-    <div class="p5-sound-toggle-wrapper">
+    <!-- Fixed UI: sound toggle + theme toggle -->
+    <div class="p5-fixed-controls">
+      <ThemeToggle client:load />
       <SoundToggle client:load />
     </div>
 
