@@ -1,6 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ContactCanvas from '../components/ContactCanvas';
+import MagneticHover from '../components/MagneticHover';
+import TextReveal from '../components/TextReveal';
 ---
 
 <Layout title="Contact — Send a Calling Card" page="contact">
@@ -9,7 +11,7 @@ import ContactCanvas from '../components/ContactCanvas';
     Layer order (low → high):
       body::before  z-index: -1  Dark overlay + P5 ghost art
       ContactCanvas z-index:  0  Canvas sparkle particles (p5ausa recreation)
-      .cstars       z-index:  1  Static star PNGs with bounce-in
+      .cstars       z-index:  1  Static star PNGs with bounce-in (parallax layers)
       .page-banner  z-index:  2  Page title
       .chat-page    z-index:  2  Contact form
   -->
@@ -17,25 +19,31 @@ import ContactCanvas from '../components/ContactCanvas';
   <!-- Canvas particle sparkle (faithful recreation of p5ausa.com's particle system) -->
   <ContactCanvas client:load />
 
-  <!-- Static star decorations — bounce-in animation matching p5ausa star_in keyframe -->
-  <!-- Sizes mirror the 6 size variants used on p5ausa: 01.png(257px) down to 06.png(29px) -->
-  <ul class="cstars" aria-hidden="true">
+  <!-- Static star decorations — split into depth layers for parallax -->
+  <ul class="cstars cstars--back" aria-hidden="true">
     <li class="cstar sz-xl pos-1"></li>
+    <li class="cstar sz-md pos-4"></li>
+    <li class="cstar sz-xs pos-9"></li>
+    <li class="cstar sz-xs pos-12"></li>
+  </ul>
+  <ul class="cstars cstars--front" aria-hidden="true">
     <li class="cstar sz-lg pos-2"></li>
     <li class="cstar sz-lg pos-3"></li>
-    <li class="cstar sz-md pos-4"></li>
     <li class="cstar sz-md pos-5"></li>
     <li class="cstar sz-sm pos-6"></li>
     <li class="cstar sz-sm pos-7"></li>
     <li class="cstar sz-sm pos-8"></li>
-    <li class="cstar sz-xs pos-9"></li>
     <li class="cstar sz-xs pos-10"></li>
     <li class="cstar sz-xs pos-11"></li>
-    <li class="cstar sz-xs pos-12"></li>
   </ul>
 
-  <!-- Page Banner -->
-  <div class="page-banner" style="position:relative;z-index:2;">Calling Card</div>
+  <!-- Page Banner with TextReveal -->
+  <div style="position:relative;z-index:2;text-align:center;padding-top:6rem;">
+    <TextReveal client:load tag="h2" className="contact-heading">
+      Calling Card
+    </TextReveal>
+    <p class="contact-subtitle">Got something on your mind? Let's connect.</p>
+  </div>
 
   <div class="chat-page">
     <div class="phone-frame">
@@ -92,7 +100,9 @@ import ContactCanvas from '../components/ContactCanvas';
             required
           ></textarea>
         </div>
-        <button type="submit" class="p5-send-btn">Send Calling Card</button>
+        <MagneticHover client:load strength={8}>
+          <button type="submit" class="p5-send-btn">Send Calling Card</button>
+        </MagneticHover>
       </form>
     </div>
   </div>

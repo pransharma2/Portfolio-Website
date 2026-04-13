@@ -6,11 +6,11 @@
  *   → Edit src/data/projects.ts  ← that's the only file you need.
  *
  * TO CHANGE CARD LAYOUT / ADD NEW SECTIONS:
- *   → Edit this file or ProjectCard.tsx.
+ *   → Edit this file or ProjectCard.tsx / ProjectModal.tsx.
  */
 import Layout from '../layouts/Layout.astro';
 import StarPatternCanvas from '../components/StarPatternCanvas';
-import ProjectCard from '../components/ProjectCard';
+import ProjectGrid from '../components/ProjectGrid';
 import { projects } from '../data/projects';
 ---
 
@@ -22,10 +22,6 @@ import { projects } from '../data/projects';
   <div class="page-banner">Persona Compendium</div>
 
   <div class="compendium-page">
-    <div class="compendium-grid">
-      {projects.map((project) => (
-        <ProjectCard client:load project={project} />
-      ))}
-    </div>
+    <ProjectGrid client:load projects={projects} />
   </div>
 </Layout>

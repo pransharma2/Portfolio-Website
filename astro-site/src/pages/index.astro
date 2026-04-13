@@ -2,6 +2,11 @@
 import Layout from '../layouts/Layout.astro';
 import JokerCutIn from '../components/JokerCutIn';
 import WeatherWidget from '../components/WeatherWidget';
+import ProofStrip from '../components/ProofStrip';
+import TextReveal from '../components/TextReveal';
+import WorkshopSection from '../components/WorkshopSection';
+import { impactMetrics } from '../data/metrics';
+import { workshops } from '../data/workshops';
 ---
 
 <Layout title="Home — Phantom Dev Portfolio" page="home">
@@ -44,6 +49,15 @@ import WeatherWidget from '../components/WeatherWidget';
       </nav>
     </div>
   </section>
+
+  <!-- Impact proof strip — hard numbers -->
+  <TextReveal client:idle tag="h2" className="proof-strip-heading">
+    Impact at a Glance
+  </TextReveal>
+  <ProofStrip client:idle metrics={impactMetrics} />
+
+  <!-- Featured workshops preview -->
+  <WorkshopSection client:idle workshops={workshops} />
 
   <!-- Joker cut-in intro animation (once per session) -->
   <JokerCutIn client:load />
