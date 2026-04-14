@@ -14,6 +14,7 @@ import type { FormEvent } from 'react';
 type FormState = 'idle' | 'sending' | 'success' | 'error';
 
 const ACCESS_KEY = (import.meta as Record<string, any>).env?.PUBLIC_WEB3FORMS_KEY ?? '';
+const KEY_MISSING = !ACCESS_KEY || ACCESS_KEY === 'your_access_key_here';
 
 export default function ContactForm() {
   const [state, setState] = useState<FormState>('idle');
@@ -23,9 +24,14 @@ export default function ContactForm() {
     e.preventDefault();
     if (state === 'sending') return;
 
+    if (KEY_MISSING) {
+      setState('error');
+      setErrorMsg('Contact form is not configured yet. Please set PUBLIC_WEB3FORMS_KEY in .env.');
+      return;
+    }
+
     const form = e.currentTarget;
     const data = new FormData(form);
-    data.append('access_key', ACCESS_KEY);
 
     setState('sending');
     setErrorMsg('');
@@ -65,6 +71,12 @@ export default function ContactForm() {
       )}
 
       <form className="chat-form" onSubmit={handleSubmit}>
+        {/* Web3Forms access key — must be a hidden field in the form */}
+        <input type="hidden" name="access_key" value={ACCESS_KEY} />
+        {/* Subject line for the email */}
+        <input type="hidden" name="subject" value="New Contact from Portfolio" />
+        {/* Send from name */}
+        <input type="hidden" name="from_name" value="Portfolio Contact Form" />
         {/* Honeypot spam field (hidden from users, caught by Web3Forms) */}
         <input type="checkbox" name="botcheck" className="sr-only" tabIndex={-1} autoComplete="off" />
 

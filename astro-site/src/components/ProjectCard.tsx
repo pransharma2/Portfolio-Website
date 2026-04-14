@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { memo } from 'react';
 import type { Project } from '../data/projects';
 
 interface Props {
@@ -6,13 +6,10 @@ interface Props {
   onClick: () => void;
 }
 
-export default function ProjectCard({ project, onClick }: Props) {
+function ProjectCard({ project, onClick }: Props) {
   return (
-    <motion.article
+    <article
       className={`persona-card${project.featured ? ' persona-card--featured' : ''}`}
-      layout
-      transition={{ duration: 0.32, ease: [0.76, 0, 0.24, 1] }}
-      whileHover={{ y: -4 }}
     >
       <button
         className="card-toggle"
@@ -42,6 +39,8 @@ export default function ProjectCard({ project, onClick }: Props) {
           </span>
         )}
       </button>
-    </motion.article>
+    </article>
   );
 }
+
+export default memo(ProjectCard);

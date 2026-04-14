@@ -1,100 +1,192 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
 /**
- * JokerCutIn — plays once per session on the home page.
- * Full-screen red overlay with Joker slide-in + "Take Your Heart" text.
- * Mirrors the original p5-intro animation from the Flask version.
- * Skipped entirely when prefers-reduced-motion is set.
+ * JokerCutIn — Persona 5 day-progression cinematic intro.
+ *
+ * Plays once per session on home page load (hard refresh / first visit).
+ * Inspired by the Unity recreation at:
+ *   github.com/Jack-Pettigrew/Persona-5-Day-Progression
+ *
+ * Three phases (~1.6s total):
+ *   Phase 1 (0–300ms):   Black angular panels sweep in from both sides
+ *   Phase 2 (300–1200ms): Date stamp — bold weekday, month/day, red accents
+ *   Phase 3 (1200–1600ms): Panels sweep out, reveal page
+ *
+ * Respects prefers-reduced-motion. Uses sessionStorage for once-per-session.
  */
+
+const MONTHS = [
+  'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
+  'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC',
+] as const;
+
+const WEEKDAYS = [
+  'SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY',
+  'THURSDAY', 'FRIDAY', 'SATURDAY',
+] as const;
+
+const EASE_SHARP: [number, number, number, number] = [0.76, 0, 0.24, 1];
+const EASE_OUT: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
+/** Total animation duration in ms */
+const TOTAL_MS = 1600;
+/** Delay before showing the intro (wait for page-reveal overlay) */
+const START_DELAY_MS = 400;
+
+function getDateParts() {
+  const now = new Date();
+  return {
+    month: MONTHS[now.getMonth()],
+    day: now.getDate(),
+    weekday: WEEKDAYS[now.getDay()],
+  };
+}
+
 export default function JokerCutIn() {
-  const [active, setActive] = useState(false);
+  const [phase, setPhase] = useState<'idle' | 'cover' | 'stamp' | 'exit' | 'done'>('idle');
+  const date = useMemo(getDateParts, []);
 
   useEffect(() => {
-    // Skip if user prefers reduced motion
+    // Respect reduced motion
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    // Show only once per browser session
+    // Once per session
     if (sessionStorage.getItem('p5IntroSeen')) return;
 
-    // Delay start until page-reveal overlay has finished sweeping off (~650ms)
-    const showTimer = setTimeout(() => setActive(true), 680);
-    // Auto-dismiss after the full animation sequence completes (~2.5s after show)
-    const hideTimer = setTimeout(() => {
-      setActive(false);
-      sessionStorage.setItem('p5IntroSeen', '1');
-    }, 3200);
+    const timers: ReturnType<typeof setTimeout>[] = [];
 
-    return () => {
-      clearTimeout(showTimer);
-      clearTimeout(hideTimer);
-    };
+    // Phase 1: panels sweep in
+    timers.push(setTimeout(() => setPhase('cover'), START_DELAY_MS));
+
+    // Phase 2: show date stamp
+    timers.push(setTimeout(() => setPhase('stamp'), START_DELAY_MS + 300));
+
+    // Phase 3: sweep out
+    timers.push(setTimeout(() => setPhase('exit'), START_DELAY_MS + 1200));
+
+    // Done — unmount
+    timers.push(setTimeout(() => {
+      setPhase('done');
+      sessionStorage.setItem('p5IntroSeen', '1');
+    }, START_DELAY_MS + TOTAL_MS + 100));
+
+    return () => timers.forEach(clearTimeout);
   }, []);
 
+  if (phase === 'idle' || phase === 'done') return null;
+
+  const stampVisible = phase === 'stamp';
+  const exiting = phase === 'exit';
+
   return (
-    <AnimatePresence>
-      {active && (
-        <motion.div
-          className="p5-intro"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          aria-hidden="true"
-        >
-          {/* White inset border frame */}
-          <div className="p5-intro-frame" />
+    <div
+      className="day-prog"
+      aria-hidden="true"
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 9200,
+        pointerEvents: 'none',
+        overflow: 'hidden',
+      }}
+    >
+      {/* ── Left angular panel ── */}
+      <motion.div
+        className="day-prog__panel day-prog__panel--left"
+        initial={{ clipPath: 'polygon(0 0, 0 0, 0 100%, 0 100%)' }}
+        animate={
+          exiting
+            ? { clipPath: 'polygon(0 0, 0 0, 0 100%, 0 100%)' }
+            : { clipPath: 'polygon(0 0, 58% 0, 48% 100%, 0 100%)' }
+        }
+        transition={{
+          duration: exiting ? 0.28 : 0.26,
+          ease: EASE_SHARP,
+        }}
+      />
 
-          {/* Joker character cut-in */}
-          <motion.img
-            src="/img/joker-cutin.png"
-            className="p5-intro-joker"
-            alt=""
-            initial={{ opacity: 0, x: '-12%', y: '4%', rotate: -3 }}
-            animate={{ opacity: 1, x: 0, y: 0, rotate: 0 }}
-            exit={{ opacity: 0, x: '12%', y: '-4%', rotate: 3 }}
-            transition={{ duration: 0.4, delay: 0.15, ease: 'easeOut' }}
-          />
+      {/* ── Right angular panel ── */}
+      <motion.div
+        className="day-prog__panel day-prog__panel--right"
+        initial={{ clipPath: 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)' }}
+        animate={
+          exiting
+            ? { clipPath: 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)' }
+            : { clipPath: 'polygon(46% 0, 100% 0, 100% 100%, 36% 100%)' }
+        }
+        transition={{
+          duration: exiting ? 0.28 : 0.26,
+          ease: EASE_SHARP,
+        }}
+      />
 
-          {/* Cyan swoosh streak */}
+      {/* ── Red accent slash (between panels) ── */}
+      <motion.div
+        className="day-prog__slash"
+        initial={{ clipPath: 'polygon(50% 0, 50% 0, 50% 100%, 50% 100%)' }}
+        animate={
+          exiting
+            ? { clipPath: 'polygon(50% 0, 50% 0, 50% 100%, 50% 100%)' }
+            : { clipPath: 'polygon(46% 0, 58% 0, 48% 100%, 36% 100%)' }
+        }
+        transition={{
+          duration: exiting ? 0.2 : 0.22,
+          delay: exiting ? 0 : 0.06,
+          ease: EASE_SHARP,
+        }}
+      />
+
+      {/* ── Date stamp content ── */}
+      <AnimatePresence>
+        {stampVisible && (
           <motion.div
-            className="p5-intro-swoosh"
-            style={{ top: '47%' }}
-            initial={{ opacity: 0, x: '-6%' }}
-            animate={{ opacity: 1, x: '8%' }}
-            exit={{ opacity: 0, x: '28%' }}
-            transition={{ duration: 0.28, delay: 0.25 }}
+            className="day-prog__stamp"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
           >
-            <svg viewBox="0 0 800 24" preserveAspectRatio="none">
-              <rect width="800" height="24" fill="rgba(0,200,255,0.75)" />
-            </svg>
-          </motion.div>
+            {/* Weekday — large bold skewed text */}
+            <motion.div
+              className="day-prog__weekday"
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.25, ease: EASE_OUT }}
+            >
+              {date.weekday}
+            </motion.div>
 
-          {/* Red swoosh streak */}
-          <motion.div
-            className="p5-intro-swoosh"
-            style={{ top: '53%' }}
-            initial={{ opacity: 0, x: '-6%' }}
-            animate={{ opacity: 1, x: '8%' }}
-            exit={{ opacity: 0, x: '28%' }}
-            transition={{ duration: 0.28, delay: 0.32 }}
-          >
-            <svg viewBox="0 0 800 24" preserveAspectRatio="none">
-              <rect width="800" height="24" fill="rgba(255,20,0,0.85)" />
-            </svg>
-          </motion.div>
+            {/* Red accent bar */}
+            <motion.div
+              className="day-prog__bar"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.2, delay: 0.08, ease: EASE_SHARP }}
+            />
 
-          {/* "Take Your Heart" title card */}
-          <motion.div
-            className="p5-intro-text"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.28, delay: 0.45 }}
-          >
-            <span>Take Your Heart</span>
+            {/* Month + Day */}
+            <motion.div
+              className="day-prog__date"
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.25, delay: 0.1, ease: EASE_OUT }}
+            >
+              <span className="day-prog__month">{date.month}</span>
+              <span className="day-prog__day">{date.day}</span>
+            </motion.div>
+
+            {/* Decorative throwing knife accent */}
+            <motion.img
+              src="/img/p5-throwing-knife.png"
+              alt=""
+              className="day-prog__knife"
+              initial={{ opacity: 0, x: 60, rotate: -20 }}
+              animate={{ opacity: 0.7, x: 0, rotate: 0 }}
+              transition={{ duration: 0.3, delay: 0.15, ease: EASE_OUT }}
+            />
           </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
