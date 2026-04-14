@@ -233,14 +233,14 @@ export default function StarPatternCanvas() {
     const PHONE   = 300_000;
     const vol     = W * H;
     const gScale  = remap(vol, FULL_HD, PHONE, 1.0, 0.75);
-    const count   = Math.round(remap(vol, FULL_HD, PHONE, 50, 25));
+    const count   = Math.round(remap(vol, FULL_HD, PHONE, 80, 35));
 
     // Per-instance buffer: [cx, cy, rotation, scale, speed, offset] = 6 floats
     const STRIDE_F = 6;
     const instArr  = new Float32Array(count * STRIDE_F);
     for (let i = 0; i < count; i++) {
       const o    = i * STRIDE_F;
-      const sc   = (200 + Math.random() * 140) * gScale; // 200–340 px, matching reference
+      const sc   = (150 + Math.random() * 190) * gScale; // 150–340 px, wider range for variety
       instArr[o    ] = Math.random() * W;          // cx
       instArr[o + 1] = Math.random() * H;          // cy
       instArr[o + 2] = Math.random() * Math.PI * 2; // rotation (rad)

@@ -10,7 +10,7 @@
  *
  * Technical limits vs. the reference:
  *   - Cannot use p5ausa.com's proprietary particlejs_a.js or CreateJS directly.
- *   - Background JPGs (bg01–bg10.jpg) are Atlus-copyrighted and not usable.
+ *   - Background JPGs (bg01–bg10.jpg) are now used via ContactBgSlideshow.tsx.
  *   - Particle behaviour is recreated with vanilla Canvas2D + RAF — zero deps.
  *   - Visual result is functionally equivalent at the same 60fps emit rate.
  */
@@ -22,6 +22,8 @@ type Shape = 'star5' | 'star10' | 'sparkle';
 interface Particle {
   x: number;
   y: number;
+  driftX: number;
+  driftY: number;
   startScale: number;
   endScale: number;
   startAlpha: number;
@@ -122,6 +124,9 @@ export default function ContactCanvas() {
       return {
         x: Math.random() * canvas!.width,
         y: Math.random() * canvas!.height,
+        // Gentle drift: -0.15 to 0.15 px/frame — subtle floating movement
+        driftX: (Math.random() - 0.5) * 0.3,
+        driftY: (Math.random() - 0.5) * 0.3,
         startScale,
         endScale,
         startAlpha,
@@ -171,6 +176,8 @@ export default function ContactCanvas() {
 
         particles = particles.filter(p => {
           p.life++;
+          p.x += p.driftX;
+          p.y += p.driftY;
           if (p.life >= p.maxLife) return false;
           drawParticle(p);
           return true;

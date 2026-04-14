@@ -13,7 +13,7 @@ import type { FormEvent } from 'react';
 
 type FormState = 'idle' | 'sending' | 'success' | 'error';
 
-const ACCESS_KEY = (import.meta as Record<string, any>).env?.PUBLIC_WEB3FORMS_KEY ?? '';
+const ACCESS_KEY = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
 const KEY_MISSING = !ACCESS_KEY || ACCESS_KEY === 'your_access_key_here';
 
 export default function ContactForm() {

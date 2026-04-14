@@ -277,34 +277,22 @@ body.page-projects::before {
   animation: none;
 }
 
-/* --- Contact: Calling Card — P5 main menu art as ghost texture.
-   Persona5MainMenuPNG.png (the iconic P5 title card with Joker + star
-   pattern) is pinned right at 65% width, masked under a near-opaque dark
-   overlay so it reads as a subtle atmospheric texture, not a photo.
-   A bottom-centre red radial glow evokes the dramatic "spotlight" of
-   receiving a Phantom Thieves calling card.
+/* --- Contact: Cycling P5 location backgrounds + particle overlay.
+   ContactBgSlideshow component handles the rotating images (bg01–bg10.jpg)
+   with crossfade transitions. body::before is just a dark base layer.
    ----------------------------------------------------------------------- */
 body.page-contact::before {
   width: 100%;
   height: 100%;
   opacity: 1;
-  animation: none;
-  background:
-    /* Near-opaque overlay — keep the ghost art subtle but present (~12% show-through) */
-    linear-gradient(rgba(4, 0, 0, 0.88), rgba(4, 0, 0, 0.88)),
-    /* Fine diagonal stripe texture — P5 UI grid feel */
-    repeating-linear-gradient(
-      -38deg,
-      transparent 0px, transparent 44px,
-      rgba(180, 0, 0, 0.04) 44px, rgba(180, 0, 0, 0.04) 46px
-    ),
-    /* Stronger bottom-centre red vignette — the calling card "stage" */
-    radial-gradient(ellipse 80% 55% at 50% 115%, rgba(160, 0, 0, 0.55) 0%, transparent 65%),
-    /* Top-right directional accent */
-    radial-gradient(ellipse 50% 35% at 100% 0%, rgba(180, 0, 0, 0.18) 0%, transparent 70%),
-    /* P5MainMenu ghost art */
-    url('/img/Additional_optional_backgrounds/Persona5MainMenuPNG.png') right center / 65% auto no-repeat,
-    #040000;
+  /* Simple dark base — visual richness comes from ContactBgSlideshow component */
+  background: #040000;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.page-contact::before {
+    /* Static fallback is just the dark base — slideshow handles its own reduced-motion */
+  }
 }
 
 /* ============================================================
@@ -941,6 +929,32 @@ h4 { font-size: 1.3rem; }
   font-family: var(--p5-font-body);
   font-size: 1.05rem;
   color: rgba(255,255,255,0.75);
+}
+
+.hero-socials {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  color: rgba(255,255,255,0.5);
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(0,0,0,0.3);
+  transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.hero-social-link:hover {
+  color: #fff;
+  border-color: var(--p5-red);
+  background: rgba(204,0,0,0.2);
 }
 
 .p5-menu {
@@ -1922,7 +1936,7 @@ h4 { font-size: 1.3rem; }
   pointer-events: none;
   clip-path: polygon(0% 0%, 115% 0%, 100% 100%, 0% 100%);
   background: #cc0000;
-  animation: p5-reveal 0.55s cubic-bezier(0.76, 0, 0.24, 1) 0.05s both;
+  animation: p5-reveal 0.45s cubic-bezier(0.76, 0, 0.24, 1) 0s both;
 }
 
 @keyframes p5-reveal {
@@ -2875,13 +2889,7 @@ h4 { font-size: 1.3rem; }
 
 /* ── Contact page ── */
 [data-theme="light"] body.page-contact::before {
-  background:
-    linear-gradient(rgba(242, 240, 237, 0.92), rgba(242, 240, 237, 0.92)),
-    repeating-linear-gradient(
-      -38deg,
-      transparent 0px, transparent 44px,
-      rgba(180, 0, 0, 0.04) 44px, rgba(180, 0, 0, 0.04) 46px
-    ) !important;
+  background: #f2f0ed !important;
 }
 
 [data-theme="light"] .contact-subtitle {
@@ -3025,4 +3033,112 @@ h4 { font-size: 1.3rem; }
 
 [data-theme="light"] ::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.35);
+}
+
+/* ── Elements that must keep white text on red backgrounds ── */
+[data-theme="light"] .nav-link.active {
+  color: #fff;
+}
+
+[data-theme="light"] .page-banner {
+  color: #fff;
+}
+
+/* ── Nav hamburger & mobile overlay ── */
+[data-theme="light"] .nav-hamburger span {
+  background: var(--text-primary);
+}
+
+[data-theme="light"] .nav-mobile-overlay {
+  background: rgba(242, 240, 237, 0.98);
+}
+
+[data-theme="light"] .nav-mobile-overlay .nav-link {
+  color: var(--text-primary);
+}
+
+/* ── Homepage hero ── */
+[data-theme="light"] .hero-title-card h1 {
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .hero-sub {
+  color: var(--text-secondary);
+}
+
+[data-theme="light"] .hero-video-bg::after {
+  background: linear-gradient(130deg, rgba(242,240,237,0.75) 20%, rgba(242,240,237,0.5) 60%, rgba(242,240,237,0.8) 100%);
+}
+
+[data-theme="light"] .menu-label {
+  color: var(--text-primary);
+}
+
+/* ── Project card titles ── */
+[data-theme="light"] .card-header h3 {
+  color: var(--text-primary);
+}
+
+/* ── Project modal body text ── */
+[data-theme="light"] .project-modal-summary {
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .project-modal-description {
+  color: var(--text-secondary);
+}
+
+[data-theme="light"] .project-modal-outcome {
+  background: rgba(204, 0, 0, 0.06);
+}
+
+[data-theme="light"] .project-modal-outcome-label {
+  color: var(--accent);
+}
+
+[data-theme="light"] .project-modal-outcome p {
+  color: var(--text-primary);
+}
+
+/* ── About page: confidant bio ── */
+[data-theme="light"] .confidant-bio p {
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .confidant-bio-header {
+  color: var(--text-primary);
+}
+
+/* ── Skill domain labels ── */
+[data-theme="light"] .skill-domain-label {
+  color: var(--text-muted);
+}
+
+/* ── Section header (white on red bg) ── */
+[data-theme="light"] .section-header h2,
+[data-theme="light"] .section-header {
+  color: #fff;
+}
+
+/* ── Proof strip heading ── */
+[data-theme="light"] .proof-strip-heading {
+  color: var(--text-primary);
+}
+
+/* ── Contact page stars ── */
+[data-theme="light"] .cstar {
+  color: rgba(204, 0, 0, 0.25);
+}
+
+/* ── Social icons ── */
+[data-theme="light"] .hero-social-link {
+  color: var(--text-muted);
+  border-color: var(--border-card);
+  background: rgba(255,255,255,0.5);
+}
+
+[data-theme="light"] .hero-social-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(204,0,0,0.08);
 }

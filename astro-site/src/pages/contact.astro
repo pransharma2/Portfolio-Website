@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import ContactBgSlideshow from '../components/ContactBgSlideshow';
 import ContactCanvas from '../components/ContactCanvas';
 import ContactForm from '../components/ContactForm';
 import TextReveal from '../components/TextReveal';
@@ -9,12 +10,16 @@ import TextReveal from '../components/TextReveal';
 
   <!--
     Layer order (low → high):
-      body::before  z-index: -1  Dark overlay + P5 ghost art
-      ContactCanvas z-index:  0  Canvas sparkle particles (p5ausa recreation)
-      .cstars       z-index:  1  Static star PNGs with bounce-in (parallax layers)
-      .page-banner  z-index:  2  Page title
-      .chat-page    z-index:  2  Contact form
+      body::before         z-index: -3  Dark base
+      ContactBgSlideshow   z-index: -1  Cycling P5 location backgrounds + scrim
+      ContactCanvas        z-index:  0  Canvas sparkle particles
+      .cstars              z-index:  1  Static star PNGs with bounce-in
+      .page-banner         z-index:  2  Page title
+      .chat-page           z-index:  2  Contact form
   -->
+
+  <!-- Cycling P5 location backgrounds (scraped from p5ausa.com) -->
+  <ContactBgSlideshow client:load />
 
   <!-- Canvas particle sparkle (faithful recreation of p5ausa.com's particle system) -->
   <ContactCanvas client:load />
