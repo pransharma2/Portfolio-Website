@@ -1350,10 +1350,13 @@ h4 { font-size: 1.3rem; }
   margin-left: 0.5rem;
 }
 
-.card-number {
-  font-family: var(--p5-font);
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.35);
+/* ── Card meta row (company + date) ── */
+.card-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .card-company {
@@ -1362,7 +1365,27 @@ h4 { font-size: 1.3rem; }
   text-transform: uppercase;
   letter-spacing: 0.2em;
   color: rgba(255, 255, 255, 0.35);
-  margin-bottom: 0.5rem;
+}
+
+.card-date {
+  font-family: var(--p5-font);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.35);
+  white-space: nowrap;
+}
+
+/* ── Category pill on card header ── */
+.card-category-pill {
+  font-family: var(--p5-font);
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  color: var(--p5-red);
+  white-space: nowrap;
 }
 
 .card-summary {
@@ -1422,6 +1445,44 @@ h4 { font-size: 1.3rem; }
 .persona-card--featured {
   border-color: rgba(255, 60, 60, 0.3);
   box-shadow: 0 0 20px rgba(180, 0, 0, 0.15);
+}
+
+/* ── Professional card — slightly muted to de-emphasise ── */
+.persona-card--professional {
+  opacity: 0.85;
+}
+
+.persona-card--professional::before {
+  background: linear-gradient(180deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+}
+
+/* ── Professional Highlights section ── */
+.professional-highlights {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.professional-highlights-title {
+  font-family: var(--p5-font);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 0.35rem;
+}
+
+.professional-highlights-subtitle {
+  font-family: var(--p5-font-body);
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+/* Compact grid variant for professional highlights */
+.compendium-grid--compact {
+  gap: 0.75rem;
 }
 
 /* ============================================================
@@ -1493,12 +1554,31 @@ h4 { font-size: 1.3rem; }
   margin-bottom: 1rem;
 }
 
-.project-modal-number {
+/* Header top row (category badge + date) */
+.project-modal-header-top {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+
+.project-modal-category-badge {
   font-family: var(--p5-font);
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   text-transform: uppercase;
-  letter-spacing: 0.25em;
-  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 0.2em;
+  padding: 0.18rem 0.6rem;
+  background: rgba(255, 0, 0, 0.15);
+  border: 1px solid rgba(255, 0, 0, 0.35);
+  color: var(--p5-red);
+}
+
+.project-modal-date {
+  font-family: var(--p5-font);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .project-modal-title {
@@ -1633,6 +1713,89 @@ h4 { font-size: 1.3rem; }
 .project-modal-link {
   justify-self: start;
   text-decoration: none;
+}
+
+/* ── Metadata strip (audience / format) ── */
+.project-modal-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  padding: 0.6rem 0;
+  margin-bottom: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.project-modal-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.project-modal-meta-label {
+  font-family: var(--p5-font);
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.project-modal-meta-value {
+  font-family: var(--p5-font-body);
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* ── Section labels (What Was Covered, Resources) ── */
+.project-modal-section-label {
+  display: block;
+  font-family: var(--p5-font);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--p5-red);
+  margin-bottom: 0.5rem;
+}
+
+/* ── What Was Covered bullet list ── */
+.project-modal-covered {
+  padding: 0.8rem 0;
+}
+
+.project-modal-covered-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.project-modal-covered-list li {
+  font-family: var(--p5-font-body);
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.project-modal-covered-list li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--p5-red);
+  font-size: 0.75rem;
+}
+
+/* ── Resources links section ── */
+.project-modal-resources {
+  padding-top: 0.5rem;
+}
+
+.project-modal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 /* ── Modal responsive ── */
@@ -2727,8 +2890,12 @@ h4 { font-size: 1.3rem; }
   box-shadow: 0 8px 32px rgba(180, 0, 0, 0.12);
 }
 
-[data-theme="light"] .card-number {
+[data-theme="light"] .card-date {
   color: var(--text-muted);
+}
+
+[data-theme="light"] .card-category-pill {
+  border-color: rgba(204, 0, 0, 0.25);
 }
 
 [data-theme="light"] .card-company {
@@ -2788,7 +2955,12 @@ h4 { font-size: 1.3rem; }
   color: var(--text-muted);
 }
 
-[data-theme="light"] .project-modal-number {
+[data-theme="light"] .project-modal-category-badge {
+  background: rgba(204, 0, 0, 0.08);
+  border-color: rgba(204, 0, 0, 0.2);
+}
+
+[data-theme="light"] .project-modal-date {
   color: var(--text-muted);
 }
 
@@ -2808,6 +2980,50 @@ h4 { font-size: 1.3rem; }
 [data-theme="light"] .project-modal-status--completed { border-color: rgba(0,140,60,0.4); color: rgba(0,120,50,0.9); }
 [data-theme="light"] .project-modal-status--ongoing   { border-color: rgba(180,140,0,0.4); color: rgba(150,110,0,0.9); }
 [data-theme="light"] .project-modal-status--in-progress { border-color: rgba(40,100,200,0.4); color: rgba(30,90,180,0.9); }
+
+[data-theme="light"] .project-modal-metadata {
+  border-color: var(--border-card);
+}
+
+[data-theme="light"] .project-modal-meta-label {
+  color: var(--text-muted);
+}
+
+[data-theme="light"] .project-modal-meta-value {
+  color: var(--text-secondary);
+}
+
+[data-theme="light"] .project-modal-covered-list li {
+  color: var(--text-secondary);
+}
+
+[data-theme="light"] .project-modal-summary {
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .project-modal-description {
+  color: var(--text-secondary);
+}
+
+[data-theme="light"] .project-modal-outcome {
+  background: rgba(204, 0, 0, 0.06);
+}
+
+[data-theme="light"] .project-modal-outcome p {
+  color: var(--text-secondary);
+}
+
+[data-theme="light"] .professional-highlights {
+  border-top-color: var(--border-card);
+}
+
+[data-theme="light"] .professional-highlights-title {
+  color: var(--text-secondary);
+}
+
+[data-theme="light"] .professional-highlights-subtitle {
+  color: var(--text-muted);
+}
 
 /* ── About page ── */
 [data-theme="light"] body.page-about::before {

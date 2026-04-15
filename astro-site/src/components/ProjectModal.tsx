@@ -13,6 +13,13 @@ const STATUS_LABEL: Record<string, string> = {
   ongoing: 'Ongoing',
 };
 
+const CATEGORY_ICON: Record<string, string> = {
+  workshops: 'Workshop',
+  teaching: 'Teaching',
+  'public-projects': 'Public Project',
+  professional: 'Professional',
+};
+
 export default function ProjectModal({ project, onClose }: Props) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const closeBtn = useRef<HTMLButtonElement>(null);
@@ -25,7 +32,6 @@ export default function ProjectModal({ project, onClose }: Props) {
       document.body.style.position = 'fixed';
       document.body.style.top = `-${scrollY.current}px`;
       document.body.style.width = '100%';
-      // Focus the close button for keyboard users
       requestAnimationFrame(() => closeBtn.current?.focus());
     } else {
       document.body.style.position = '';
@@ -120,9 +126,14 @@ export default function ProjectModal({ project, onClose }: Props) {
               &times;
             </button>
 
-            {/* Header */}
+            {/* ── 1. Header: title, date, category, status ── */}
             <div className="project-modal-header">
-              <span className="project-modal-number">No. {project.number}</span>
+              <div className="project-modal-header-top">
+                <span className="project-modal-category-badge">
+                  {CATEGORY_ICON[project.category] ?? project.category}
+                </span>
+                <span className="project-modal-date">{project.date}</span>
+              </div>
               <h2 className="project-modal-title">{project.title}</h2>
               <div className="project-modal-meta">
                 <span className="project-modal-company">{project.company}</span>
@@ -137,6 +148,24 @@ export default function ProjectModal({ project, onClose }: Props) {
               </div>
             </div>
 
+            {/* ── 2. Metadata strip: audience, format, stack ── */}
+            {(project.audience || project.format) && (
+              <div className="project-modal-metadata">
+                {project.audience && (
+                  <div className="project-modal-meta-item">
+                    <span className="project-modal-meta-label">Audience</span>
+                    <span className="project-modal-meta-value">{project.audience}</span>
+                  </div>
+                )}
+                {project.format && (
+                  <div className="project-modal-meta-item">
+                    <span className="project-modal-meta-label">Format</span>
+                    <span className="project-modal-meta-value">{project.format}</span>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Tags */}
             <div className="project-modal-tags">
               {project.tags.map((tag) => (
@@ -144,10 +173,23 @@ export default function ProjectModal({ project, onClose }: Props) {
               ))}
             </div>
 
-            {/* Body */}
+            {/* ── 3. Body ── */}
             <div className="project-modal-body">
+              {/* Overview / long description */}
               <p className="project-modal-summary">{project.summary}</p>
               <p className="project-modal-description">{project.description}</p>
+
+              {/* ── 4. What was covered ── */}
+              {project.covered && project.covered.length > 0 && (
+                <div className="project-modal-covered">
+                  <span className="project-modal-section-label">What Was Covered</span>
+                  <ul className="project-modal-covered-list">
+                    {project.covered.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
               {/* Outcome */}
               {project.outcome && (
@@ -157,7 +199,7 @@ export default function ProjectModal({ project, onClose }: Props) {
                 </div>
               )}
 
-              {/* Screenshots */}
+              {/* ── 5. Image gallery / screenshots ── */}
               {project.images && project.images.length > 0 && (
                 <div className="project-modal-gallery">
                   {project.images.map((src, i) => (
@@ -175,30 +217,24 @@ export default function ProjectModal({ project, onClose }: Props) {
                 </div>
               )}
 
-              {/* Architecture Diagram */}
-              {project.architectureDiagram && (
-                <figure className="project-modal-arch">
-                  <img
-                    src={project.architectureDiagram}
-                    alt={project.architectureCaption ?? `${project.title} architecture diagram`}
-                    loading="lazy"
-                  />
-                  {project.architectureCaption && (
-                    <figcaption>{project.architectureCaption}</figcaption>
-                  )}
-                </figure>
-              )}
-
-              {/* Link */}
-              {project.link && (
-                <a
-                  href={project.link}
-                  className="project-modal-link p5-btn"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  View Project &#8599;
-                </a>
+              {/* ── 6. Resource links / external links ── */}
+              {project.publicLinks && project.publicLinks.length > 0 && (
+                <div className="project-modal-resources">
+                  <span className="project-modal-section-label">Resources</span>
+                  <div className="project-modal-links">
+                    {project.publicLinks.map((link) => (
+                      <a
+                        key={link.url}
+                        href={link.url}
+                        className="project-modal-link p5-btn"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {link.label} &#8599;
+                      </a>
+                    ))}
+                  </div>
+                </div>
               )}
             </div>
           </motion.div>

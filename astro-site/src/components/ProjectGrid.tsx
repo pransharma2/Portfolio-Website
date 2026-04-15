@@ -23,10 +23,26 @@ export default function ProjectGrid({ projects }: Props) {
     );
   }, [projects]);
 
+  // Filter then sort by date (newest first)
   const filtered = useMemo(() => {
-    if (activeFilter === 'all') return projects;
-    return projects.filter((p) => p.category === activeFilter);
+    let result = activeFilter === 'all'
+      ? [...projects]
+      : projects.filter((p) => p.category === activeFilter);
+    result.sort((a, b) => b.sortDate.localeCompare(a.sortDate));
+    return result;
   }, [projects, activeFilter]);
+
+  // Split into main projects and professional highlights
+  const mainProjects = useMemo(
+    () => filtered.filter((p) => p.category !== 'professional'),
+    [filtered],
+  );
+  const proHighlights = useMemo(
+    () => filtered.filter((p) => p.category === 'professional'),
+    [filtered],
+  );
+
+  const showProSection = activeFilter === 'all' || activeFilter === 'professional';
 
   return (
     <>
@@ -44,15 +60,38 @@ export default function ProjectGrid({ projects }: Props) {
         ))}
       </nav>
 
-      <div className="compendium-grid">
-        {filtered.map((project) => (
-          <ProjectCard
-            key={project.number}
-            project={project}
-            onClick={() => openModal(project)}
-          />
-        ))}
-      </div>
+      {/* Main project grid */}
+      {mainProjects.length > 0 && (
+        <div className="compendium-grid">
+          {mainProjects.map((project) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              onClick={() => openModal(project)}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Professional Highlights section */}
+      {showProSection && proHighlights.length > 0 && (
+        <section className="professional-highlights">
+          <h2 className="professional-highlights-title">Professional Highlights</h2>
+          <p className="professional-highlights-subtitle">
+            Selected impact from employer-owned work — details kept concise to respect confidentiality.
+          </p>
+          <div className="compendium-grid compendium-grid--compact">
+            {proHighlights.map((project) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                onClick={() => openModal(project)}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
       <ProjectModal project={selected} onClose={closeModal} />
     </>
   );
