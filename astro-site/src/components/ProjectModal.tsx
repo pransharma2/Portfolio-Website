@@ -25,24 +25,27 @@ export default function ProjectModal({ project, onClose }: Props) {
   const closeBtn = useRef<HTMLButtonElement>(null);
   const scrollY = useRef(0);
 
-  // Lock body scroll when modal opens, restore on close
+  // Lock body scroll and hide nav when modal opens, restore on close
   useEffect(() => {
     if (project) {
       scrollY.current = window.scrollY;
       document.body.style.position = 'fixed';
       document.body.style.top = `-${scrollY.current}px`;
       document.body.style.width = '100%';
+      document.body.classList.add('modal-open');
       requestAnimationFrame(() => closeBtn.current?.focus());
     } else {
       document.body.style.position = '';
       document.body.style.top = '';
       document.body.style.width = '';
+      document.body.classList.remove('modal-open');
       window.scrollTo(0, scrollY.current);
     }
     return () => {
       document.body.style.position = '';
       document.body.style.top = '';
       document.body.style.width = '';
+      document.body.classList.remove('modal-open');
     };
   }, [project]);
 
