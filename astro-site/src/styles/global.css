@@ -266,14 +266,16 @@ body.page-about::before {
   animation: none; /* static — sections provide their own visual depth */
 }
 
-/* --- Projects: Dark fallback for non-WebGL browsers.
-   The real star-field is rendered by StarPatternCanvas.tsx (WebGL2 instanced
-   rendering of the exact BuyMyBeard/StarPattern GLSL shader) at z-index: -2.
-   This ::before sits at z-index: -3 as a plain black safety net. ---------- */
+/* --- Projects: Animated star-field GIF background.
+   persona5starsbackground.gif provides the Persona 5 star-pattern effect
+   without the overhead of WebGL rendering. --------------------------------- */
 body.page-projects::before {
   opacity: 1;
   background-color: var(--p5-black);
-  background-image: none;
+  background-image: url('/img/persona5starsbackground.gif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   animation: none;
 }
 

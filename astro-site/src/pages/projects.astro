@@ -9,15 +9,11 @@
  *   → Edit this file or ProjectCard.tsx / ProjectModal.tsx.
  */
 import Layout from '../layouts/Layout.astro';
-import StarPatternCanvas from '../components/StarPatternCanvas';
 import ProjectGrid from '../components/ProjectGrid';
 import { projects } from '../data/projects';
 ---
 
 <Layout title="Projects — Persona Compendium" page="projects">
-  <!-- WebGL star-field -->
-  <StarPatternCanvas client:idle />
-
   <!-- Page Banner -->
   <div class="page-banner">Persona Compendium</div>
 
