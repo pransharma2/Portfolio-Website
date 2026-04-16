@@ -1756,8 +1756,8 @@ h4 { font-size: 1.3rem; }
 .persona-card {
   position: relative;
   overflow: hidden;
-  background: rgba(0, 0, 0, 0.85);
-  border: 2px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.92);
+  border: 2px solid rgba(255, 255, 255, 0.16);
   clip-path: polygon(0 0, calc(100% - 2rem) 0, 100% 1.8rem, 100% 100%, 1.8rem 100%, 0 calc(100% - 1.8rem));
   transition: border-color 160ms linear, box-shadow 160ms ease, transform 200ms ease;
   contain: layout style paint;
@@ -1933,7 +1933,7 @@ h4 { font-size: 1.3rem; }
 
 /* ── Professional card — slightly muted to de-emphasise ── */
 .persona-card--professional {
-  opacity: 0.85;
+  opacity: 0.95;
 }
 
 .persona-card--professional::before {
@@ -1945,6 +1945,20 @@ h4 { font-size: 1.3rem; }
   margin-top: 2rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--border-subtle);
+  position: relative;
+}
+
+/* Dark-mode backing layer to reduce star-field interference behind heading area */
+.professional-highlights::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -1rem;
+  right: -1rem;
+  height: 5.5rem;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.35) 70%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .professional-highlights-title {
@@ -1952,16 +1966,20 @@ h4 { font-size: 1.3rem; }
   font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   margin-bottom: 0.35rem;
+  position: relative;
+  z-index: 1;
 }
 
 .professional-highlights-subtitle {
   font-family: var(--p5-font-body);
   font-size: 0.78rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin-bottom: 1rem;
   line-height: 1.5;
+  position: relative;
+  z-index: 1;
 }
 
 /* Compact grid variant for professional highlights */
@@ -3381,8 +3399,9 @@ body.modal-open .project-modal {
 }
 
 [data-theme="light"] .persona-card {
-  background: var(--bg-card);
-  border-color: var(--border-card);
+  background: rgba(255, 255, 255, 0.97);
+  border-color: rgba(0, 0, 0, 0.16);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 [data-theme="light"] .persona-card:hover {
@@ -3517,12 +3536,16 @@ body.modal-open .project-modal {
   border-top-color: var(--border-card);
 }
 
+[data-theme="light"] .professional-highlights::before {
+  background: linear-gradient(180deg, rgba(242, 240, 237, 0.8) 0%, rgba(242, 240, 237, 0.4) 70%, transparent 100%);
+}
+
 [data-theme="light"] .professional-highlights-title {
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 [data-theme="light"] .professional-highlights-subtitle {
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 /* ── About page (overhauled) ── */
