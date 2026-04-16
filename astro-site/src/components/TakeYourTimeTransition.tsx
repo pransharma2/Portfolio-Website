@@ -4,14 +4,14 @@ import { motion, AnimatePresence } from 'motion/react';
 /**
  * TakeYourTimeTransition — Video page transition coordinator.
  *
- * Intercepts internal link clicks (capture phase, before PageTransition)
+ * Intercepts internal link clicks (capture phase)
  * and randomly selects between two video transition variants:
  *
  * 1. "TAKE YOUR TIME" — full-screen P5-style video with text overlay
  * 2. "P5 ANIMATION" — chroma-keyed transparent P5 transition overlay
  *
- * Activation: ~40% random chance OR always when leaving the about page.
- * When activated, picks variant 1 (60%) or variant 2 (40%).
+ * Activation: always intercepts internal navigation.
+ * Picks variant 1 (60%) or variant 2 (40%).
  *
  * Falls back to instant navigation if videos fail to load.
  */
@@ -44,11 +44,6 @@ export default function TakeYourTimeTransition() {
     const targetPath = new URL(href, location.href).pathname;
     if (targetPath === location.pathname) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    // ~40% chance randomly, or always when leaving the about page
-    const isFromAbout = location.pathname === '/about' || location.pathname === '/about/';
-    const shouldUseVideo = isFromAbout || Math.random() < 0.4;
-    if (!shouldUseVideo) return;
 
     if (e.defaultPrevented) return;
 
@@ -156,7 +151,7 @@ export default function TakeYourTimeTransition() {
                   muted
                   playsInline
                   preload="auto"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(1.1) contrast(1.1)' }}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain', filter: 'brightness(1.1) contrast(1.1)' }}
                 />
               </motion.div>
               {/* Text overlay */}

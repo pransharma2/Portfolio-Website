@@ -238,7 +238,7 @@ const outsideItems = [
       </AboutSectionReveal>
 
       <div class="about-principles-grid">
-        <AboutSectionReveal client:idle direction="panel" delay={0}>
+        <AboutSectionReveal client:idle direction="up" delay={0}>
           <div class="about-principle-card">
             <div class="about-principle-number">01</div>
             <h3 class="about-principle-title">Build to Be Used</h3>
@@ -246,7 +246,7 @@ const outsideItems = [
           </div>
         </AboutSectionReveal>
 
-        <AboutSectionReveal client:idle direction="panel" delay={100}>
+        <AboutSectionReveal client:idle direction="up" delay={100}>
           <div class="about-principle-card">
             <div class="about-principle-number">02</div>
             <h3 class="about-principle-title">Measure the Impact</h3>
@@ -254,7 +254,7 @@ const outsideItems = [
           </div>
         </AboutSectionReveal>
 
-        <AboutSectionReveal client:idle direction="panel" delay={200}>
+        <AboutSectionReveal client:idle direction="up" delay={200}>
           <div class="about-principle-card">
             <div class="about-principle-number">03</div>
             <h3 class="about-principle-title">Communicate Clearly</h3>
@@ -262,7 +262,7 @@ const outsideItems = [
           </div>
         </AboutSectionReveal>
 
-        <AboutSectionReveal client:idle direction="panel" delay={300}>
+        <AboutSectionReveal client:idle direction="up" delay={300}>
           <div class="about-principle-card">
             <div class="about-principle-number">04</div>
             <h3 class="about-principle-title">Stay Curious</h3>
@@ -380,12 +380,9 @@ const outsideItems = [
          Full work timeline with Persona-themed entries
     ═══════════════════════════════════════════════════════════ -->
     <section class="about-section about-experience">
-      <div class="about-experience-header-row">
-        <AboutSectionReveal client:idle direction="slash" delay={0}>
-          <div class="section-header">Infiltration Log</div>
-        </AboutSectionReveal>
-        <img src="/img/p5-assets/p5-morgana.png" alt="" class="about-morgana-accent" aria-hidden="true" />
-      </div>
+      <AboutSectionReveal client:idle direction="slash" delay={0}>
+        <div class="section-header">Infiltration Log</div>
+      </AboutSectionReveal>
 
       <div class="mission-log">
         {missions.map((m, i) => (

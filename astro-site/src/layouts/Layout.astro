@@ -2,7 +2,6 @@
 import '../styles/global.css';
 import SoundToggle from '../components/SoundToggle';
 import ThemeToggle from '../components/ThemeToggle';
-import PageTransition from '../components/PageTransition';
 import TakeYourTimeTransition from '../components/TakeYourTimeTransition';
 
 interface Props {
@@ -131,8 +130,7 @@ const navLinks = [
       <SoundToggle client:load />
     </div>
 
-    <!-- Full-screen cinematic page transition overlays -->
-    <PageTransition client:load />
+    <!-- Full-screen cinematic page transition overlay -->
     <TakeYourTimeTransition client:load />
 
     <script>

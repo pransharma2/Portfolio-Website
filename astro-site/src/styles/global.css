@@ -1793,29 +1793,6 @@ h4 { font-size: 1.3rem; }
   opacity: 1;
 }
 
-/* ── Experience / Infiltration Log enhancements ── */
-.about-experience-header-row {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 0;
-}
-
-.about-morgana-accent {
-  width: 60px;
-  height: auto;
-  opacity: 0.7;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
-  transform: scaleX(-1);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  flex-shrink: 0;
-}
-
-.about-experience-header-row:hover .about-morgana-accent {
-  opacity: 1;
-  transform: scaleX(-1) translateY(-3px);
-}
-
 /* ── Trait card glow enhancement ── */
 .about-trait-card {
   position: relative;
@@ -2016,10 +1993,6 @@ h4 { font-size: 1.3rem; }
     width: 180px;
     opacity: 0.03;
   }
-
-  .about-morgana-accent {
-    width: 45px;
-  }
 }
 
 @media (max-width: 768px) {
@@ -2076,11 +2049,6 @@ h4 { font-size: 1.3rem; }
   .about-hero-watermark {
     display: none;
   }
-
-  .about-morgana-accent {
-    width: 40px;
-    opacity: 0.5;
-  }
 }
 
 @media (max-width: 640px) {
@@ -2111,10 +2079,6 @@ h4 { font-size: 1.3rem; }
   }
 
   .p5-slash-divider::after {
-    display: none;
-  }
-
-  .about-morgana-accent {
     display: none;
   }
 }
@@ -4228,10 +4192,6 @@ body.modal-open .project-modal {
     linear-gradient(-45deg, rgba(204, 0, 0, 0.02) 25%, transparent 25%),
     linear-gradient(45deg, transparent 75%, rgba(204, 0, 0, 0.02) 75%),
     linear-gradient(-45deg, transparent 75%, rgba(204, 0, 0, 0.02) 75%);
-}
-
-[data-theme="light"] .about-morgana-accent {
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
 }
 
 [data-theme="light"] .about-trait-card::after {
