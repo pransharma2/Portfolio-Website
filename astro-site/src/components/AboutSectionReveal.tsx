@@ -9,11 +9,13 @@ import { useRef, useEffect, useState, type ReactNode, type CSSProperties } from 
  * - "right": slide from right + fade
  * - "scale": scale up from 0.92 + fade
  * - "slash": diagonal slash reveal (skew + translate)
+ * - "burst": scale up + slight rotation, like P5's all-out attack splash
+ * - "panel": clip-path reveal from bottom, like P5's menu panel animations
  *
  * Uses IntersectionObserver (no extra deps). Respects prefers-reduced-motion.
  */
 
-type RevealDirection = 'up' | 'left' | 'right' | 'scale' | 'slash';
+type RevealDirection = 'up' | 'left' | 'right' | 'scale' | 'slash' | 'burst' | 'panel';
 
 interface Props {
   children: ReactNode;
@@ -30,11 +32,14 @@ const directionStyles: Record<RevealDirection, CSSProperties> = {
   right: { opacity: 0, transform: 'translateX(3rem)' },
   scale: { opacity: 0, transform: 'scale(0.92)' },
   slash: { opacity: 0, transform: 'translateX(-2rem) skewX(-4deg)' },
+  burst: { opacity: 0, transform: 'scale(0.8) rotate(-2deg)' },
+  panel: { opacity: 0, transform: 'translateY(2rem)', clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)' },
 };
 
 const revealedStyle: CSSProperties = {
   opacity: 1,
-  transform: 'translateX(0) translateY(0) scale(1) skewX(0deg)',
+  transform: 'translateX(0) translateY(0) scale(1) skewX(0deg) rotate(0deg)',
+  clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
 };
 
 export default function AboutSectionReveal({
@@ -77,11 +82,11 @@ export default function AboutSectionReveal({
     : revealed
       ? {
           ...revealedStyle,
-          transition: `opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms`,
+          transition: `opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms, clip-path 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms`,
         }
       : {
           ...directionStyles[direction],
-          transition: `opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms`,
+          transition: `opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms, clip-path 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms`,
         };
 
   return (

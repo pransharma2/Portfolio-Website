@@ -1561,6 +1561,398 @@ h4 { font-size: 1.3rem; }
   padding-bottom: 5rem;
 }
 
+/* ─────────────────────────────────────────────
+   P5 DECORATIVE ELEMENTS — ABOUT PAGE ENHANCEMENTS
+   Inspired by persona5.jp, p5r.jp, p5s.jp assets
+   ───────────────────────────────────────────── */
+
+/* ── Red line side accents (p5r.jp bg_red_line inspiration) ── */
+.p5-red-line-left,
+.p5-red-line-right {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(255, 0, 0, 0.4) 15%,
+    rgba(204, 0, 0, 0.6) 50%,
+    rgba(255, 0, 0, 0.4) 85%,
+    transparent 100%
+  );
+}
+
+.p5-red-line-left {
+  left: 0.5rem;
+}
+
+.p5-red-line-right {
+  right: 0.5rem;
+}
+
+.p5-red-line-left::after,
+.p5-red-line-right::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: inherit;
+  filter: blur(4px);
+  opacity: 0.5;
+}
+
+/* ── Floating star decorations (persona5.jp star assets) ── */
+.p5-floating-stars {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.p5-star {
+  position: absolute;
+  opacity: 0;
+  animation: p5-star-float 12s ease-in-out infinite, p5-star-fade 12s ease-in-out infinite;
+  filter: brightness(1.2) drop-shadow(0 0 4px rgba(255, 0, 0, 0.3));
+  will-change: transform, opacity;
+}
+
+.p5-star--1 { width: 24px; top: 8%;  left: 5%;  animation-delay: 0s; }
+.p5-star--2 { width: 32px; top: 22%; right: 4%; animation-delay: 1.5s; }
+.p5-star--3 { width: 18px; top: 40%; left: 8%;  animation-delay: 3s; }
+.p5-star--4 { width: 28px; top: 55%; right: 7%; animation-delay: 4.5s; }
+.p5-star--5 { width: 22px; top: 72%; left: 3%;  animation-delay: 6s; }
+.p5-star--6 { width: 20px; top: 15%; right: 12%; animation-delay: 2s; }
+.p5-star--7 { width: 26px; top: 65%; left: 12%; animation-delay: 7.5s; }
+.p5-star--8 { width: 30px; top: 85%; right: 3%; animation-delay: 9s; }
+
+@keyframes p5-star-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-15px) rotate(5deg); }
+  50% { transform: translateY(-8px) rotate(-3deg); }
+  75% { transform: translateY(-20px) rotate(4deg); }
+}
+
+@keyframes p5-star-fade {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.5; }
+}
+
+/* ── P5 slash dividers between sections ── */
+.p5-slash-divider {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  height: 3px;
+  overflow: visible;
+}
+
+.p5-slash-divider::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 5%;
+  right: 5%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 0, 0, 0.3) 15%,
+    rgba(204, 0, 0, 0.6) 50%,
+    rgba(255, 0, 0, 0.3) 85%,
+    transparent 100%
+  );
+  transform: skewX(-25deg);
+}
+
+.p5-slash-divider::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: var(--p5-red);
+  transform: translateX(-50%) rotate(45deg);
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
+}
+
+/* ── Hero section P5 watermark ── */
+.about-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.about-hero-watermark {
+  position: absolute;
+  right: -2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 280px;
+  opacity: 0.04;
+  pointer-events: none;
+  filter: grayscale(1) brightness(2);
+  z-index: 0;
+}
+
+.about-hero-inner {
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 40px rgba(255, 0, 0, 0.06), inset 0 0 60px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Hero sweep line animation (p5r.jp canvas light frame) ── */
+.about-hero-inner::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--p5-red), transparent);
+  animation: p5-sweep-line 4s ease-in-out infinite;
+}
+
+@keyframes p5-sweep-line {
+  0% { transform: translateX(-100%); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateX(100%); opacity: 0; }
+}
+
+/* ── Star burst accent on rank badge ── */
+.rank-badge {
+  animation: p5-rank-pulse 3s ease-in-out infinite;
+}
+
+@keyframes p5-rank-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); }
+  50% { box-shadow: 0 0 12px 3px rgba(255, 215, 0, 0.2); }
+}
+
+/* ── Section header enhancements (p5r.jp shadow-text + red sweep) ── */
+.section-header {
+  position: relative;
+  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.section-header::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  animation: p5-header-shine 6s ease-in-out infinite;
+}
+
+@keyframes p5-header-shine {
+  0%, 70%, 100% { left: -100%; }
+  85% { left: 100%; }
+}
+
+/* ── Principle card enhancements ── */
+.about-principle-card {
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--transition-fast), transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+
+.about-principle-card:hover {
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 8px 25px rgba(255, 0, 0, 0.1);
+}
+
+/* Diamond pattern background on principle cards */
+.about-principle-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(45deg, rgba(255, 0, 0, 0.03) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(255, 0, 0, 0.03) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(255, 0, 0, 0.03) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(255, 0, 0, 0.03) 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.about-principle-card:hover::before {
+  opacity: 1;
+}
+
+/* ── Experience / Infiltration Log enhancements ── */
+.about-experience-header-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0;
+}
+
+.about-morgana-accent {
+  width: 60px;
+  height: auto;
+  opacity: 0.7;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+  transform: scaleX(-1);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.about-experience-header-row:hover .about-morgana-accent {
+  opacity: 1;
+  transform: scaleX(-1) translateY(-3px);
+}
+
+/* ── Trait card glow enhancement ── */
+.about-trait-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.about-trait-card::after {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background: radial-gradient(circle at center, rgba(255, 0, 0, 0.08), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.about-trait-card:hover::after {
+  opacity: 1;
+}
+
+/* ── Stats section light-frame glow border ── */
+.about-stats-layout {
+  position: relative;
+}
+
+.about-stats-layout::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border: 1px solid transparent;
+  clip-path: polygon(0 0, calc(100% - 2rem) 0, 100% 2rem, 100% 100%, 2rem 100%, 0 calc(100% - 2rem));
+  background: linear-gradient(135deg, rgba(255, 0, 0, 0.15), transparent 40%, transparent 60%, rgba(255, 0, 0, 0.15)) border-box;
+  pointer-events: none;
+  animation: p5-glow-border 5s ease-in-out infinite alternate;
+}
+
+@keyframes p5-glow-border {
+  0% { opacity: 0.3; }
+  100% { opacity: 0.8; }
+}
+
+/* ── Outside the Terminal card hover enhancements ── */
+.about-outside-card {
+  transition: border-color var(--transition-fast), transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+
+.about-outside-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 0, 0, 0.08);
+}
+
+/* ── Focus item P5 angular flash on hover ── */
+.about-focus-item {
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.about-focus-item:hover {
+  border-color: rgba(255, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.about-focus-item::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.04), transparent);
+  transform: skewX(-25deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+.about-focus-item:hover::after {
+  left: 150%;
+}
+
+/* ── Resume CTA Morgana-style flourish ── */
+.about-resume-inner {
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.about-resume-inner:hover {
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.12);
+}
+
+.about-resume-inner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255, 0, 0, 0.06), transparent 70%);
+  pointer-events: none;
+  animation: p5-resume-glow 6s ease-in-out infinite alternate;
+}
+
+@keyframes p5-resume-glow {
+  0% { transform: scale(0.8); opacity: 0.3; }
+  100% { transform: scale(1.2); opacity: 0.7; }
+}
+
+/* ── Why-block enhanced hover ── */
+.about-why-block {
+  transition: border-color 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+
+.about-why-block:hover {
+  border-color: rgba(255, 0, 0, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 0, 0, 0.06);
+}
+
+/* ── Confidant panel enhanced ── */
+.about-confidant-panel {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-confidant-panel:hover {
+  box-shadow: 0 4px 16px rgba(255, 0, 0, 0.06);
+}
+
+/* ── Mission entry enhanced hover ── */
+.mission-entry {
+  transition: background 0.3s ease;
+}
+
+.mission-entry:hover {
+  background: rgba(255, 0, 0, 0.02);
+}
+
 .about-resume-inner {
   display: flex;
   align-items: center;
@@ -1619,6 +2011,15 @@ h4 { font-size: 1.3rem; }
   .about-trait-cards {
     justify-content: center;
   }
+
+  .about-hero-watermark {
+    width: 180px;
+    opacity: 0.03;
+  }
+
+  .about-morgana-accent {
+    width: 45px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1661,6 +2062,25 @@ h4 { font-size: 1.3rem; }
     width: 2.2rem;
     height: 2.2rem;
   }
+
+  /* P5 decorative — hide heavy elements on tablet */
+  .p5-floating-stars {
+    display: none;
+  }
+
+  .p5-red-line-left,
+  .p5-red-line-right {
+    opacity: 0.4;
+  }
+
+  .about-hero-watermark {
+    display: none;
+  }
+
+  .about-morgana-accent {
+    width: 40px;
+    opacity: 0.5;
+  }
 }
 
 @media (max-width: 640px) {
@@ -1683,6 +2103,20 @@ h4 { font-size: 1.3rem; }
   .about-confidant-panel {
     padding: 1rem 1.1rem;
   }
+
+  /* P5 decorative — minimal on mobile */
+  .p5-red-line-left,
+  .p5-red-line-right {
+    display: none;
+  }
+
+  .p5-slash-divider::after {
+    display: none;
+  }
+
+  .about-morgana-accent {
+    display: none;
+  }
 }
 
 /* ── Reduced motion ── */
@@ -1698,6 +2132,36 @@ h4 { font-size: 1.3rem; }
   }
   .about-outside-card {
     transition: none;
+  }
+  .p5-star {
+    animation: none;
+    opacity: 0.25;
+  }
+  .about-hero-inner::after {
+    animation: none;
+    opacity: 0.5;
+    transform: none;
+  }
+  .rank-badge {
+    animation: none;
+  }
+  .section-header::after {
+    animation: none;
+    display: none;
+  }
+  .about-stats-layout::before {
+    animation: none;
+    opacity: 0.5;
+  }
+  .about-resume-inner::before {
+    animation: none;
+  }
+  .about-focus-item::after {
+    display: none;
+  }
+  .p5-red-line-left::after,
+  .p5-red-line-right::after {
+    display: none;
   }
 }
 
@@ -3706,6 +4170,96 @@ body.modal-open .project-modal {
 
 [data-theme="light"] .about-resume-text p {
   color: var(--text-secondary);
+}
+
+/* ── P5 decorative elements — light theme ── */
+[data-theme="light"] .p5-red-line-left,
+[data-theme="light"] .p5-red-line-right {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(204, 0, 0, 0.15) 15%,
+    rgba(204, 0, 0, 0.25) 50%,
+    rgba(204, 0, 0, 0.15) 85%,
+    transparent 100%
+  );
+}
+
+[data-theme="light"] .p5-star {
+  filter: brightness(0.8) drop-shadow(0 0 4px rgba(204, 0, 0, 0.2));
+}
+
+[data-theme="light"] .p5-slash-divider::before {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(204, 0, 0, 0.15) 15%,
+    rgba(204, 0, 0, 0.3) 50%,
+    rgba(204, 0, 0, 0.15) 85%,
+    transparent 100%
+  );
+}
+
+[data-theme="light"] .p5-slash-divider::after {
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(204, 0, 0, 0.2);
+}
+
+[data-theme="light"] .about-hero-watermark {
+  filter: grayscale(1) brightness(0.5);
+  opacity: 0.03;
+}
+
+[data-theme="light"] .about-hero-inner {
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08), inset 0 0 30px rgba(0, 0, 0, 0.02);
+}
+
+[data-theme="light"] .about-hero-inner::after {
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+[data-theme="light"] .about-principle-card:hover {
+  box-shadow: 0 8px 25px rgba(204, 0, 0, 0.06);
+}
+
+[data-theme="light"] .about-principle-card::before {
+  background-image:
+    linear-gradient(45deg, rgba(204, 0, 0, 0.02) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(204, 0, 0, 0.02) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(204, 0, 0, 0.02) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(204, 0, 0, 0.02) 75%);
+}
+
+[data-theme="light"] .about-morgana-accent {
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
+}
+
+[data-theme="light"] .about-trait-card::after {
+  background: radial-gradient(circle at center, rgba(204, 0, 0, 0.04), transparent 70%);
+}
+
+[data-theme="light"] .about-stats-layout::before {
+  background: linear-gradient(135deg, rgba(204, 0, 0, 0.08), transparent 40%, transparent 60%, rgba(204, 0, 0, 0.08)) border-box;
+}
+
+[data-theme="light"] .about-outside-card:hover {
+  box-shadow: 0 6px 20px rgba(204, 0, 0, 0.05);
+}
+
+[data-theme="light"] .about-why-block:hover {
+  box-shadow: 0 6px 20px rgba(204, 0, 0, 0.04);
+}
+
+[data-theme="light"] .about-resume-inner:hover {
+  box-shadow: 0 0 30px rgba(204, 0, 0, 0.06);
+}
+
+[data-theme="light"] .about-resume-inner::before {
+  background: radial-gradient(circle, rgba(204, 0, 0, 0.03), transparent 70%);
+}
+
+[data-theme="light"] .mission-entry:hover {
+  background: rgba(204, 0, 0, 0.02);
 }
 
 /* ── Contact page ── */
