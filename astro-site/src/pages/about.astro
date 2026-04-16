@@ -1,6 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import AboutSectionReveal from '../components/AboutSectionReveal.tsx';
+import ConfidantStats from '../components/ConfidantStats.tsx';
 
+/* ── Experience data ── */
 const missions = [
   {
     op: 'Operation: Platform Guardian',
@@ -24,8 +27,6 @@ const missions = [
       'Drove 300K+ in annual savings by shifting ingestion of 400 SAP tables from SLT to Datasphere through an orchestration tool upgrade.',
       'Designed Azure Data Factory pipelines for Otodata and DXFleet source systems (IoT fuel tank tracking + fleet vehicle data) with dynamic pagination and daily/hourly batching logic.',
       'Upgraded the main orchestration tool to handle SQL change-tracking ingestion for tables with hundreds of millions of rows, improving pipeline scalability and reliability.',
-      'Built Power BI dashboards tracking admin distribution and underutilized reports across the organization, enabling targeted cost savings.',
-      'Improved AI project governance by launching a dedicated Jira board and redesigning intake forms with data-driven questions, streamlining tracking for the founding team.',
     ],
   },
   {
@@ -51,6 +52,7 @@ const missions = [
   },
 ];
 
+/* ── Skill groups ── */
 const skillGroups = [
   {
     label: 'Programming',
@@ -69,108 +71,379 @@ const skillGroups = [
     tags: ['Problem-Solving', 'Analytical Thinking', 'Attention to Detail', 'Collaboration', 'Adaptability'],
   },
 ];
+
+/* ── Trait cards for Social Stats section ── */
+const traitCards = [
+  { name: 'Knowledge',   img: '/img/fixed_traits_from_user/knowledge.png',   rank: 4 },
+  { name: 'Proficiency',  img: '/img/fixed_traits_from_user/Proficiency.png', rank: 5 },
+  { name: 'Charm',        img: '/img/fixed_traits_from_user/charm.png',       rank: 3 },
+  { name: 'Guts',         img: '/img/fixed_traits_from_user/Guts.png',        rank: 4 },
+  { name: 'Kindness',     img: '/img/fixed_traits_from_user/Kindness.png',    rank: 4 },
+];
+
+/* ── Current Focus items ── */
+const focusItems = [
+  { icon: '⚡', text: 'Consulting on Suncor\'s enterprise data warehouse at SDK Tek Services' },
+  { icon: '🎓', text: 'Completing dual BComm + BSc at the University of Calgary' },
+  { icon: '🎤', text: 'Running 50+ student workshops as DS&ML Club Workshop Director' },
+  { icon: '🔧', text: 'Building portfolio projects that merge data engineering with design' },
+];
+
+/* ── Outside the Terminal items ── */
+const outsideItems = [
+  { label: 'Gaming', detail: 'JRPGs, Persona franchise, competitive FPS — the creative fuel behind this portfolio' },
+  { label: 'Fitness', detail: 'Gym sessions for the discipline transfer — consistency in sets carries into sprints' },
+  { label: 'Music', detail: 'Lo-fi, jazz, and game soundtracks — always coding to a curated playlist' },
+  { label: 'Teaching', detail: 'Breaking down complex topics until they click — in workshops, tutorials, or casual conversation' },
+];
 ---
 
 <Layout title="About — Confidant Profile" page="about">
   <div class="page-banner">Confidant Profile</div>
 
-  <div class="confidant-page">
+  <div class="about-overhaul">
 
-    <!-- ── 1. Profile: who I am ── -->
-    <div class="confidant-profile">
-      <div class="confidant-portrait">
-        <img
-          src="/img/1_P1ZpJoADmVLHN2vjq0cmqw_1762760206212.jpg"
-          alt="Prantap portrait photo"
-          loading="lazy"
-        />
-        <span class="rank-badge" aria-label="Star rank">&#9733;</span>
-      </div>
-      <div class="confidant-bio">
-        <div class="confidant-bio-header">
-          <span class="confidant-name">Prantap Sharma</span>
-          <span class="confidant-location">Calgary, AB · Canadian Citizen</span>
-        </div>
-        <p>
-          Dual-degree student at the University of Calgary completing a BComm in Business Analytics
-          alongside a BSc in Computer Science. Recently finished a Data Engineering internship at
-          Suncor Energy — building pipelines, automation tools, and monitoring systems that
-          contributed to 300K+ in annual savings. Currently consulting at SDK Tek Services keeping
-          Suncor's data warehouse running and pushing continuous improvements. Directing technical
-          workshops for 50+ students per session as Workshop Director of the DS&amp;ML Club.
-          Building things that get used, at the intersection of data infrastructure and analytics.
-        </p>
-        <div class="confidant-tags">
-          <span class="p5-tag">Azure</span>
-          <span class="p5-tag">Snowflake</span>
-          <span class="p5-tag">Power BI</span>
-          <span class="p5-tag">Python</span>
-          <span class="p5-tag">PySpark</span>
-          <span class="p5-tag">ADF</span>
-          <span class="p5-tag">Databricks</span>
-          <span class="p5-tag">SQL</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── 1b. Education ── -->
-    <div class="education-block">
-      <div class="education-inst">
-        <span class="education-name">University of Calgary</span>
-        <span class="education-period">Sep 2021 — Present</span>
-      </div>
-      <div class="education-degrees">
-        <div class="education-degree">
-          <span class="education-degree-label">BComm</span>
-          Business Analytics (Major)
-        </div>
-        <div class="education-degree">
-          <span class="education-degree-label">BSc</span>
-          Computer Science (Major)
-        </div>
-      </div>
-    </div>
-
-    <hr class="p5-divider" />
-
-    <!-- ── 2. Infiltration Log: work experience ── -->
-    <div>
-      <div class="section-header">Infiltration Log</div>
-      <div class="mission-log">
-        {missions.map((m) => (
-          <div class="mission-entry">
-            <span class="mission-date">{m.date}</span>
-            <div class="mission-op">{m.op}</div>
-            <div class="mission-org">{m.org}</div>
-            <div class="mission-role">{m.role}</div>
-            <ul class="mission-bullets">
-              {m.bullets.map((b) => (
-                <li class="mission-bullet">{b}</li>
-              ))}
-            </ul>
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION A — HERO / PROFILE INTRO
+         Dramatic entry: portrait, name, headline, core tags
+    ═══════════════════════════════════════════════════════════ -->
+    <section class="about-hero">
+      <div class="about-hero-inner">
+        <AboutSectionReveal client:idle direction="left" delay={0}>
+          <div class="about-hero-portrait">
+            <img
+              src="/img/1_P1ZpJoADmVLHN2vjq0cmqw_1762760206212.jpg"
+              alt="Prantap Sharma portrait"
+              loading="eager"
+            />
+            <span class="rank-badge" aria-label="Star rank">&#9733;</span>
           </div>
-        ))}
-      </div>
-    </div>
+        </AboutSectionReveal>
 
-    <hr class="p5-divider" />
+        <div class="about-hero-text">
+          <AboutSectionReveal client:idle direction="right" delay={100}>
+            <span class="about-hero-codename">Confidant File</span>
+            <h1 class="about-hero-name">Prantap Sharma</h1>
+            <p class="about-hero-title">Data Engineer · Workshop Director · Builder</p>
+            <p class="about-hero-location">Calgary, AB · Canadian Citizen</p>
+          </AboutSectionReveal>
 
-    <!-- ── 3. Skill Domains ── -->
-    <div>
-      <div class="section-header">Arsenal</div>
-      <div class="skill-domains-grid">
-        {skillGroups.map((group) => (
-          <div class="skill-domain-group">
-            <div class="skill-domain-label">{group.label}</div>
-            <div class="skill-domain-tags">
-              {group.tags.map((tag) => (
-                <span class="p5-tag">{tag}</span>
-              ))}
+          <AboutSectionReveal client:idle direction="up" delay={250}>
+            <div class="about-hero-education">
+              <div class="about-hero-edu-row">
+                <span class="about-hero-edu-badge">BComm</span>
+                <span>Business Analytics — University of Calgary</span>
+              </div>
+              <div class="about-hero-edu-row">
+                <span class="about-hero-edu-badge">BSc</span>
+                <span>Computer Science — University of Calgary</span>
+              </div>
             </div>
+          </AboutSectionReveal>
+
+          <AboutSectionReveal client:idle direction="up" delay={400}>
+            <div class="about-hero-tags">
+              <span class="p5-tag">Azure</span>
+              <span class="p5-tag">Snowflake</span>
+              <span class="p5-tag">Power BI</span>
+              <span class="p5-tag">Python</span>
+              <span class="p5-tag">PySpark</span>
+              <span class="p5-tag">ADF</span>
+              <span class="p5-tag">Databricks</span>
+              <span class="p5-tag">SQL</span>
+            </div>
+          </AboutSectionReveal>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION B — CONFIDANT PROFILE (EXTENDED BIO)
+         The story behind the resume line items
+    ═══════════════════════════════════════════════════════════ -->
+    <section class="about-section about-confidant">
+      <AboutSectionReveal client:idle direction="slash" delay={0}>
+        <div class="section-header">Confidant Profile</div>
+      </AboutSectionReveal>
+
+      <div class="about-confidant-body">
+        <AboutSectionReveal client:idle direction="left" delay={100}>
+          <div class="about-confidant-panel about-confidant-panel--accent">
+            <p>
+              I'm a dual-degree student at the University of Calgary finishing a BComm in Business
+              Analytics alongside a BSc in Computer Science. Most of my professional time has been
+              spent inside enterprise data platforms — building pipelines, writing automation tools,
+              and standing up monitoring systems that teams actually rely on.
+            </p>
           </div>
+        </AboutSectionReveal>
+
+        <AboutSectionReveal client:idle direction="right" delay={200}>
+          <div class="about-confidant-panel">
+            <p>
+              At Suncor Energy, I worked across the full data stack: Azure Data Factory orchestration,
+              Snowflake migration tooling, Power BI observability dashboards, and Python automation
+              that cut per-object build costs by $550 each. One ingestion redesign saved over $300K
+              annually. Now at SDK Tek Services, I'm consulting on the same warehouse — keeping
+              pipelines healthy and pushing operational improvements.
+            </p>
+          </div>
+        </AboutSectionReveal>
+
+        <AboutSectionReveal client:idle direction="left" delay={300}>
+          <div class="about-confidant-panel about-confidant-panel--accent">
+            <p>
+              Outside of work, I direct technical workshops for the DS&ML Club at UCalgary — sessions
+              on neural networks, cloud data engineering, SQL for data science, and applied ML. Over
+              50 students per workshop, 90%+ satisfaction ratings. I care about making complex ideas
+              land clearly, whether that's in a pipeline design doc or a live coding demo.
+            </p>
+          </div>
+        </AboutSectionReveal>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION C — HOW I WORK
+         Working style, principles, approach
+    ═══════════════════════════════════════════════════════════ -->
+    <section class="about-section about-how-i-work">
+      <AboutSectionReveal client:idle direction="slash" delay={0}>
+        <div class="section-header">How I Work</div>
+      </AboutSectionReveal>
+
+      <div class="about-principles-grid">
+        <AboutSectionReveal client:idle direction="up" delay={0}>
+          <div class="about-principle-card">
+            <div class="about-principle-number">01</div>
+            <h3 class="about-principle-title">Build to Be Used</h3>
+            <p>Every tool, dashboard, and pipeline I build is designed for adoption — not just delivery. If the team doesn't use it, it doesn't count.</p>
+          </div>
+        </AboutSectionReveal>
+
+        <AboutSectionReveal client:idle direction="up" delay={100}>
+          <div class="about-principle-card">
+            <div class="about-principle-number">02</div>
+            <h3 class="about-principle-title">Measure the Impact</h3>
+            <p>I track outcomes, not output. Hours saved, dollars cut, adoption rates — the numbers tell you whether the work mattered.</p>
+          </div>
+        </AboutSectionReveal>
+
+        <AboutSectionReveal client:idle direction="up" delay={200}>
+          <div class="about-principle-card">
+            <div class="about-principle-number">03</div>
+            <h3 class="about-principle-title">Communicate Clearly</h3>
+            <p>Technical work dies in silence. I document decisions, present findings to stakeholders, and make sure no one has to reverse-engineer my thinking.</p>
+          </div>
+        </AboutSectionReveal>
+
+        <AboutSectionReveal client:idle direction="up" delay={300}>
+          <div class="about-principle-card">
+            <div class="about-principle-number">04</div>
+            <h3 class="about-principle-title">Stay Curious</h3>
+            <p>New frameworks, new patterns, new problems — I learn by building. This portfolio itself is a side project in Astro, React, and motion design.</p>
+          </div>
+        </AboutSectionReveal>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION D — WHY I BUILD + TEACH
+         Motivation, intersection of engineering and education
+    ═══════════════════════════════════════════════════════════ -->
+    <section class="about-section about-why">
+      <AboutSectionReveal client:idle direction="slash" delay={0}>
+        <div class="section-header">Why I Build + Teach</div>
+      </AboutSectionReveal>
+
+      <div class="about-why-body">
+        <AboutSectionReveal client:idle direction="left" delay={100}>
+          <div class="about-why-block">
+            <h3>The Builder Side</h3>
+            <p>
+              Data engineering clicked for me because the work is tangible. You build a pipeline, and
+              data flows. You write an automation script, and three hours of manual work vanishes. The
+              feedback loop is immediate and measurable — $550 saved per object, $300K+ in annual
+              savings, 400 tables migrated. I'm drawn to infrastructure that scales quietly and
+              doesn't break when you're not looking.
+            </p>
+          </div>
+        </AboutSectionReveal>
+
+        <AboutSectionReveal client:idle direction="right" delay={200}>
+          <div class="about-why-block">
+            <h3>The Teacher Side</h3>
+            <p>
+              Teaching started at Kumon when I was in high school and never stopped. Now I'm running
+              workshops at the university level — 50+ students, neural network walk-throughs, cloud
+              data engineering deep-dives. The goal is always the same: take something complex and
+              make it land. Not simplified — clarified. I want students to leave the session with
+              working code and real intuition, not just slides they'll forget.
+            </p>
+          </div>
+        </AboutSectionReveal>
+
+        <AboutSectionReveal client:idle direction="up" delay={300}>
+          <div class="about-why-connector">
+            <span class="about-why-connector-line" aria-hidden="true"></span>
+            <p>
+              Building and teaching reinforce each other. Building makes me a better teacher because
+              I know what actually works in production. Teaching makes me a better builder because
+              explaining a system forces you to truly understand it.
+            </p>
+          </div>
+        </AboutSectionReveal>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION E — CURRENT FOCUS / MISSION
+         What I'm actively working on right now
+    ═══════════════════════════════════════════════════════════ -->
+    <section class="about-section about-focus">
+      <AboutSectionReveal client:idle direction="slash" delay={0}>
+        <div class="section-header">Current Mission</div>
+      </AboutSectionReveal>
+
+      <div class="about-focus-grid">
+        {focusItems.map((item, i) => (
+          <AboutSectionReveal client:idle direction="up" delay={i * 100}>
+            <div class="about-focus-item">
+              <span class="about-focus-icon" aria-hidden="true">{item.icon}</span>
+              <p>{item.text}</p>
+            </div>
+          </AboutSectionReveal>
         ))}
       </div>
-    </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION F — OUTSIDE THE TERMINAL
+         Personality, interests, human side
+    ═══════════════════════════════════════════════════════════ -->
+    <section class="about-section about-outside">
+      <AboutSectionReveal client:idle direction="slash" delay={0}>
+        <div class="section-header">Outside the Terminal</div>
+      </AboutSectionReveal>
+
+      <div class="about-outside-grid">
+        {outsideItems.map((item, i) => (
+          <AboutSectionReveal client:idle direction={i % 2 === 0 ? 'left' : 'right'} delay={i * 100}>
+            <div class="about-outside-card">
+              <span class="about-outside-label">{item.label}</span>
+              <p>{item.detail}</p>
+            </div>
+          </AboutSectionReveal>
+        ))}
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION G — EXPERIENCE SNAPSHOT (INFILTRATION LOG)
+         Full work timeline with Persona-themed entries
+    ═══════════════════════════════════════════════════════════ -->
+    <section class="about-section about-experience">
+      <AboutSectionReveal client:idle direction="slash" delay={0}>
+        <div class="section-header">Infiltration Log</div>
+      </AboutSectionReveal>
+
+      <div class="mission-log">
+        {missions.map((m, i) => (
+          <AboutSectionReveal client:idle direction="up" delay={i * 80}>
+            <div class="mission-entry">
+              <span class="mission-date">{m.date}</span>
+              <div class="mission-op">{m.op}</div>
+              <div class="mission-org">{m.org}</div>
+              <div class="mission-role">{m.role}</div>
+              <ul class="mission-bullets">
+                {m.bullets.map((b) => (
+                  <li class="mission-bullet">{b}</li>
+                ))}
+              </ul>
+            </div>
+          </AboutSectionReveal>
+        ))}
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION H — SOCIAL STATS / QUICK TRAITS
+         P5-style trait cards + animated stat bars
+    ═══════════════════════════════════════════════════════════ -->
+    <section class="about-section about-stats">
+      <AboutSectionReveal client:idle direction="slash" delay={0}>
+        <div class="section-header">Social Stats</div>
+      </AboutSectionReveal>
+
+      <div class="about-stats-layout">
+        <!-- Trait cards (P5 visual) -->
+        <div class="about-trait-cards">
+          {traitCards.map((trait, i) => (
+            <AboutSectionReveal client:idle direction="scale" delay={i * 80}>
+              <div class="about-trait-card">
+                <img src={trait.img} alt={trait.name} loading="lazy" />
+                <span class="about-trait-name">{trait.name}</span>
+                <span class="about-trait-rank">
+                  {'★'.repeat(trait.rank)}{'☆'.repeat(5 - trait.rank)}
+                </span>
+              </div>
+            </AboutSectionReveal>
+          ))}
+        </div>
+
+        <!-- Animated stat bars -->
+        <AboutSectionReveal client:idle direction="right" delay={200}>
+          <ConfidantStats client:idle />
+        </AboutSectionReveal>
+      </div>
+
+      <!-- Arsenal (skill tags) -->
+      <div class="about-arsenal">
+        <AboutSectionReveal client:idle direction="slash" delay={0}>
+          <h3 class="about-arsenal-heading">Arsenal</h3>
+        </AboutSectionReveal>
+        <div class="skill-domains-grid">
+          {skillGroups.map((group, i) => (
+            <AboutSectionReveal client:idle direction="up" delay={i * 80}>
+              <div class="skill-domain-group">
+                <div class="skill-domain-label">{group.label}</div>
+                <div class="skill-domain-tags">
+                  {group.tags.map((tag) => (
+                    <span class="p5-tag">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </AboutSectionReveal>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION I — RESUME DOWNLOAD
+         Clean CTA to grab the PDF
+    ═══════════════════════════════════════════════════════════ -->
+    <section class="about-section about-resume">
+      <AboutSectionReveal client:idle direction="scale" delay={0}>
+        <div class="about-resume-inner">
+          <div class="about-resume-text">
+            <h2>Grab the Full Dossier</h2>
+            <p>
+              Everything above, distilled into a clean one-page PDF. Formatted for ATS,
+              designed for humans.
+            </p>
+          </div>
+          <a
+            href="/resume/Prantap_Sharma_Resume.pdf"
+            class="p5-btn"
+            download
+            aria-label="Download resume PDF"
+          >
+            Download Resume
+          </a>
+        </div>
+      </AboutSectionReveal>
+    </section>
 
   </div>
 </Layout>
