@@ -5,23 +5,23 @@ import { motion, AnimatePresence } from 'motion/react';
  * TakeYourTimeTransition — Video page transition coordinator.
  *
  * Intercepts internal link clicks (capture phase)
- * and randomly selects between two video transition variants:
+ * and randomly selects between three video transition variants:
  *
  * 1. "TAKE YOUR TIME" — full-screen P5-style video with text overlay
- * 2. "P5 ANIMATION" — chroma-keyed transparent P5 transition overlay
+ * 2. "P5 CLIP 1" — first half of the chroma-keyed P5 transition (slam)
+ * 3. "P5 CLIP 2" — second half of the chroma-keyed P5 transition (grapple)
  *
  * Activation: always intercepts internal navigation.
- * Picks variant 1 (60%) or variant 2 (40%).
- *
  * Falls back to instant navigation if videos fail to load.
  */
 
 const TAKE_YOUR_TIME_SRC = '/img/Take Your TIme.webm0001-0167.mp4';
-const P5_ANIM_SRC = '/img/p5-transition-alpha.webm';
+const P5_CLIP1_SRC = '/img/p5-transition-clip1.webm';
+const P5_CLIP2_SRC = '/img/p5-transition-clip2.webm';
 
 const EASE_SHARP: [number, number, number, number] = [0.76, 0, 0.24, 1];
 
-type Variant = 'take-your-time' | 'p5-anim';
+type Variant = 'take-your-time' | 'p5-clip1' | 'p5-clip2';
 type Phase = 'idle' | 'wipe-in' | 'video' | 'wipe-out';
 
 export default function TakeYourTimeTransition() {
@@ -29,7 +29,8 @@ export default function TakeYourTimeTransition() {
   const [phase, setPhase] = useState<Phase>('idle');
   const [variant, setVariant] = useState<Variant>('take-your-time');
   const tytVideoRef = useRef<HTMLVideoElement>(null);
-  const p5VideoRef = useRef<HTMLVideoElement>(null);
+  const p5Clip1Ref = useRef<HTMLVideoElement>(null);
+  const p5Clip2Ref = useRef<HTMLVideoElement>(null);
   const targetHref = useRef('');
 
   const handleClick = useCallback((e: MouseEvent) => {
@@ -50,8 +51,9 @@ export default function TakeYourTimeTransition() {
     e.preventDefault();
     e.stopPropagation();
 
-    // Pick variant: 60% Take Your Time, 40% P5 animation overlay
-    const pick: Variant = Math.random() < 0.6 ? 'take-your-time' : 'p5-anim';
+    // Pick variant: ~34% each
+    const roll = Math.random();
+    const pick: Variant = roll < 0.34 ? 'take-your-time' : roll < 0.67 ? 'p5-clip1' : 'p5-clip2';
     setVariant(pick);
     targetHref.current = href;
     setActive(true);
@@ -63,13 +65,19 @@ export default function TakeYourTimeTransition() {
     return () => document.removeEventListener('click', handleClick, true);
   }, [handleClick]);
 
+  const isP5 = variant === 'p5-clip1' || variant === 'p5-clip2';
+
   // Phase state machine
   useEffect(() => {
     if (phase === 'wipe-in') {
       const delay = variant === 'take-your-time' ? 400 : 300;
       const timer = setTimeout(() => {
         setPhase('video');
-        const videoEl = variant === 'take-your-time' ? tytVideoRef.current : p5VideoRef.current;
+        let videoEl: HTMLVideoElement | null = null;
+        if (variant === 'take-your-time') videoEl = tytVideoRef.current;
+        else if (variant === 'p5-clip1') videoEl = p5Clip1Ref.current;
+        else videoEl = p5Clip2Ref.current;
+
         if (videoEl) {
           if (variant === 'take-your-time') videoEl.currentTime = 0.5;
           videoEl.play().catch(() => {
@@ -81,7 +89,8 @@ export default function TakeYourTimeTransition() {
     }
 
     if (phase === 'video') {
-      const hold = variant === 'take-your-time' ? 1700 : 2400;
+      // clip1 ~1s, clip2 ~2.45s, tyt ~1.7s
+      const hold = variant === 'take-your-time' ? 1700 : variant === 'p5-clip1' ? 1000 : 2400;
       const timer = setTimeout(() => setPhase('wipe-out'), hold);
       return () => clearTimeout(timer);
     }
@@ -180,12 +189,17 @@ export default function TakeYourTimeTransition() {
             </>
           )}
 
-          {/* ── Variant 2: P5 Animation Overlay ── */}
-          {!isTYT && (
+          {/* ── Variants 2 & 3: P5 Animation Clips ── */}
+          {isP5 && (
             <>
-              {/* Dark background that sweeps in diagonally */}
+              {/* Dark red background so Joker's silhouette is visible */}
               <motion.div
-                style={{ position: 'absolute', inset: 0, background: '#000000', zIndex: 1 }}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(135deg, #1a0000 0%, #330000 40%, #1a0000 100%)',
+                  zIndex: 1,
+                }}
                 initial={{ clipPath: 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)' }}
                 animate={
                   phase === 'wipe-in' || phase === 'video'
@@ -210,7 +224,7 @@ export default function TakeYourTimeTransition() {
                 }} />
               </motion.div>
 
-              {/* Chroma-keyed P5 animation video (transparent WebM) */}
+              {/* P5 animation video */}
               <motion.div
                 style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 3 }}
                 initial={{ opacity: 0, scale: 1.1 }}
@@ -223,18 +237,26 @@ export default function TakeYourTimeTransition() {
                 }
                 transition={{ duration: 0.35, ease: EASE_SHARP }}
               >
-                <video
-                  ref={p5VideoRef}
-                  src={P5_ANIM_SRC}
-                  muted
-                  playsInline
-                  preload="auto"
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain',
-                  }}
-                />
+                {variant === 'p5-clip1' && (
+                  <video
+                    ref={p5Clip1Ref}
+                    src={P5_CLIP1_SRC}
+                    muted
+                    playsInline
+                    preload="auto"
+                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                  />
+                )}
+                {variant === 'p5-clip2' && (
+                  <video
+                    ref={p5Clip2Ref}
+                    src={P5_CLIP2_SRC}
+                    muted
+                    playsInline
+                    preload="auto"
+                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                  />
+                )}
               </motion.div>
 
               {/* Diagonal red stripe accents during video */}
