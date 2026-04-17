@@ -89,8 +89,8 @@ export default function TakeYourTimeTransition() {
     }
 
     if (phase === 'video') {
-      // clip1 ~0.42s (quick slam), clip2 ~0.62s (Joker crouch), tyt ~1.7s
-      const hold = variant === 'take-your-time' ? 1700 : variant === 'p5-clip1' ? 420 : 625;
+      // clip1 ~0.42s (quick slam), clip2 ~0.96s (Joker + screen break, full playback), tyt ~1.7s
+      const hold = variant === 'take-your-time' ? 1700 : variant === 'p5-clip1' ? 420 : 980;
       const timer = setTimeout(() => setPhase('wipe-out'), hold);
       return () => clearTimeout(timer);
     }
@@ -192,12 +192,12 @@ export default function TakeYourTimeTransition() {
           {/* ── Variants 2 & 3: P5 Animation Clips ── */}
           {isP5 && (
             <>
-              {/* P5 background: clip1 uses site bg (red is baked into video), clip2 uses P5 red */}
+              {/* P5 background: site bg (red/colors are baked into the video) */}
               <motion.div
                 style={{
                   position: 'absolute',
                   inset: 0,
-                  background: variant === 'p5-clip1' ? '#0d0d0d' : '#cc0000',
+                  background: '#0d0d0d',
                   zIndex: 1,
                 }}
                 initial={{ clipPath: 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)' }}
