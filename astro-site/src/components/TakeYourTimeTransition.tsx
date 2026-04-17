@@ -5,11 +5,12 @@ import { motion, AnimatePresence } from 'motion/react';
  * TakeYourTimeTransition — Video page transition coordinator.
  *
  * Intercepts internal link clicks (capture phase)
- * and randomly selects between three video transition variants:
+ * and randomly selects between four video transition variants:
  *
  * 1. "TAKE YOUR TIME" — full-screen P5-style video with text overlay
  * 2. "P5 CLIP 1" — first half of the chroma-keyed P5 transition (slam)
  * 3. "P5 CLIP 2" — second half of the chroma-keyed P5 transition (grapple)
+ * 4. "P5 SUBWAY" — subway crowd scene from P5
  *
  * Activation: always intercepts internal navigation.
  * Falls back to instant navigation if videos fail to load.
@@ -18,10 +19,11 @@ import { motion, AnimatePresence } from 'motion/react';
 const TAKE_YOUR_TIME_SRC = '/img/Take Your TIme.webm0001-0167.mp4';
 const P5_CLIP1_SRC = '/img/p5-transition-clip1.webm';
 const P5_CLIP2_SRC = '/img/p5-transition-clip2.webm';
+const P5_SUBWAY_SRC = '/img/p5-transition-subway.webm';
 
 const EASE_SHARP: [number, number, number, number] = [0.76, 0, 0.24, 1];
 
-type Variant = 'take-your-time' | 'p5-clip1' | 'p5-clip2';
+type Variant = 'take-your-time' | 'p5-clip1' | 'p5-clip2' | 'p5-subway';
 type Phase = 'idle' | 'wipe-in' | 'video' | 'wipe-out';
 
 export default function TakeYourTimeTransition() {
@@ -31,6 +33,7 @@ export default function TakeYourTimeTransition() {
   const tytVideoRef = useRef<HTMLVideoElement>(null);
   const p5Clip1Ref = useRef<HTMLVideoElement>(null);
   const p5Clip2Ref = useRef<HTMLVideoElement>(null);
+  const p5SubwayRef = useRef<HTMLVideoElement>(null);
   const targetHref = useRef('');
 
   const handleClick = useCallback((e: MouseEvent) => {
@@ -51,9 +54,9 @@ export default function TakeYourTimeTransition() {
     e.preventDefault();
     e.stopPropagation();
 
-    // Pick variant: ~34% each
+    // Pick variant: ~25% each
     const roll = Math.random();
-    const pick: Variant = roll < 0.34 ? 'take-your-time' : roll < 0.67 ? 'p5-clip1' : 'p5-clip2';
+    const pick: Variant = roll < 0.25 ? 'take-your-time' : roll < 0.5 ? 'p5-clip1' : roll < 0.75 ? 'p5-clip2' : 'p5-subway';
     setVariant(pick);
     targetHref.current = href;
     setActive(true);
@@ -65,7 +68,7 @@ export default function TakeYourTimeTransition() {
     return () => document.removeEventListener('click', handleClick, true);
   }, [handleClick]);
 
-  const isP5 = variant === 'p5-clip1' || variant === 'p5-clip2';
+  const isP5 = variant === 'p5-clip1' || variant === 'p5-clip2' || variant === 'p5-subway';
 
   // Phase state machine
   useEffect(() => {
@@ -76,7 +79,8 @@ export default function TakeYourTimeTransition() {
         let videoEl: HTMLVideoElement | null = null;
         if (variant === 'take-your-time') videoEl = tytVideoRef.current;
         else if (variant === 'p5-clip1') videoEl = p5Clip1Ref.current;
-        else videoEl = p5Clip2Ref.current;
+        else if (variant === 'p5-clip2') videoEl = p5Clip2Ref.current;
+        else videoEl = p5SubwayRef.current;
 
         if (videoEl) {
           if (variant === 'take-your-time') videoEl.currentTime = 0.5;
@@ -89,8 +93,11 @@ export default function TakeYourTimeTransition() {
     }
 
     if (phase === 'video') {
-      // clip1 ~0.42s (quick slam), clip2 ~1.79s (Joker + break + settle to dark), tyt ~1.7s
-      const hold = variant === 'take-your-time' ? 1700 : variant === 'p5-clip1' ? 420 : 1800;
+      // clip1 ~0.42s (quick slam), clip2 ~1.79s (Joker + break + settle to dark), subway ~6s (crowd slide), tyt ~1.7s
+      const hold = variant === 'take-your-time' ? 1700
+        : variant === 'p5-clip1' ? 420
+        : variant === 'p5-subway' ? 3000
+        : 1800;
       const timer = setTimeout(() => setPhase('wipe-out'), hold);
       return () => clearTimeout(timer);
     }
@@ -251,6 +258,16 @@ export default function TakeYourTimeTransition() {
                   <video
                     ref={p5Clip2Ref}
                     src={P5_CLIP2_SRC}
+                    muted
+                    playsInline
+                    preload="auto"
+                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                  />
+                )}
+                {variant === 'p5-subway' && (
+                  <video
+                    ref={p5SubwayRef}
+                    src={P5_SUBWAY_SRC}
                     muted
                     playsInline
                     preload="auto"
