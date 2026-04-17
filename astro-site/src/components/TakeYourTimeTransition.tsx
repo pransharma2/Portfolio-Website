@@ -89,8 +89,8 @@ export default function TakeYourTimeTransition() {
     }
 
     if (phase === 'video') {
-      // clip1 ~0.42s (quick slam), clip2 ~0.96s (Joker + screen break, full playback), tyt ~1.7s
-      const hold = variant === 'take-your-time' ? 1700 : variant === 'p5-clip1' ? 420 : 980;
+      // clip1 ~0.42s (quick slam), clip2 ~1.79s (Joker + break + settle to dark), tyt ~1.7s
+      const hold = variant === 'take-your-time' ? 1700 : variant === 'p5-clip1' ? 420 : 1800;
       const timer = setTimeout(() => setPhase('wipe-out'), hold);
       return () => clearTimeout(timer);
     }
