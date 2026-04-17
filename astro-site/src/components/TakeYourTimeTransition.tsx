@@ -89,8 +89,8 @@ export default function TakeYourTimeTransition() {
     }
 
     if (phase === 'video') {
-      // clip1 ~1s, clip2 ~2.45s, tyt ~1.7s
-      const hold = variant === 'take-your-time' ? 1700 : variant === 'p5-clip1' ? 1000 : 2400;
+      // clip1 ~1.67s (slowed), clip2 ~2.45s, tyt ~1.7s
+      const hold = variant === 'take-your-time' ? 1700 : variant === 'p5-clip1' ? 1670 : 2400;
       const timer = setTimeout(() => setPhase('wipe-out'), hold);
       return () => clearTimeout(timer);
     }
@@ -197,7 +197,7 @@ export default function TakeYourTimeTransition() {
                 style={{
                   position: 'absolute',
                   inset: 0,
-                  background: '#1a0000',
+                  background: '#2a0806',
                   zIndex: 1,
                 }}
                 initial={{ clipPath: 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)' }}
