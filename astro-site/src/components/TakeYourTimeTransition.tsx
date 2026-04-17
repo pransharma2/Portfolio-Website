@@ -197,7 +197,7 @@ export default function TakeYourTimeTransition() {
                 style={{
                   position: 'absolute',
                   inset: 0,
-                  background: 'linear-gradient(135deg, #1a0000 0%, #330000 40%, #1a0000 100%)',
+                  background: '#1a0000',
                   zIndex: 1,
                 }}
                 initial={{ clipPath: 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)' }}
