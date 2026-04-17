@@ -116,7 +116,7 @@ export default function TakeYourTimeTransition() {
             <>
               {/* Black background wipe */}
               <motion.div
-                style={{ position: 'absolute', inset: 0, background: '#0d0d0d', zIndex: 1 }}
+                style={{ position: 'absolute', inset: 0, background: '#000000', zIndex: 1 }}
                 initial={{ clipPath: 'polygon(0 0, 0 0, 0 100%, 0 100%)' }}
                 animate={
                   phase === 'wipe-in' || phase === 'video'
@@ -185,7 +185,7 @@ export default function TakeYourTimeTransition() {
             <>
               {/* Dark background that sweeps in diagonally */}
               <motion.div
-                style={{ position: 'absolute', inset: 0, background: '#0d0d0d', zIndex: 1 }}
+                style={{ position: 'absolute', inset: 0, background: '#000000', zIndex: 1 }}
                 initial={{ clipPath: 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)' }}
                 animate={
                   phase === 'wipe-in' || phase === 'video'
