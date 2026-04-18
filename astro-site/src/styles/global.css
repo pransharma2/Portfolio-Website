@@ -3102,16 +3102,27 @@ body.modal-open .project-modal {
    Reference: github.com/Jack-Pettigrew/Persona-5-Day-Progression
    ============================================================ */
 
-/* ── Panels — black angular covers with diagonal hatching ── */
+/* ── Panels — angular covers with city backgrounds ── */
 .day-prog__panel {
   position: absolute;
   inset: 0;
-  background: #0d0d0d;
   z-index: 1;
   will-change: clip-path;
+  background-size: cover;
+  background-position: center;
 }
 
-/* Diagonal hatch texture via repeating gradient */
+/* Left panel: day city */
+.day-prog__panel--left {
+  background-image: url('/img/persona-day-city.jpg');
+}
+
+/* Right panel: night city */
+.day-prog__panel--right {
+  background-image: url('/img/persona-night-city.jpg');
+}
+
+/* Subtle diagonal hatch texture over panels */
 .day-prog__panel::after {
   content: '';
   position: absolute;
@@ -3119,24 +3130,9 @@ body.modal-open .project-modal {
   background: repeating-linear-gradient(
     -45deg,
     transparent,
-    transparent 6px,
-    rgba(255, 255, 255, 0.03) 6px,
-    rgba(255, 255, 255, 0.03) 7px
-  );
-  pointer-events: none;
-}
-
-/* ── Hatching overlay (full viewport, subtle texture during panels) ── */
-.day-prog__hatch-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  background: repeating-linear-gradient(
-    -45deg,
-    transparent,
-    transparent 4px,
-    rgba(255, 255, 255, 0.5) 4px,
-    rgba(255, 255, 255, 0.5) 5px
+    transparent 8px,
+    rgba(0, 0, 0, 0.08) 8px,
+    rgba(0, 0, 0, 0.08) 9px
   );
   pointer-events: none;
 }
@@ -3148,30 +3144,6 @@ body.modal-open .project-modal {
   background: var(--p5-dark-red, #cc0000);
   z-index: 2;
   will-change: clip-path;
-}
-
-/* ── Red edge accent lines on panel inner edges ── */
-.day-prog__edge-line {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: var(--p5-red, #ff0000);
-  z-index: 3;
-  transform-origin: center center;
-  will-change: transform;
-}
-
-.day-prog__edge-line--left {
-  /* Positioned at the right edge of the left panel (~48-58% zone) */
-  left: 52%;
-  transform: skewX(-7deg);
-}
-
-.day-prog__edge-line--right {
-  /* Positioned at the left edge of the right panel */
-  left: 42%;
-  transform: skewX(-7deg);
 }
 
 /* ── Stamp container — centered date display ── */
@@ -3198,25 +3170,24 @@ body.modal-open .project-modal {
   to   { transform: translate(-50%, -50%) skewX(-6deg) scale(1.015); }
 }
 
-/* ── Weekday — large bold text (Earwig Factory like the P5 reference) ── */
+/* ── Weekday — large bold text (LEMONMILK like the P5 reference) ── */
 .day-prog__weekday {
-  font-family: 'Earwig Factory', var(--p5-font);
-  font-size: clamp(2.8rem, 7vw, 5.5rem);
-  font-weight: 400; /* Earwig Factory is display weight */
+  font-family: 'LEMONMILK', var(--p5-font);
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.18em;
   color: #fff;
   text-shadow:
-    4px 4px 0 #000,
-    6px 6px 0 rgba(0, 0, 0, 0.3),
-    0 0 30px rgba(204, 0, 0, 0.15);
+    3px 3px 0 #000,
+    5px 5px 0 rgba(0, 0, 0, 0.4);
   line-height: 1;
 }
 
 /* ── Red accent bar — horizontal separator ── */
 .day-prog__bar {
   width: 100%;
-  height: 4px;
+  height: 5px;
   background: linear-gradient(90deg, var(--p5-dark-red, #cc0000), var(--p5-red, #ff0000));
   transform-origin: left center;
   border-radius: 2px;
@@ -3226,43 +3197,45 @@ body.modal-open .project-modal {
 /* ── Month + Day row ── */
 .day-prog__date {
   display: flex;
-  align-items: baseline;
-  gap: 0.6rem;
-  font-family: 'LEMONMILK', var(--p5-font);
+  align-items: center;
+  gap: 0.5rem;
   line-height: 1;
 }
 
 .day-prog__month {
-  font-size: clamp(1.6rem, 4vw, 3rem);
+  font-family: 'LEMONMILK', var(--p5-font);
+  font-size: clamp(1.8rem, 4.5vw, 3.2rem);
   font-weight: 500;
-  letter-spacing: 0.14em;
-  color: rgba(255, 255, 255, 0.9);
-  text-shadow: 2px 2px 0 #000, 0 0 10px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 2px 2px 0 #000, 4px 4px 0 rgba(0, 0, 0, 0.3);
 }
 
 /* ── Day scroller — slot-machine number cycling container ── */
 .day-prog__day-scroller {
   position: relative;
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: center;
-  min-width: 2.5em;
+  min-width: 2em;
+  height: 1.3em;
   overflow: hidden;
-  height: 1.2em;
+  vertical-align: middle;
 }
 
 /* ── Day number — individual cycling number ── */
 .day-prog__day-number {
   font-family: 'LEMONMILK', var(--p5-font);
-  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  font-size: clamp(2.6rem, 6.5vw, 5rem);
   font-weight: 500;
   letter-spacing: 0.05em;
   color: #fff;
   text-shadow:
     3px 3px 0 #000,
-    5px 5px 0 rgba(0, 0, 0, 0.2);
+    5px 5px 0 rgba(0, 0, 0, 0.3);
   line-height: 1;
   display: block;
+  text-align: center;
   will-change: transform, opacity;
 }
 
@@ -3281,13 +3254,13 @@ body.modal-open .project-modal {
 /* ── Red glow pulse behind stamp during hold phase ── */
 .day-prog__glow {
   position: absolute;
-  inset: -40px;
+  inset: -50px;
   z-index: -1;
   border-radius: 50%;
   background: radial-gradient(
     ellipse at center,
-    rgba(204, 0, 0, 0.2) 0%,
-    rgba(204, 0, 0, 0.08) 40%,
+    rgba(204, 0, 0, 0.25) 0%,
+    rgba(204, 0, 0, 0.1) 40%,
     transparent 70%
   );
   animation: glow-breathe 1.2s ease-in-out infinite alternate;
@@ -3310,13 +3283,13 @@ body.modal-open .project-modal {
     width: 2rem;
   }
   .day-prog__weekday {
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
   }
   .day-prog__day-scroller {
-    min-width: 2em;
+    min-width: 1.8em;
   }
   .day-prog__glow {
-    inset: -20px;
+    inset: -25px;
   }
 }
 

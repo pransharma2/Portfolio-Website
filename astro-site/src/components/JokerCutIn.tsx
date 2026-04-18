@@ -163,11 +163,10 @@ export default function JokerCutIn() {
 
   if (phase === 'idle' || phase === 'done') return null;
 
-  const panelsVisible = phase !== 'idle' && phase !== 'done';
-  const panelsExiting = phase === 'panels-out';
-  const stampVisible = phase === 'day-scroll' || phase === 'day-hold';
-  const showScroller = phase === 'day-scroll' || phase === 'day-hold';
-  const holdPhase = phase === 'day-hold';
+    const panelsExiting = phase === 'panels-out';
+    const stampVisible = phase === 'day-scroll' || phase === 'day-hold';
+    const showScroller = phase === 'day-scroll' || phase === 'day-hold';
+    const holdPhase = phase === 'day-hold';
 
   return (
     <div
@@ -181,14 +180,6 @@ export default function JokerCutIn() {
         overflow: 'hidden',
       }}
     >
-      {/* ── Diagonal hatching overlay (across entire viewport during panels) ── */}
-      <motion.div
-        className="day-prog__hatch-overlay"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: panelsExiting ? 0 : 0.06 }}
-        transition={{ duration: panelsExiting ? 0.2 : 0.4 }}
-      />
-
       {/* ── Left angular panel ── */}
       <motion.div
         className="day-prog__panel day-prog__panel--left"
@@ -234,24 +225,6 @@ export default function JokerCutIn() {
           ease: EASE_SHARP,
         }}
       />
-
-      {/* ── Red edge lines (subtle accent on panel edges) ── */}
-      {panelsVisible && !panelsExiting && (
-        <>
-          <motion.div
-            className="day-prog__edge-line day-prog__edge-line--left"
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: 1 }}
-            transition={{ duration: 0.3, delay: 0.15, ease: EASE_SHARP }}
-          />
-          <motion.div
-            className="day-prog__edge-line day-prog__edge-line--right"
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: 1 }}
-            transition={{ duration: 0.3, delay: 0.15, ease: EASE_SHARP }}
-          />
-        </>
-      )}
 
       {/* ── Date stamp content ── */}
       <AnimatePresence>
