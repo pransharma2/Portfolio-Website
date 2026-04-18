@@ -516,6 +516,7 @@ export default function JokerCutIn() {
 
   // Panel background style — both panels use the same time-appropriate image
   const panelBg: React.CSSProperties = {
+    backgroundColor: '#000',
     backgroundImage: `url('${bgImage}')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
