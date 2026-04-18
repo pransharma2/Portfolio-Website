@@ -7,12 +7,11 @@ import { motion, AnimatePresence } from 'motion/react';
  * Faithfully recreates the P5 day-progression animation from:
  *   github.com/Jack-Pettigrew/Persona-5-Day-Progression
  *
- * Six phases (~4s total):
- *   Phase 1 — panels-in   (0–500ms):    Black hatched panels sweep in from both sides
- *   Phase 2 — day-scroll   (500–2000ms): Day numbers cycle rapidly, weekday slides in
- *   Phase 3 — day-hold     (2000–3200ms): Date stamp holds, knife accent slides in
- *   Phase 4 — panels-out   (3200–3700ms): Panels sweep back out
- *   Phase 5 — done         (3800ms):      Unmount
+ * Features:
+ *   - Time-of-day aware backgrounds (day city 6am–6pm, night city 6pm–6am)
+ *   - Dynamic weather effects (rain, drifting clouds) via canvas
+ *   - Slot-machine day number cycling
+ *   - Angular panel sweep with clip-path animations
  *
  * Respects prefers-reduced-motion. Uses sessionStorage for once-per-session.
  */
@@ -49,7 +48,12 @@ function getDateParts() {
     month: MONTHS[now.getMonth()],
     day: now.getDate(),
     weekday: WEEKDAYS[now.getDay()],
+    hour: now.getHours(),
   };
+}
+
+function isNightTime(hour: number): boolean {
+  return hour < 6 || hour >= 18;
 }
 
 /** Generate an array of random day numbers for the slot-machine cycling effect */
@@ -64,6 +68,140 @@ function generateScrollDays(finalDay: number, count = 8): number[] {
   }
   days.push(finalDay);
   return days;
+}
+
+/* ── Rain Canvas sub-component ── */
+
+interface RainDrop {
+  x: number;
+  y: number;
+  length: number;
+  speed: number;
+  opacity: number;
+  width: number;
+}
+
+function WeatherCanvas({ isNight }: { isNight: boolean }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const dropsRef = useRef<RainDrop[]>([]);
+  const animFrameRef = useRef<number>(0);
+  const cloudsRef = useRef<{ x: number; y: number; w: number; h: number; speed: number; opacity: number }[]>([]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Initialize rain drops
+    const dropCount = isNight ? 180 : 80;
+    dropsRef.current = Array.from({ length: dropCount }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      length: 15 + Math.random() * 25,
+      speed: 8 + Math.random() * 12,
+      opacity: 0.15 + Math.random() * 0.35,
+      width: 1 + Math.random() * 1.5,
+    }));
+
+    // Initialize clouds (soft floating shapes)
+    const cloudCount = isNight ? 3 : 5;
+    cloudsRef.current = Array.from({ length: cloudCount }, () => ({
+      x: Math.random() * canvas.width,
+      y: 20 + Math.random() * (canvas.height * 0.3),
+      w: 200 + Math.random() * 300,
+      h: 40 + Math.random() * 60,
+      speed: 0.2 + Math.random() * 0.5,
+      opacity: isNight ? 0.06 + Math.random() * 0.08 : 0.08 + Math.random() * 0.12,
+    }));
+
+    const drawCloud = (cloud: typeof cloudsRef.current[0]) => {
+      ctx.save();
+      ctx.globalAlpha = cloud.opacity;
+      ctx.fillStyle = isNight ? '#8899bb' : '#ffffff';
+      ctx.beginPath();
+      // Draw cloud as overlapping ellipses for organic shape
+      const cx = cloud.x;
+      const cy = cloud.y;
+      ctx.ellipse(cx, cy, cloud.w * 0.5, cloud.h * 0.5, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(cx - cloud.w * 0.25, cy + cloud.h * 0.1, cloud.w * 0.35, cloud.h * 0.4, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(cx + cloud.w * 0.3, cy - cloud.h * 0.05, cloud.w * 0.3, cloud.h * 0.35, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    };
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw drifting clouds
+      for (const cloud of cloudsRef.current) {
+        drawCloud(cloud);
+        cloud.x += cloud.speed;
+        if (cloud.x - cloud.w > canvas.width) {
+          cloud.x = -cloud.w;
+          cloud.y = 20 + Math.random() * (canvas.height * 0.3);
+        }
+      }
+
+      // Draw rain streaks
+      const rainColor = isNight ? '180, 200, 255' : '200, 210, 230';
+      for (const drop of dropsRef.current) {
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(${rainColor}, ${drop.opacity})`;
+        ctx.lineWidth = drop.width;
+        ctx.moveTo(drop.x, drop.y);
+        // Slight angle for wind effect
+        ctx.lineTo(drop.x - 2, drop.y + drop.length);
+        ctx.stroke();
+
+        drop.y += drop.speed;
+        drop.x -= 0.3; // subtle wind drift
+
+        if (drop.y > canvas.height) {
+          drop.y = -drop.length;
+          drop.x = Math.random() * canvas.width;
+        }
+        if (drop.x < 0) {
+          drop.x = canvas.width;
+        }
+      }
+
+      animFrameRef.current = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      cancelAnimationFrame(animFrameRef.current);
+      window.removeEventListener('resize', resize);
+    };
+  }, [isNight]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="day-prog__weather-canvas"
+      style={{
+        position: 'absolute',
+        inset: 0,
+        width: '100%',
+        height: '100%',
+        pointerEvents: 'none',
+        zIndex: 0,
+      }}
+    />
+  );
 }
 
 /* ── Day Number Scroller sub-component ── */
@@ -127,6 +265,10 @@ export default function JokerCutIn() {
   const [phase, setPhase] = useState<Phase>('idle');
   const date = useMemo(getDateParts, []);
   const [dayLanded, setDayLanded] = useState(false);
+  const isNight = useMemo(() => isNightTime(date.hour), [date.hour]);
+
+  // Choose background based on time of day
+  const bgImage = isNight ? '/img/persona-night-city.jpg' : '/img/persona-day-city.jpg';
 
   const handleDayLanded = useCallback(() => {
     setDayLanded(true);
@@ -163,10 +305,17 @@ export default function JokerCutIn() {
 
   if (phase === 'idle' || phase === 'done') return null;
 
-    const panelsExiting = phase === 'panels-out';
-    const stampVisible = phase === 'day-scroll' || phase === 'day-hold';
-    const showScroller = phase === 'day-scroll' || phase === 'day-hold';
-    const holdPhase = phase === 'day-hold';
+  const panelsExiting = phase === 'panels-out';
+  const stampVisible = phase === 'day-scroll' || phase === 'day-hold';
+  const showScroller = phase === 'day-scroll' || phase === 'day-hold';
+  const holdPhase = phase === 'day-hold';
+
+  // Panel background style — both panels use the same time-appropriate image
+  const panelBg: React.CSSProperties = {
+    backgroundImage: `url('${bgImage}')`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  };
 
   return (
     <div
@@ -183,6 +332,7 @@ export default function JokerCutIn() {
       {/* ── Left angular panel ── */}
       <motion.div
         className="day-prog__panel day-prog__panel--left"
+        style={panelBg}
         initial={{ clipPath: 'polygon(0 0, 0% 0, 0% 100%, 0 100%)' }}
         animate={
           panelsExiting
@@ -193,11 +343,14 @@ export default function JokerCutIn() {
           duration: panelsExiting ? 0.35 : 0.4,
           ease: panelsExiting ? EASE_IN : EASE_SHARP,
         }}
-      />
+      >
+        <WeatherCanvas isNight={isNight} />
+      </motion.div>
 
       {/* ── Right angular panel ── */}
       <motion.div
         className="day-prog__panel day-prog__panel--right"
+        style={panelBg}
         initial={{ clipPath: 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)' }}
         animate={
           panelsExiting
@@ -208,7 +361,9 @@ export default function JokerCutIn() {
           duration: panelsExiting ? 0.35 : 0.4,
           ease: panelsExiting ? EASE_IN : EASE_SHARP,
         }}
-      />
+      >
+        <WeatherCanvas isNight={isNight} />
+      </motion.div>
 
       {/* ── Red accent slash (between panels) ── */}
       <motion.div

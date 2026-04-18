@@ -28,7 +28,7 @@
 @font-face {
   font-family: 'LEMONMILK';
   src: url('/fonts/lemonmilk-medium.otf') format('opentype');
-  font-weight: 500;
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
@@ -3110,16 +3110,7 @@ body.modal-open .project-modal {
   will-change: clip-path;
   background-size: cover;
   background-position: center;
-}
-
-/* Left panel: day city */
-.day-prog__panel--left {
-  background-image: url('/img/persona-day-city.jpg');
-}
-
-/* Right panel: night city */
-.day-prog__panel--right {
-  background-image: url('/img/persona-night-city.jpg');
+  overflow: hidden;
 }
 
 /* Subtle diagonal hatch texture over panels */
@@ -3135,6 +3126,17 @@ body.modal-open .project-modal {
     rgba(0, 0, 0, 0.08) 9px
   );
   pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Weather canvas — dynamic rain/cloud overlay inside panels ── */
+.day-prog__weather-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* ── Red accent slash between panels ── */
@@ -3218,8 +3220,8 @@ body.modal-open .project-modal {
   align-items: center;
   justify-content: center;
   min-width: 2em;
-  height: 1.3em;
-  overflow: hidden;
+  height: clamp(3rem, 7vw, 5.5rem);
+  overflow: visible;
   vertical-align: middle;
 }
 
