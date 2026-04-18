@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import SoundToggle from '../components/SoundToggle';
 import ThemeToggle from '../components/ThemeToggle';
-import PageTransition from '../components/PageTransition';
+import TakeYourTimeTransition from '../components/TakeYourTimeTransition';
 
 interface Props {
   title: string;
@@ -131,7 +131,7 @@ const navLinks = [
     </div>
 
     <!-- Full-screen cinematic page transition overlay -->
-    <PageTransition client:load />
+    <TakeYourTimeTransition client:load />
 
     <script>
       // ── Hamburger menu toggle ──────────────────────────────────
