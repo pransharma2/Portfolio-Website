@@ -3113,6 +3113,56 @@ body.modal-open .project-modal {
   overflow: hidden;
 }
 
+/* Time-of-day color overlays — ported from scene.pkg color grading layers.
+   scene.pkg uses separate tint textures (Morning.tex, Daytime.tex, Afternoon.tex,
+   Evening.tex, EarlyMorning.tex) composited via alpha scripts. We replicate them
+   as CSS gradient overlays keyed by data-time attribute. */
+.day-prog__panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+}
+
+/* Night (20:00-5:00) — deep blue-purple, scene.pkg "Magia nera" dark blend */
+.day-prog__panel[data-time="night"]::before {
+  background: linear-gradient(to bottom, rgba(10, 5, 30, 0.6), rgba(20, 15, 45, 0.4));
+}
+
+/* Dawn (5:00-7:00) — warm lavender-pink, matches dawn2.tex purple tones */
+.day-prog__panel[data-time="dawn"]::before {
+  background: linear-gradient(to bottom, rgba(140, 100, 160, 0.25), rgba(180, 130, 160, 0.15));
+}
+
+/* Day (7:00-15:00) — light bright, minimal tinting to preserve Day2.tex grayscale */
+.day-prog__panel[data-time="day"]::before {
+  background: linear-gradient(to bottom, rgba(200, 220, 240, 0.12), rgba(255, 255, 255, 0.05));
+}
+
+/* Afternoon (15:00-19:00) — warm golden, matches midday.tex olive/amber tones */
+.day-prog__panel[data-time="afternoon"]::before {
+  background: linear-gradient(to bottom, rgba(200, 160, 80, 0.2), rgba(180, 140, 60, 0.1));
+}
+
+/* Evening (19:00-20:00) — deep orange-red sunset, matches miday2.tex warm tones */
+.day-prog__panel[data-time="evening"]::before {
+  background: linear-gradient(to bottom, rgba(200, 80, 30, 0.25), rgba(150, 50, 60, 0.15));
+}
+
+/* Rain weather darkening — scene.pkg color grading: brightness=-0.2, temp=-0.15 */
+.day-prog__panel[data-weather="rainy"]::before {
+  background: linear-gradient(to bottom, rgba(0, 10, 30, 0.25), rgba(0, 5, 20, 0.2)) !important;
+  opacity: 0.5;
+}
+
+/* Snow weather tint — scene.pkg "Snow colors" objects */
+.day-prog__panel[data-weather="snowy"]::before {
+  background: linear-gradient(to bottom, rgba(200, 210, 230, 0.15), rgba(180, 195, 220, 0.1)) !important;
+  opacity: 0.4;
+}
+
 /* Subtle diagonal hatch texture over panels */
 .day-prog__panel::after {
   content: '';
