@@ -3108,6 +3108,7 @@ body.modal-open .project-modal {
   inset: 0;
   z-index: 1;
   will-change: clip-path;
+  background-color: #000;
   background-size: cover;
   background-position: center;
   overflow: hidden;
