@@ -184,9 +184,9 @@ export default function ContactPage() {
   return (
     <div style={{
       position: 'relative', width: '100%', height: '100vh', overflow: 'hidden',
-      background: T.ink, color: T.paper, fontFamily: T.fontBody,
+      color: T.paper, fontFamily: T.fontBody,
     }}>
-      {/* BACKGROUND STACK */}
+      {/* Image slideshow sits behind via position:fixed z:-1 */}
       <ContactBgSlideshow />
       <SparkleCanvas />
       <StaticStars />
