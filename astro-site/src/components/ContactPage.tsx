@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import type { CSSProperties } from 'react';
 import ContactForm from './ContactForm';
+import ContactBgSlideshow from './ContactBgSlideshow';
 
 /* ─── Design tokens ─── */
 const T = {
@@ -85,36 +86,7 @@ function SparkleCanvas() {
   );
 }
 
-/* ─── Location-tint backdrop (cycling gradient scrim) ─── */
-function BackdropSlideshow() {
-  const [i, setI] = useState(0);
-  useEffect(() => {
-    const t = setInterval(() => setI(x => (x + 1) % 4), 4200);
-    return () => clearInterval(t);
-  }, []);
-  const tints = [
-    ['#190708', '#3a0a10', '#5a0a14'],
-    ['#0a1018', '#1a1029', '#2a0f2f'],
-    ['#140a05', '#2a1505', '#3a200a'],
-    ['#0c0a10', '#240a24', '#3a0a2a'],
-  ];
-  return (
-    <>
-      {tints.map((t, idx) => (
-        <div key={idx} style={{
-          position: 'absolute', inset: 0, zIndex: 0,
-          background: `linear-gradient(135deg, ${t[0]} 0%, ${t[1]} 45%, ${t[2]} 100%)`,
-          opacity: i === idx ? 1 : 0,
-          transition: 'opacity 1.6s ease',
-        }} />
-      ))}
-      <div style={{
-        position: 'absolute', inset: 0, zIndex: 0,
-        background: 'radial-gradient(ellipse at 30% 70%, rgba(10,5,7,0) 0%, rgba(5,2,3,0.55) 70%, rgba(5,2,3,0.85) 100%)',
-      }} />
-    </>
-  );
-}
+
 
 /* ─── Static decorative stars (gold SVG) ─── */
 function StaticStars() {
@@ -215,7 +187,7 @@ export default function ContactPage() {
       background: T.ink, color: T.paper, fontFamily: T.fontBody,
     }}>
       {/* BACKGROUND STACK */}
-      <BackdropSlideshow />
+      <ContactBgSlideshow />
       <SparkleCanvas />
       <StaticStars />
 
