@@ -57,12 +57,13 @@ export default function ContactBgSlideshow() {
   }, []);
 
   const baseStyle: React.CSSProperties = {
-    position: 'fixed',
+    position: 'absolute',
     inset: 0,
     width: '100%',
     height: '100%',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
     pointerEvents: 'none',
   };
 

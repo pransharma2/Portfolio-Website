@@ -87,23 +87,55 @@ export default function WeatherWidget() {
   // Don't render until we have a time string (avoids hydration flash)
   if (!time) return null;
 
+  const fontDisplay = '"Shippori Mincho B1","Shippori Mincho",serif';
+
   return (
-    <div className="p5-weather-widget" aria-hidden="true">
+    <div
+      aria-hidden="true"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        pointerEvents: 'none',
+      }}
+    >
       {/* Row 1: Month + Day */}
-      <div className="wgt-date-row">
-        <span className="wgt-month">{date.month}</span>
-        <span className="wgt-day">{date.day}</span>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, lineHeight: 1 }}>
+        <span style={{
+          fontFamily: fontDisplay, fontSize: 15, fontWeight: 700,
+          letterSpacing: '0.1em', color: 'rgba(255,255,255,0.8)',
+          textShadow: '1px 1px 0 #000',
+        }}>{date.month}</span>
+        <span style={{
+          fontFamily: fontDisplay, fontSize: 22, fontWeight: 900,
+          letterSpacing: '0.04em', color: '#fff',
+          textShadow: '2px 2px 0 #000',
+        }}>{date.day}</span>
       </div>
 
       {/* Row 2: Weekday */}
-      <div className="wgt-weekday">{date.weekday}</div>
+      <div style={{
+        fontFamily: fontDisplay, fontSize: 11, fontWeight: 600,
+        letterSpacing: '0.15em', color: '#d41428',
+        textShadow: '1px 1px 0 rgba(0,0,0,0.6)', lineHeight: 1,
+      }}>{date.weekday}</div>
 
       {/* Row 3: Time + Weather */}
-      <div className="wgt-info-row">
-        <span className="wgt-time">{time}</span>
-        <span className="wgt-weather">
-          <span className="wgt-icon">{weather.symbol}</span>
-          <span className="wgt-temp">{weather.temp}</span>
+      <div style={{
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        gap: 8, borderTop: '1px solid rgba(255,255,255,0.1)',
+        paddingTop: 4, marginTop: 2,
+      }}>
+        <span style={{
+          fontFamily: fontDisplay, fontSize: 12, color: '#fff',
+          textShadow: '1px 1px 0 #000', letterSpacing: '0.05em',
+        }}>{time}</span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          <span style={{ fontSize: 14, lineHeight: 1 }}>{weather.symbol}</span>
+          <span style={{
+            fontFamily: fontDisplay, fontSize: 12, color: '#fff',
+            textShadow: '1px 1px 0 #000', letterSpacing: '0.05em',
+          }}>{weather.temp}</span>
         </span>
       </div>
     </div>

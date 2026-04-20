@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { CSSProperties } from 'react';
 import WeatherWidget from './WeatherWidget';
 import SoundToggle from './SoundToggle';
+import JokerCutIn from './JokerCutIn';
 
 /* ─── Design tokens (mirror CSS custom props) ─── */
 const T = {
@@ -500,6 +501,9 @@ export default function HomeHero() {
           </a>
         ))}
       </div>
+
+      {/* Persona 5 day-progression cinematic intro — plays once per session */}
+      <JokerCutIn />
     </div>
   );
 }
