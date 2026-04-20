@@ -1,4 +1,5 @@
-import { useRef, useState, useEffect, CSSProperties, ReactNode } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 /* ─── Design tokens ─── */
 const T = {
