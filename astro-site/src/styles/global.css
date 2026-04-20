@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Arsenal:ital,wght@0,400;0,700;1,400;1,700&family=Bebas+Neue&family=Fjalla+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Arsenal:ital,wght@0,400;0,700;1,400;1,700&family=Bebas+Neue&family=Fjalla+One&family=Shippori+Mincho+B1:wght@400;700;800&display=swap');
 
 /* ============================================================
    PERSONA 5 PORTFOLIO - GLOBAL STYLES
@@ -49,6 +49,16 @@
   /* Font Stacks */
   --p5-font: 'Fjalla One', 'Bebas Neue', 'Arsenal', Impact, sans-serif;
   --p5-font-body: 'Arsenal', sans-serif;
+  --p5-font-display: 'Shippori Mincho B1', 'Shippori Mincho', serif;
+
+  /* Redesign tokens */
+  --ink: #0d0d0d;
+  --ink-soft: #1a1514;
+  --paper: #f2f0ed;
+  --paper-soft: #e8e5e1;
+  --crimson: #d41428;
+  --crimson-deep: #8a0a17;
+  --gold: #ffd700;
 
   /* Spacing */
   --nav-height: 70px;
@@ -4648,4 +4658,18 @@ body.modal-open .project-modal {
   color: var(--accent);
   border-color: var(--accent);
   background: rgba(204,0,0,0.08);
+}
+
+/* ============================================================
+   REDESIGN — KEYFRAMES
+   ============================================================ */
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(6px); }
 }
