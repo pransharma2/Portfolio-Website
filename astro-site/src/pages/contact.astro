@@ -1,78 +1,32 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ContactBgSlideshow from '../components/ContactBgSlideshow';
-import ContactCanvas from '../components/ContactCanvas';
-import ContactForm from '../components/ContactForm';
-import TextReveal from '../components/TextReveal';
+import ContactPage from '../components/ContactPage';
 ---
 
 <Layout title="Contact — Send a Calling Card" page="contact">
-
-  <!--
-    Layer order (low → high):
-      body::before         z-index: -3  Dark base
-      ContactBgSlideshow   z-index: -1  Cycling P5 location backgrounds + scrim
-      ContactCanvas        z-index:  0  Canvas sparkle particles
-      .cstars              z-index:  1  Static star PNGs with bounce-in
-      .page-banner         z-index:  2  Page title
-      .chat-page           z-index:  2  Contact form
-  -->
-
-  <!-- Cycling P5 location backgrounds (scraped from p5ausa.com) -->
-  <ContactBgSlideshow client:load />
-
-  <!-- Canvas particle sparkle (faithful recreation of p5ausa.com's particle system) -->
-  <ContactCanvas client:load />
-
-  <!-- Static star decorations — split into depth layers for parallax -->
-  <ul class="cstars cstars--back" aria-hidden="true">
-    <li class="cstar sz-xl pos-1"></li>
-    <li class="cstar sz-md pos-4"></li>
-    <li class="cstar sz-xs pos-9"></li>
-    <li class="cstar sz-xs pos-12"></li>
-  </ul>
-  <ul class="cstars cstars--front" aria-hidden="true">
-    <li class="cstar sz-lg pos-2"></li>
-    <li class="cstar sz-lg pos-3"></li>
-    <li class="cstar sz-md pos-5"></li>
-    <li class="cstar sz-sm pos-6"></li>
-    <li class="cstar sz-sm pos-7"></li>
-    <li class="cstar sz-sm pos-8"></li>
-    <li class="cstar sz-xs pos-10"></li>
-    <li class="cstar sz-xs pos-11"></li>
-  </ul>
-
-  <!-- Page Banner with TextReveal -->
-  <div style="position:relative;z-index:2;text-align:center;padding-top:6rem;">
-    <TextReveal client:load tag="h2" className="contact-heading">
-      Calling Card
-    </TextReveal>
-    <p class="contact-subtitle">Got something on your mind? Let's connect.</p>
-  </div>
-
-  <div class="chat-page">
-    <div class="phone-frame">
-      <!-- Chat Header -->
-      <div class="chat-header">
-        <div class="chat-avatar" aria-hidden="true">P</div>
-        <div>
-          <span class="chat-name">Phantom Dev</span>
-          <span class="chat-status">Online</span>
-        </div>
-      </div>
-
-      <!-- Chat Messages -->
-      <div class="chat-messages">
-        <div class="chat-bubble received">
-          <p>Hey there! Welcome to the Phantom Thieves hideout.</p>
-        </div>
-        <div class="chat-bubble received">
-          <p>Got something on your mind? Send me a calling card below.</p>
-        </div>
-      </div>
-
-      <!-- Functional Contact Form (Web3Forms) -->
-      <ContactForm client:load />
-    </div>
-  </div>
+  <ContactPage client:load />
 </Layout>
+
+<style>
+  :global(.page-contact main) {
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
+  :global(.page-contact .nav-header) {
+    display: none;
+  }
+  :global(.page-contact .site-footer) {
+    display: none;
+  }
+  :global(.page-contact .p5-fixed-controls) {
+    display: none;
+  }
+  :global(.page-contact .particles) {
+    display: none;
+  }
+  :global(.page-contact .corner-decor) {
+    display: none;
+  }
+</style>

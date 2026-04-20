@@ -1,23 +1,33 @@
 ---
-/**
- * projects.astro — layout shell only.
- *
- * TO UPDATE PROJECT CONTENT (text, tags, outcomes):
- *   → Edit src/data/projects.ts  ← that's the only file you need.
- *
- * TO CHANGE CARD LAYOUT / ADD NEW SECTIONS:
- *   → Edit this file or ProjectCard.tsx / ProjectModal.tsx.
- */
 import Layout from '../layouts/Layout.astro';
-import ProjectGrid from '../components/ProjectGrid';
+import ProjectsPage from '../components/ProjectsPage';
 import { projects } from '../data/projects';
 ---
 
 <Layout title="Projects — Persona Compendium" page="projects">
-  <!-- Page Banner -->
-  <div class="page-banner">Persona Compendium</div>
-
-  <div class="compendium-page">
-    <ProjectGrid client:load projects={projects} />
-  </div>
+  <ProjectsPage client:load projects={projects} />
 </Layout>
+
+<style>
+  :global(.page-projects main) {
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
+  :global(.page-projects .nav-header) {
+    display: none;
+  }
+  :global(.page-projects .site-footer) {
+    display: none;
+  }
+  :global(.page-projects .p5-fixed-controls) {
+    display: none;
+  }
+  :global(.page-projects .particles) {
+    display: none;
+  }
+  :global(.page-projects .corner-decor) {
+    display: none;
+  }
+</style>
