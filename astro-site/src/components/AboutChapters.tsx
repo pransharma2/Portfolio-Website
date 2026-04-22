@@ -169,7 +169,7 @@ export default function AboutChapters() {
         }}
       >
         <div style={{ fontFamily: T.fontDisplay, fontSize: 18, fontWeight: 800 }}>
-          PRAN <span style={{ color: T.crimson }}>SHARMA</span>
+          PRANTAP <span style={{ color: T.crimson }}>SHARMA</span>
         </div>
         <div style={{ display: 'flex', gap: 18, fontFamily: T.fontDisplay, fontSize: 12, fontWeight: 700, letterSpacing: 2 }}>
           <a href="/" style={{ opacity: 0.5, color: T.ink, textDecoration: 'none' }}>HOME</a>
@@ -237,7 +237,7 @@ export default function AboutChapters() {
             marginTop: 18,
           }}
         >
-          PRAN<span style={{ color: T.crimson }}>.</span>
+          PRANTAP<span style={{ color: T.crimson }}>.</span>
         </div>
         <div
           style={{
@@ -781,7 +781,7 @@ export default function AboutChapters() {
           letterSpacing: 3,
         }}
       >
-        <span>END OF DOSSIER · © PRAN SHARMA 2026</span>
+        <span>END OF DOSSIER · © PRANTAP SHARMA 2026</span>
         <button
           onClick={() => scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })}
           style={{

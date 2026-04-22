@@ -155,7 +155,7 @@ export default function HomeHero() {
         }}
       >
         <div style={{ fontFamily: T.fontDisplay, fontSize: 22, fontWeight: 800, letterSpacing: -0.5 }}>
-          PRAN <span style={{ color: T.crimson }}>SHARMA</span>
+          PRANTAP <span style={{ color: T.crimson }}>SHARMA</span>
           <span
             style={{
               display: 'inline-block',
@@ -239,7 +239,7 @@ export default function HomeHero() {
             textShadow: '2px 2px 0 rgba(0,0,0,0.6)',
           }}
         >
-          — no, just <span style={{ color: T.crimson }}>Pran</span>. software engineer &amp; storyteller.
+          — no, just <span style={{ color: T.crimson }}>Prantap</span>. software engineer &amp; storyteller.
         </div>
       </div>
 

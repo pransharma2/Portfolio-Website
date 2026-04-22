@@ -207,7 +207,7 @@ export default function ContactPage() {
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
       }}>
         <div style={{ fontFamily: T.fontDisplay, fontSize: 18, fontWeight: 800 }}>
-          PRAN <span style={{ color: T.crimson }}>SHARMA</span>{' '}
+          PRANTAP <span style={{ color: T.crimson }}>SHARMA</span>{' '}
           <span style={{ fontFamily: T.fontBody, fontSize: 11, fontWeight: 400, letterSpacing: 3, opacity: 0.55 }}>/ PORTFOLIO</span>
         </div>
         <div style={{ display: 'flex', gap: 18, fontFamily: T.fontDisplay, fontSize: 12, fontWeight: 700, letterSpacing: 2 }}>
