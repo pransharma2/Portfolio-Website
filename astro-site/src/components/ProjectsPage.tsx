@@ -34,6 +34,8 @@ const CATS: [string, string][] = [
 function ProjectCard({ p, onOpen }: { p: Project; onOpen: (p: Project) => void }) {
   const [hover, setHover] = useState(false);
   const isPro = p.category === 'professional';
+  const showImage = !isPro; // image slot only for non-professional cards
+  const thumb = p.images?.[0];
   return (
     <button
       onClick={() => onOpen(p)}
@@ -43,7 +45,9 @@ function ProjectCard({ p, onOpen }: { p: Project; onOpen: (p: Project) => void }
         textAlign: 'left', cursor: 'pointer', position: 'relative',
         background: isPro ? 'rgba(13,13,13,0.82)' : 'rgba(242,240,237,0.97)',
         color: isPro ? T.paper : T.ink,
-        padding: '22px 22px 20px',
+        // Extra top padding so the top-right status + category stack fits
+        // inside the clipPath without being cut off.
+        padding: '44px 22px 20px',
         border: p.featured ? `2px solid ${T.crimson}` : `1px solid ${isPro ? 'rgba(242,240,237,0.22)' : 'rgba(13,13,13,0.18)'}`,
         clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%)',
         boxShadow: hover
@@ -54,11 +58,30 @@ function ProjectCard({ p, onOpen }: { p: Project; onOpen: (p: Project) => void }
         fontFamily: T.fontBody,
       }}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', gap: 12 }}>
-        <h3 style={{
-          margin: 0, fontFamily: T.fontDisplay, fontSize: 22, fontWeight: 800,
-          lineHeight: 1.15, letterSpacing: -0.5, flex: 1,
-        }}>{p.title}</h3>
+      {/* Top-right stack: status badge + category chip.
+          Both are positioned INSIDE the card so the clipPath doesn't chop
+          the top of the "COMPLETE" / "ONGOING" / "IN PROGRESS" labels. */}
+      <div style={{
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-end',
+        gap: 6,
+        zIndex: 2,
+      }}>
+        {p.status && (
+          <span style={{
+            background: p.status === 'completed' ? T.ink : p.status === 'ongoing' ? T.crimson : T.gold,
+            color: p.status === 'in-progress' ? T.ink : T.paper,
+            padding: '3px 10px', fontFamily: T.fontDisplay, fontSize: 9,
+            fontWeight: 800, letterSpacing: 2, whiteSpace: 'nowrap',
+            boxShadow: '2px 2px 0 rgba(0,0,0,0.35)',
+          }}>
+            {p.status === 'in-progress' ? 'IN PROGRESS' : p.status === 'ongoing' ? 'ONGOING' : 'COMPLETE'}
+          </span>
+        )}
         <span style={{
           background: isPro ? T.paper : T.ink,
           color: isPro ? T.ink : T.paper,
@@ -67,6 +90,49 @@ function ProjectCard({ p, onOpen }: { p: Project; onOpen: (p: Project) => void }
           transform: 'skewX(-6deg)',
         }}>{CATEGORY_LABELS[p.category] ?? p.category}</span>
       </div>
+
+      {/* Title */}
+      <h3 style={{
+        margin: 0, fontFamily: T.fontDisplay, fontSize: 22, fontWeight: 800,
+        lineHeight: 1.15, letterSpacing: -0.5,
+        // Reserve room on the right for the absolute top-right stack
+        paddingRight: 'clamp(90px, 28%, 150px)',
+      }}>{p.title}</h3>
+
+      {/* Image slot (public / workshops / teaching only) */}
+      {showImage && (
+        <div style={{
+          marginTop: 14,
+          width: '100%',
+          height: 130,
+          position: 'relative',
+          background: thumb
+            ? `url('${thumb}') center/cover no-repeat`
+            : 'linear-gradient(135deg, rgba(13,13,13,0.08) 0%, rgba(212,20,40,0.08) 100%)',
+          border: `1px solid ${isPro ? 'rgba(242,240,237,0.18)' : 'rgba(13,13,13,0.18)'}`,
+          clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+          overflow: 'hidden',
+        }}>
+          {!thumb && (
+            <div style={{
+              position: 'absolute', inset: 0,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontFamily: T.fontDisplay, fontSize: 11, fontWeight: 800, letterSpacing: 3,
+              color: 'rgba(13,13,13,0.35)',
+              backgroundImage: halftoneBg('rgba(13,13,13,0.06)', 6),
+            }}>▤ IMAGE</div>
+          )}
+          {/* Subtle inner corner accent to match P5 geometry */}
+          <div style={{
+            position: 'absolute', bottom: 0, right: 0,
+            width: 0, height: 0,
+            borderLeft: '10px solid transparent',
+            borderBottom: `10px solid ${T.crimson}`,
+            transform: 'rotate(180deg)',
+            opacity: 0.85,
+          }} />
+        </div>
+      )}
 
       <div style={{
         display: 'flex', justifyContent: 'space-between', gap: 10,
@@ -105,17 +171,6 @@ function ProjectCard({ p, onOpen }: { p: Project; onOpen: (p: Project) => void }
           }}>+{p.tags.length - 4}</span>
         )}
       </div>
-
-      {p.status && (
-        <div style={{
-          position: 'absolute', top: -10, right: 16,
-          background: p.status === 'completed' ? T.ink : p.status === 'ongoing' ? T.crimson : T.gold,
-          color: p.status === 'in-progress' ? T.ink : T.paper,
-          padding: '3px 10px', fontFamily: T.fontDisplay, fontSize: 9, fontWeight: 800, letterSpacing: 2,
-        }}>
-          {p.status === 'in-progress' ? 'IN PROGRESS' : p.status === 'ongoing' ? 'ONGOING' : 'COMPLETE'}
-        </div>
-      )}
 
       {p.featured && (
         <div style={{
