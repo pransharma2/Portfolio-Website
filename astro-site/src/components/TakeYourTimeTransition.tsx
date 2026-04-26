@@ -4,26 +4,25 @@ import { motion, AnimatePresence } from 'motion/react';
 /**
  * TakeYourTimeTransition — Video page transition coordinator.
  *
- * Intercepts internal link clicks (capture phase)
- * and randomly selects between four video transition variants:
+ * Intercepts internal link clicks (capture phase) and picks between
+ * TWO video transition variants (50/50):
  *
- * 1. "TAKE YOUR TIME" — full-screen P5-style video with text overlay
- * 2. "P5 CLIP 1" — first half of the chroma-keyed P5 transition (slam)
- * 3. "P5 CLIP 2" — second half of the chroma-keyed P5 transition (grapple)
- * 4. "P5 SUBWAY" — subway crowd scene from P5
+ *   1. "TAKE YOUR TIME" — full-screen P5-style clip with text overlay.
+ *      Timing is slower + held longer so the destination page has
+ *      time to load before the overlay wipes out.
+ *   2. "P5 SUBWAY"      — subway crowd scene, fills the viewport
+ *      (objectFit: cover) so it never letterboxes.
  *
- * Activation: always intercepts internal navigation.
- * Falls back to instant navigation if videos fail to load.
+ * Falls back to instant navigation if a video fails to play.
+ * Respects prefers-reduced-motion (navigates instantly).
  */
 
 const TAKE_YOUR_TIME_SRC = '/img/Take Your TIme.webm0001-0167.mp4';
-const P5_CLIP1_SRC = '/img/p5-transition-clip1.webm';
-const P5_CLIP2_SRC = '/img/p5-transition-clip2.webm';
 const P5_SUBWAY_SRC = '/img/p5-transition-subway.webm';
 
 const EASE_SHARP: [number, number, number, number] = [0.76, 0, 0.24, 1];
 
-type Variant = 'take-your-time' | 'p5-clip1' | 'p5-clip2' | 'p5-subway';
+type Variant = 'take-your-time' | 'p5-subway';
 type Phase = 'idle' | 'wipe-in' | 'video' | 'wipe-out';
 
 export default function TakeYourTimeTransition() {
@@ -31,8 +30,6 @@ export default function TakeYourTimeTransition() {
   const [phase, setPhase] = useState<Phase>('idle');
   const [variant, setVariant] = useState<Variant>('take-your-time');
   const tytVideoRef = useRef<HTMLVideoElement>(null);
-  const p5Clip1Ref = useRef<HTMLVideoElement>(null);
-  const p5Clip2Ref = useRef<HTMLVideoElement>(null);
   const p5SubwayRef = useRef<HTMLVideoElement>(null);
   const targetHref = useRef('');
 
@@ -54,9 +51,8 @@ export default function TakeYourTimeTransition() {
     e.preventDefault();
     e.stopPropagation();
 
-    // Pick variant: ~25% each
-    const roll = Math.random();
-    const pick: Variant = roll < 0.25 ? 'take-your-time' : roll < 0.5 ? 'p5-clip1' : roll < 0.75 ? 'p5-clip2' : 'p5-subway';
+    // Pick variant: 50/50 between TYT and subway
+    const pick: Variant = Math.random() < 0.5 ? 'take-your-time' : 'p5-subway';
     setVariant(pick);
     targetHref.current = href;
     setActive(true);
@@ -68,18 +64,15 @@ export default function TakeYourTimeTransition() {
     return () => document.removeEventListener('click', handleClick, true);
   }, [handleClick]);
 
-  const isP5 = variant === 'p5-clip1' || variant === 'p5-clip2' || variant === 'p5-subway';
-
   // Phase state machine
   useEffect(() => {
     if (phase === 'wipe-in') {
-      const delay = variant === 'take-your-time' ? 400 : 300;
+      // Slower wipe-in for TYT so the text reads; snappier for subway
+      const delay = variant === 'take-your-time' ? 550 : 320;
       const timer = setTimeout(() => {
         setPhase('video');
         let videoEl: HTMLVideoElement | null = null;
         if (variant === 'take-your-time') videoEl = tytVideoRef.current;
-        else if (variant === 'p5-clip1') videoEl = p5Clip1Ref.current;
-        else if (variant === 'p5-clip2') videoEl = p5Clip2Ref.current;
         else videoEl = p5SubwayRef.current;
 
         if (videoEl) {
@@ -93,24 +86,26 @@ export default function TakeYourTimeTransition() {
     }
 
     if (phase === 'video') {
-      // clip1 ~0.42s (quick slam), clip2 ~1.79s (Joker + break + settle to dark), subway ~6s (crowd slide), tyt ~1.7s
-      const hold = variant === 'take-your-time' ? 1700
-        : variant === 'p5-clip1' ? 420
-        : variant === 'p5-subway' ? 3000
-        : 1800;
+      // Give the destination page time to load before the wipe-out reveal.
+      // TYT extended to 2600ms (was 1700) so the "Take Your Time" beat reads.
+      // Subway extended to 3400ms (was 3000) for a better crowd slide.
+      const hold = variant === 'take-your-time' ? 2600 : 3400;
       const timer = setTimeout(() => setPhase('wipe-out'), hold);
       return () => clearTimeout(timer);
     }
 
     if (phase === 'wipe-out') {
+      // Slower wipe-out so the new page has time to paint
+      const wipeOutMs = variant === 'take-your-time' ? 650 : 550;
       const timer = setTimeout(() => {
         window.location.href = targetHref.current;
-      }, 400);
+      }, wipeOutMs);
       return () => clearTimeout(timer);
     }
   }, [phase, variant]);
 
   const isTYT = variant === 'take-your-time';
+  const isSubway = variant === 'p5-subway';
 
   return (
     <AnimatePresence>
@@ -130,7 +125,7 @@ export default function TakeYourTimeTransition() {
           {/* ── Variant 1: Take Your Time ── */}
           {isTYT && (
             <>
-              {/* Black background wipe */}
+              {/* Black background wipe — slower for a more confident feel */}
               <motion.div
                 style={{ position: 'absolute', inset: 0, background: '#000000', zIndex: 1 }}
                 initial={{ clipPath: 'polygon(0 0, 0 0, 0 100%, 0 100%)' }}
@@ -139,7 +134,10 @@ export default function TakeYourTimeTransition() {
                     ? { clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' }
                     : { clipPath: 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)' }
                 }
-                transition={{ duration: 0.35, ease: EASE_SHARP }}
+                transition={{
+                  duration: phase === 'wipe-out' ? 0.55 : 0.5,
+                  ease: EASE_SHARP,
+                }}
               />
               {/* Red diagonal accent */}
               <motion.div
@@ -152,14 +150,22 @@ export default function TakeYourTimeTransition() {
                       ? { clipPath: 'polygon(0 0, 8% 0, 3% 100%, 0 100%)' }
                       : { clipPath: 'polygon(100% 0, 115% 0, 105% 100%, 100% 100%)' }
                 }
-                transition={{ duration: 0.3, ease: EASE_SHARP, delay: phase === 'wipe-in' ? 0.1 : 0 }}
+                transition={{
+                  duration: phase === 'wipe-out' ? 0.5 : 0.42,
+                  ease: EASE_SHARP,
+                  delay: phase === 'wipe-in' ? 0.12 : 0,
+                }}
               />
               {/* Video layer */}
               <motion.div
-                style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 3 }}
+                style={{
+                  position: 'absolute', inset: 0,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  zIndex: 3,
+                }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: phase === 'video' ? 1 : 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.45, delay: phase === 'video' ? 0.1 : 0 }}
               >
                 <video
                   ref={tytVideoRef}
@@ -167,15 +173,26 @@ export default function TakeYourTimeTransition() {
                   muted
                   playsInline
                   preload="auto"
-                  style={{ width: '100%', height: '100%', objectFit: 'contain', filter: 'brightness(1.1) contrast(1.1)' }}
+                  style={{
+                    width: '100%', height: '100%',
+                    objectFit: 'contain',
+                    filter: 'brightness(1.1) contrast(1.1)',
+                  }}
                 />
               </motion.div>
-              {/* Text overlay */}
+              {/* Text overlay — slower fade so user has time to read */}
               <motion.div
-                style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 4 }}
+                style={{
+                  position: 'absolute', inset: 0,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  zIndex: 4,
+                }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: phase === 'video' ? 1 : 0 }}
-                transition={{ duration: 0.4, delay: phase === 'video' ? 0.3 : 0 }}
+                transition={{
+                  duration: phase === 'video' ? 0.55 : 0.35,
+                  delay: phase === 'video' ? 0.45 : 0,
+                }}
               >
                 <span
                   style={{
@@ -196,24 +213,19 @@ export default function TakeYourTimeTransition() {
             </>
           )}
 
-          {/* ── Variants 2 & 3: P5 Animation Clips ── */}
-          {isP5 && (
+          {/* ── Variant 2: P5 Subway ── */}
+          {isSubway && (
             <>
-              {/* P5 background: site bg (red/colors are baked into the video) */}
+              {/* Dark backdrop so cover-cropped edges don't flash bright */}
               <motion.div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: '#0d0d0d',
-                  zIndex: 1,
-                }}
+                style={{ position: 'absolute', inset: 0, background: '#0d0d0d', zIndex: 1 }}
                 initial={{ clipPath: 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)' }}
                 animate={
                   phase === 'wipe-in' || phase === 'video'
                     ? { clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' }
                     : { clipPath: 'polygon(0 0, 0 0, 0 100%, 0 100%)' }
                 }
-                transition={{ duration: 0.3, ease: EASE_SHARP }}
+                transition={{ duration: 0.35, ease: EASE_SHARP }}
               />
 
               {/* Red angular flash accent */}
@@ -231,49 +243,39 @@ export default function TakeYourTimeTransition() {
                 }} />
               </motion.div>
 
-              {/* P5 animation video */}
+              {/* Subway video — fills the viewport with objectFit: cover so
+                  no black bars and edges are cropped rather than letterboxed */}
               <motion.div
-                style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 3 }}
-                initial={{ opacity: 0, scale: 1.1 }}
+                style={{
+                  position: 'absolute', inset: 0,
+                  zIndex: 3,
+                  overflow: 'hidden',
+                }}
+                initial={{ opacity: 0, scale: 1.08 }}
                 animate={
                   phase === 'video'
                     ? { opacity: 1, scale: 1 }
                     : phase === 'wipe-out'
-                      ? { opacity: 0, scale: 0.95 }
-                      : { opacity: 0, scale: 1.1 }
+                      ? { opacity: 0, scale: 0.97 }
+                      : { opacity: 0, scale: 1.08 }
                 }
-                transition={{ duration: 0.35, ease: EASE_SHARP }}
+                transition={{ duration: 0.4, ease: EASE_SHARP }}
               >
-                {variant === 'p5-clip1' && (
-                  <video
-                    ref={p5Clip1Ref}
-                    src={P5_CLIP1_SRC}
-                    muted
-                    playsInline
-                    preload="auto"
-                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                  />
-                )}
-                {variant === 'p5-clip2' && (
-                  <video
-                    ref={p5Clip2Ref}
-                    src={P5_CLIP2_SRC}
-                    muted
-                    playsInline
-                    preload="auto"
-                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                  />
-                )}
-                {variant === 'p5-subway' && (
-                  <video
-                    ref={p5SubwayRef}
-                    src={P5_SUBWAY_SRC}
-                    muted
-                    playsInline
-                    preload="auto"
-                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                  />
-                )}
+                <video
+                  ref={p5SubwayRef}
+                  src={P5_SUBWAY_SRC}
+                  muted
+                  playsInline
+                  preload="auto"
+                  style={{
+                    position: 'absolute',
+                    top: 0, left: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'center',
+                  }}
+                />
               </motion.div>
 
               {/* Diagonal red stripe accents during video */}
