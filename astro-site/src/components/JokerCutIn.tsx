@@ -813,9 +813,11 @@ function DateNumberTransition({
 /* ── DaggerMarker (stylized date-pin) ──────────────────────────── */
 
 function DaggerMarker({ active }: { active: boolean }) {
-  // SVG dagger/date-pin. Enters from upper-right, lands pinning top-right area
-  // of the date (centered composition). We pin it near top-right of viewport
-  // with a rotation so it reads as diagonally stabbing into the date.
+  // Uses the existing /img/p5-throwing-knife.png asset. Its default orientation
+  // has the blade pointing down-left, which naturally reads as "stabbing from
+  // upper-right into the top-right of the date." We add a small rotation on
+  // rest + a subtle landing wobble + an offset red slash so the composition
+  // feels pinned/impacted.
   return (
     <AnimatePresence>
       {active && (
@@ -823,72 +825,68 @@ function DaggerMarker({ active }: { active: boolean }) {
           aria-hidden="true"
           style={{
             position: 'absolute',
-            top: 'clamp(18%,22vh,28%)',
-            left: 'calc(50% + clamp(80px,14vw,220px))',
+            // Anchor near the top-right corner of the centered date block
+            top: 'clamp(14%,18vh,24%)',
+            left: 'calc(50% + clamp(70px,12vw,200px))',
             zIndex: 45,
-            width: 'clamp(120px,18vw,260px)',
-            height: 'clamp(120px,18vw,260px)',
+            width: 'clamp(160px,22vw,320px)',
+            height: 'clamp(160px,22vw,320px)',
             pointerEvents: 'none',
-            transformOrigin: 'center',
+            transformOrigin: '30% 30%',
           }}
-          initial={{ x: 420, y: -420, rotate: 60, opacity: 0, scale: 1.25 }}
+          initial={{ x: 440, y: -440, rotate: 55, opacity: 0, scale: 1.3 }}
           animate={{
-            x: 0, y: 0, rotate: 35, opacity: 1, scale: 1,
+            x: 0, y: 0, rotate: 8, opacity: 1, scale: 1,
           }}
-          exit={{ opacity: 0, scale: 0.9 }}
-          transition={{ duration: 0.28, ease: [0.65, 0, 0.25, 1.35] }}
+          exit={{ opacity: 0, scale: 0.92, transition: { duration: 0.25 } }}
+          transition={{ duration: 0.3, ease: [0.65, 0, 0.25, 1.4] }}
         >
-          <motion.svg
-            viewBox="0 0 200 200"
-            width="100%" height="100%"
-            animate={{
-              rotate: [35, 33, 36, 34, 35],
+          {/* Red accent slash behind the dagger's landing point for extra pop */}
+          <motion.div
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              top: '18%',
+              left: '-14%',
+              width: '70%',
+              height: '14%',
+              background: '#d41428',
+              transform: 'skewX(-22deg) rotate(-14deg)',
+              boxShadow: '4px 4px 0 #0a0a0a',
+              zIndex: 0,
             }}
-            transition={{ duration: 0.6, ease: EASE_SHARP, delay: 0.25 }}
-            style={{ filter: 'drop-shadow(6px 6px 0 rgba(0,0,0,0.85))' }}
-          >
-            {/* Blade — long pointed lozenge */}
-            <polygon
-              points="100,0 120,90 100,130 80,90"
-              fill="#f4f4f4"
-              stroke="#0a0a0a"
-              strokeWidth="4"
-              strokeLinejoin="miter"
-            />
-            {/* Blade highlight */}
-            <polygon
-              points="100,8 110,90 100,120 95,90"
-              fill="rgba(255,255,255,0.85)"
-            />
-            {/* Blood-red inner accent */}
-            <polygon
-              points="100,14 104,82 100,110 98,82"
-              fill="#d41428"
-              opacity="0.85"
-            />
-            {/* Crossguard */}
-            <rect
-              x="62" y="126" width="76" height="16"
-              fill="#0a0a0a"
-              stroke="#0a0a0a" strokeWidth="3"
-            />
-            <rect
-              x="62" y="126" width="76" height="6"
-              fill="#d41428"
-            />
-            {/* Grip */}
-            <rect
-              x="88" y="142" width="24" height="44"
-              fill="#d41428"
-              stroke="#0a0a0a" strokeWidth="4"
-            />
-            {/* Pommel */}
-            <polygon
-              points="86,186 114,186 108,200 92,200"
-              fill="#0a0a0a"
-              stroke="#0a0a0a" strokeWidth="3"
-            />
-          </motion.svg>
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={{ scaleX: 1, opacity: 0.9 }}
+            transition={{ duration: 0.32, delay: 0.08, ease: EASE_SHARP }}
+          />
+          {/* The actual dagger PNG — with landing wobble */}
+          <motion.img
+            src="/img/p5-throwing-knife.png"
+            alt=""
+            draggable={false}
+            animate={{ rotate: [8, 5, 11, 7, 9, 8] }}
+            transition={{
+              duration: 0.55,
+              ease: EASE_SHARP,
+              delay: 0.22,
+              times: [0, 0.2, 0.4, 0.6, 0.8, 1],
+            }}
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              display: 'block',
+              filter: [
+                'drop-shadow(4px 4px 0 rgba(0,0,0,0.6))',
+                'drop-shadow(8px 8px 0 rgba(212,20,40,0.55))',
+              ].join(' '),
+              zIndex: 1,
+              transformOrigin: '30% 30%',
+              userSelect: 'none',
+              WebkitUserSelect: 'none',
+            }}
+          />
         </motion.div>
       )}
     </AnimatePresence>
