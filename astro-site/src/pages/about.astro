@@ -8,13 +8,14 @@ import AboutChapters from '../components/AboutChapters.tsx';
 </Layout>
 
 <style>
-  /* Let the scroll container inside AboutChapters own the viewport */
+  /* AboutChapters now renders a naturally-scrolling Confidant Profile
+     page, so let the document own scrolling instead of locking to 100vh. */
   :global(.page-about main) {
     padding: 0;
     margin: 0;
-    height: 100vh;
-    overflow: hidden;
   }
+  /* The new design ships its own sticky nav + footer ticker; hide the
+     global chrome so the layout stays edge-to-edge. */
   :global(.page-about .nav-header) {
     display: none;
   }
