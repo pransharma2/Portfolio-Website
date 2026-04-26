@@ -123,11 +123,19 @@ function getDateParts(now: Date = new Date()): DateParts {
   };
 }
 
+/**
+ * Map a 24-hour clock to a Persona-5 backdrop mood.
+ *   21:00 – 04:59 → night     (deep neon-blue city)
+ *   05:00 – 06:59 → dawn      (cool purple → warm peach horizon)
+ *   07:00 – 11:59 → day       (bright blue sky)
+ *   12:00 – 16:59 → afternoon (warm golden haze)
+ *   17:00 – 20:59 → evening   (sunset / magic-hour)
+ */
 function getTimePeriod(hour: number): TimePeriod {
-  if (hour >= 20 || hour < 5)  return 'night';
-  if (hour >= 5 && hour < 7)   return 'dawn';
-  if (hour >= 7 && hour < 15)  return 'day';
-  if (hour >= 15 && hour < 19) return 'afternoon';
+  if (hour >= 21 || hour < 5)  return 'night';
+  if (hour < 7)                return 'dawn';
+  if (hour < 12)               return 'day';
+  if (hour < 17)               return 'afternoon';
   return 'evening';
 }
 
@@ -289,7 +297,9 @@ function CloudLayer({
     resize();
     window.addEventListener('resize', resize);
 
-    const isNight = timePeriod === 'night' || timePeriod === 'evening';
+    // Cloud tinting: only true night gets the cool blue wash.
+    // Evening/sunset keeps warm day-like highlights.
+    const isNight = timePeriod === 'night';
     // Painterly color ranges — slight warm/cool tint per period
     const coreRGB = (() => {
       switch (timePeriod) {
