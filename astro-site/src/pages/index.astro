@@ -1,53 +1,32 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import JokerCutIn from '../components/JokerCutIn';
-import WeatherWidget from '../components/WeatherWidget';
+import HomeHero from '../components/HomeHero';
 ---
 
 <Layout title="Home — Phantom Dev Portfolio" page="home">
-  <!-- Hero Section -->
-  <section class="hero">
-    <!-- Fullscreen looping background video (muted by default; SoundToggle controls audio) -->
-    <div class="hero-video-bg">
-      <video
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="auto"
-        poster="/img/p5_wall.jpg"
-      >
-        <source src="/img/home_page_50MBs.mp4" type="video/mp4" />
-      </video>
-    </div>
-
-    <div class="hero-inner">
-      <div class="hero-title-card">
-        <h1>Prantap's Portfolio</h1>
-        <p class="hero-sub">Take Your Heart &mdash; enter the Metaverse of my work.</p>
-      </div>
-
-      <!-- P5-style battle menu navigation -->
-      <nav class="p5-menu" aria-label="Quick navigation">
-        <a href="/about" class="p5-menu-item">
-          <img src="/img/about-me.png" alt="" loading="lazy" class="menu-icon" />
-          <span class="menu-label">About</span>
-        </a>
-        <a href="/projects" class="p5-menu-item">
-          <img src="/img/projects.png" alt="" loading="lazy" class="menu-icon" />
-          <span class="menu-label">Projects</span>
-        </a>
-        <a href="/contact" class="p5-menu-item">
-          <img src="/img/contact.png" alt="" loading="lazy" class="menu-icon" />
-          <span class="menu-label">Contact</span>
-        </a>
-      </nav>
-    </div>
-  </section>
-
-  <!-- Joker cut-in intro animation (once per session) -->
-  <JokerCutIn client:load />
-
-  <!-- P5 weather/date widget (top-right of home page) -->
-  <WeatherWidget client:load />
+  <HomeHero client:load />
 </Layout>
+
+<style>
+  /* Make the home page fill the viewport for the fixed hero */
+  :global(.page-home main) {
+    padding: 0;
+    margin: 0;
+    min-height: 100vh;
+  }
+  :global(.page-home .nav-header) {
+    display: none;
+  }
+  :global(.page-home .site-footer) {
+    display: none;
+  }
+  :global(.page-home .p5-fixed-controls) {
+    display: none;
+  }
+  :global(.page-home .particles) {
+    display: none;
+  }
+  :global(.page-home .corner-decor) {
+    display: none;
+  }
+</style>

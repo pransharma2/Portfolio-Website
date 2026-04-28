@@ -1,99 +1,32 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ContactCanvas from '../components/ContactCanvas';
+import ContactPage from '../components/ContactPage';
 ---
 
 <Layout title="Contact — Send a Calling Card" page="contact">
-
-  <!--
-    Layer order (low → high):
-      body::before  z-index: -1  Dark overlay + P5 ghost art
-      ContactCanvas z-index:  0  Canvas sparkle particles (p5ausa recreation)
-      .cstars       z-index:  1  Static star PNGs with bounce-in
-      .page-banner  z-index:  2  Page title
-      .chat-page    z-index:  2  Contact form
-  -->
-
-  <!-- Canvas particle sparkle (faithful recreation of p5ausa.com's particle system) -->
-  <ContactCanvas client:load />
-
-  <!-- Static star decorations — bounce-in animation matching p5ausa star_in keyframe -->
-  <!-- Sizes mirror the 6 size variants used on p5ausa: 01.png(257px) down to 06.png(29px) -->
-  <ul class="cstars" aria-hidden="true">
-    <li class="cstar sz-xl pos-1"></li>
-    <li class="cstar sz-lg pos-2"></li>
-    <li class="cstar sz-lg pos-3"></li>
-    <li class="cstar sz-md pos-4"></li>
-    <li class="cstar sz-md pos-5"></li>
-    <li class="cstar sz-sm pos-6"></li>
-    <li class="cstar sz-sm pos-7"></li>
-    <li class="cstar sz-sm pos-8"></li>
-    <li class="cstar sz-xs pos-9"></li>
-    <li class="cstar sz-xs pos-10"></li>
-    <li class="cstar sz-xs pos-11"></li>
-    <li class="cstar sz-xs pos-12"></li>
-  </ul>
-
-  <!-- Page Banner -->
-  <div class="page-banner" style="position:relative;z-index:2;">Calling Card</div>
-
-  <div class="chat-page">
-    <div class="phone-frame">
-      <!-- Chat Header -->
-      <div class="chat-header">
-        <div class="chat-avatar" aria-hidden="true">P</div>
-        <div>
-          <span class="chat-name">Phantom Dev</span>
-          <span class="chat-status">Online</span>
-        </div>
-      </div>
-
-      <!-- Chat Messages -->
-      <div class="chat-messages">
-        <div class="chat-bubble received">
-          <p>Hey there! Welcome to the Phantom Thieves hideout.</p>
-        </div>
-        <div class="chat-bubble received">
-          <p>Got something on your mind? Send me a calling card below.</p>
-        </div>
-      </div>
-
-      <!-- Contact Form -->
-      <form class="chat-form" action="#" method="post">
-        <div class="form-row">
-          <label for="contact-name">Name</label>
-          <input
-            type="text"
-            id="contact-name"
-            name="name"
-            placeholder="Your codename..."
-            required
-            autocomplete="name"
-          />
-        </div>
-        <div class="form-row">
-          <label for="contact-email">Email</label>
-          <input
-            type="email"
-            id="contact-email"
-            name="email"
-            placeholder="phantom@example.com"
-            required
-            autocomplete="email"
-          />
-        </div>
-        <div class="form-row">
-          <label for="contact-message">Message</label>
-          <textarea
-            id="contact-message"
-            name="message"
-            placeholder="Write your calling card..."
-            rows="4"
-            required
-          ></textarea>
-        </div>
-        <button type="submit" class="p5-send-btn">Send Calling Card</button>
-      </form>
-    </div>
-  </div>
+  <ContactPage client:load />
 </Layout>
+
+<style>
+  :global(.page-contact main) {
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
+  :global(.page-contact .nav-header) {
+    display: none;
+  }
+  :global(.page-contact .site-footer) {
+    display: none;
+  }
+  :global(.page-contact .p5-fixed-controls) {
+    display: none;
+  }
+  :global(.page-contact .particles) {
+    display: none;
+  }
+  :global(.page-contact .corner-decor) {
+    display: none;
+  }
+</style>

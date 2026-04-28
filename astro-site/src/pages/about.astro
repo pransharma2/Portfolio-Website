@@ -1,176 +1,34 @@
 ---
 import Layout from '../layouts/Layout.astro';
-
-const missions = [
-  {
-    op: 'Operation: Platform Guardian',
-    org: 'SDK Tek Services Ltd',
-    role: 'Data Analytics Consultant Intern',
-    date: 'Jan 2026 — Present',
-    bullets: [
-      'Sustaining Suncor\'s enterprise data warehouse — triaging Azure pipeline failures, raising ServiceNow incident tickets, and troubleshooting to maintain SLA uptime.',
-      'Handling requested item tickets from Suncor: access requests, Power BI report updates, and platform change requests.',
-      'Built PBI reports consolidating pipeline failures across multiple data factories via Log Analytics Workspaces, then automated incident ticket generation — shifting team focus entirely from triaging to troubleshooting.',
-    ],
-  },
-  {
-    op: 'Operation: Pipeline Vanguard',
-    org: 'Suncor Energy',
-    role: 'Data Engineering Intern',
-    date: 'Sep 2024 — Aug 2025',
-    bullets: [
-      'Built a Power BI monitoring app covering the full orchestration stack — pipeline statuses, Iceberg table refreshes, triggers, Snowflake query history — pulling from Log Analytics Workspaces across source-to-bronze, bronze-to-silver, and silver-to-gold layers.',
-      'Developed Dim/Fact automation scripts (Python, migrated to Streamlit app) reusable by any project team in the Snowflake migration, saving $550 per object and ~3 hours per build.',
-      'Drove 300K+ in annual savings by shifting ingestion of 400 SAP tables from SLT to Datasphere through an orchestration tool upgrade.',
-      'Designed Azure Data Factory pipelines for Otodata and DXFleet source systems (IoT fuel tank tracking + fleet vehicle data) with dynamic pagination and daily/hourly batching logic.',
-      'Upgraded the main orchestration tool to handle SQL change-tracking ingestion for tables with hundreds of millions of rows, improving pipeline scalability and reliability.',
-      'Built Power BI dashboards tracking admin distribution and underutilized reports across the organization, enabling targeted cost savings.',
-      'Improved AI project governance by launching a dedicated Jira board and redesigning intake forms with data-driven questions, streamlining tracking for the founding team.',
-    ],
-  },
-  {
-    op: 'Operation: Phantom Curriculum',
-    org: 'DS&ML Club — UCalgary',
-    role: 'Workshop Director',
-    date: 'Jul 2024 — Present',
-    bullets: [
-      'Developing and delivering interactive workshops consistently attended by 50+ University of Calgary students per session — topics include neural networks, data engineering, and cloud-based analytics.',
-      'Sustained 90%+ satisfaction and relevance ratings, with attendee feedback highlighting clarity, effective theory-to-practice delivery, and engaging activities.',
-      'Implemented incentive-based engagement programs (certificates, tournaments) to drive repeat attendance and foster long-term skill development.',
-    ],
-  },
-  {
-    op: 'Operation: Foundations',
-    org: 'Kumon Math & Reading',
-    role: 'Tutor',
-    date: 'Dec 2019 — Sep 2024',
-    bullets: [
-      'Taught foundational math and reading skills across multiple grade levels, adapting content to each student\'s learning style.',
-      'Provided individualized guidance to ensure students progressed at their own pace and consistently hit their targets.',
-    ],
-  },
-];
-
-const skillGroups = [
-  {
-    label: 'Programming',
-    tags: ['Python', 'SQL', 'R', 'PySpark', 'JavaScript', 'Java', 'C', 'HTML/CSS', 'Bash', 'Shell Scripting', 'Git', 'ARM Assembly'],
-  },
-  {
-    label: 'Data Platforms',
-    tags: ['Power BI', 'Snowflake', 'Azure', 'Azure Data Factory', 'Databricks', 'Tableau', 'MS SQL Server', 'Microsoft Access'],
-  },
-  {
-    label: 'Tools',
-    tags: ['Streamlit', 'ServiceNow', 'Jira', 'Power Apps', 'Excel', 'VS Code'],
-  },
-  {
-    label: 'Core Strengths',
-    tags: ['Problem-Solving', 'Analytical Thinking', 'Attention to Detail', 'Collaboration', 'Adaptability'],
-  },
-];
+import AboutChapters from '../components/AboutChapters.tsx';
 ---
 
 <Layout title="About — Confidant Profile" page="about">
-  <div class="page-banner">Confidant Profile</div>
-
-  <div class="confidant-page">
-
-    <!-- ── 1. Profile: who I am ── -->
-    <div class="confidant-profile">
-      <div class="confidant-portrait">
-        <img
-          src="/img/1_P1ZpJoADmVLHN2vjq0cmqw_1762760206212.jpg"
-          alt="Prantap portrait photo"
-          loading="lazy"
-        />
-        <span class="rank-badge" aria-label="Star rank">&#9733;</span>
-      </div>
-      <div class="confidant-bio">
-        <div class="confidant-bio-header">
-          <span class="confidant-name">Prantap Sharma</span>
-          <span class="confidant-location">Calgary, AB · Canadian Citizen</span>
-        </div>
-        <p>
-          Dual-degree student at the University of Calgary completing a BComm in Business Analytics
-          alongside a BSc in Computer Science. Recently finished a Data Engineering internship at
-          Suncor Energy — building pipelines, automation tools, and monitoring systems that
-          contributed to 300K+ in annual savings. Currently consulting at SDK Tek Services keeping
-          Suncor's data warehouse running and pushing continuous improvements. Directing technical
-          workshops for 50+ students per session as Workshop Director of the DS&amp;ML Club.
-          Building things that get used, at the intersection of data infrastructure and analytics.
-        </p>
-        <div class="confidant-tags">
-          <span class="p5-tag">Azure</span>
-          <span class="p5-tag">Snowflake</span>
-          <span class="p5-tag">Power BI</span>
-          <span class="p5-tag">Python</span>
-          <span class="p5-tag">PySpark</span>
-          <span class="p5-tag">ADF</span>
-          <span class="p5-tag">Databricks</span>
-          <span class="p5-tag">SQL</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── 1b. Education ── -->
-    <div class="education-block">
-      <div class="education-inst">
-        <span class="education-name">University of Calgary</span>
-        <span class="education-period">Sep 2021 — Present</span>
-      </div>
-      <div class="education-degrees">
-        <div class="education-degree">
-          <span class="education-degree-label">BComm</span>
-          Business Analytics (Major)
-        </div>
-        <div class="education-degree">
-          <span class="education-degree-label">BSc</span>
-          Computer Science (Major)
-        </div>
-      </div>
-    </div>
-
-    <hr class="p5-divider" />
-
-    <!-- ── 2. Infiltration Log: work experience ── -->
-    <div>
-      <div class="section-header">Infiltration Log</div>
-      <div class="mission-log">
-        {missions.map((m) => (
-          <div class="mission-entry">
-            <span class="mission-date">{m.date}</span>
-            <div class="mission-op">{m.op}</div>
-            <div class="mission-org">{m.org}</div>
-            <div class="mission-role">{m.role}</div>
-            <ul class="mission-bullets">
-              {m.bullets.map((b) => (
-                <li class="mission-bullet">{b}</li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-    </div>
-
-    <hr class="p5-divider" />
-
-    <!-- ── 3. Skill Domains ── -->
-    <div>
-      <div class="section-header">Arsenal</div>
-      <div class="skill-domains-grid">
-        {skillGroups.map((group) => (
-          <div class="skill-domain-group">
-            <div class="skill-domain-label">{group.label}</div>
-            <div class="skill-domain-tags">
-              {group.tags.map((tag) => (
-                <span class="p5-tag">{tag}</span>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-
-  </div>
+  <AboutChapters client:load />
 </Layout>
+
+<style>
+  /* AboutChapters now renders a naturally-scrolling Confidant Profile
+     page, so let the document own scrolling instead of locking to 100vh. */
+  :global(.page-about main) {
+    padding: 0;
+    margin: 0;
+  }
+  /* The new design ships its own sticky nav + footer ticker; hide the
+     global chrome so the layout stays edge-to-edge. */
+  :global(.page-about .nav-header) {
+    display: none;
+  }
+  :global(.page-about .site-footer) {
+    display: none;
+  }
+  :global(.page-about .p5-fixed-controls) {
+    display: none;
+  }
+  :global(.page-about .particles) {
+    display: none;
+  }
+  :global(.page-about .corner-decor) {
+    display: none;
+  }
+</style>

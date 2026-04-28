@@ -233,14 +233,14 @@ export default function StarPatternCanvas() {
     const PHONE   = 300_000;
     const vol     = W * H;
     const gScale  = remap(vol, FULL_HD, PHONE, 1.0, 0.75);
-    const count   = Math.round(remap(vol, FULL_HD, PHONE, 120, 60));
+    const count   = Math.round(remap(vol, FULL_HD, PHONE, 120, 50));
 
     // Per-instance buffer: [cx, cy, rotation, scale, speed, offset] = 6 floats
     const STRIDE_F = 6;
     const instArr  = new Float32Array(count * STRIDE_F);
     for (let i = 0; i < count; i++) {
       const o    = i * STRIDE_F;
-      const sc   = (200 + Math.random() * 140) * gScale; // 200–340 px, matching reference
+      const sc   = (120 + Math.random() * 240) * gScale; // 120–360 px, wider range for better coverage
       instArr[o    ] = Math.random() * W;          // cx
       instArr[o + 1] = Math.random() * H;          // cy
       instArr[o + 2] = Math.random() * Math.PI * 2; // rotation (rad)
@@ -312,19 +312,25 @@ export default function StarPatternCanvas() {
       gl.ONE,       gl.ONE_MINUS_SRC_ALPHA,
     );
 
-    // --- Render loop ---------------------------------------------------------
+    // --- Render loop (throttled to ~30fps) -----------------------------------
     const t0 = performance.now();
     let rafId: number;
+    let lastFrame = 0;
+    const FRAME_INTERVAL = 1000 / 30; // ~33ms per frame
 
     function render() {
-      const t = (performance.now() - t0) / 1000;
+      rafId = requestAnimationFrame(render);
+      const now = performance.now();
+      if (now - lastFrame < FRAME_INTERVAL) return;
+      lastFrame = now;
+
+      const t = (now - t0) / 1000;
       gl.viewport(0, 0, W, H);
       gl.clearColor(0, 0, 0, 1);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.uniform1f(uTime, t);
       gl.bindVertexArray(vao);
       gl.drawElementsInstanced(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0, count);
-      rafId = requestAnimationFrame(render);
     }
 
     // Pause rendering when tab is hidden (performance)
